@@ -1,0 +1,21 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield shape - grayscale -->
+  <path d="M24 3 L42 9 L42 24 Q42 36 24 45 Q6 36 6 24 L6 9 Z"
+        fill="#999999"/>
+  <!-- Inner shield highlight -->
+  <path d="M24 6 L39 11 L39 24 Q39 34.5 24 42 Q9 34.5 9 24 L9 11 Z"
+        fill="none"
+        stroke="rgba(255,255,255,0.2)"
+        stroke-width="1"/>
+  <!-- Checkmark -->
+  <path d="M15 24 L21 30 L33 15"
+        fill="none"
+        stroke="#cccccc"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <!-- Three small stars representing the Eumenides -->
+  <circle cx="24" cy="12" r="1.5" fill="#cccccc" opacity="0.5"/>
+  <circle cx="20" cy="13" r="1.2" fill="#cccccc" opacity="0.4"/>
+  <circle cx="28" cy="13" r="1.2" fill="#cccccc" opacity="0.4"/>
+</svg>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eumenides</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 350px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    
+    .status {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .status-text {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .toggle.active {
+      background: #4ade80;
+    }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: 0.3s;
+    }
+    
+    .toggle.active::after {
+      left: 26px;
+    }
+    
+    .mode-selector {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .mode-selector h3 {
+      font-size: 14px;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    
+    .mode-option {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .mode-option:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .mode-option.selected {
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.2);
+    }
+    
+    .mode-option h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    
+    .mode-option p {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+    
+    .stats {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .stats h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    
+    .stat-value {
+      font-weight: 600;
+    }
+    
+    .premium-badge {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    
+    .upgrade-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    
+    .upgrade-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    .dashboard-btn {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 13px;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+    
+    .dashboard-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .limit-warning {
+      background: rgba(255, 107, 107, 0.3);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚡ <span data-i18n="extName">Eumenides</span></h1>
+      <p data-i18n="extDescription">Transform your rage into wisdom</p>
+    </div>
+
+    <div class="status">
+      <span class="status-text" data-i18n="protectionActive">Protection active</span>
+      <div class="toggle active" id="mainToggle"></div>
+    </div>
+
+    <div class="mode-selector">
+      <h3 data-i18n="protectionMode">Protection mode</h3>
+
+      <div class="mode-option selected" data-mode="instant">
+        <h4 data-i18n="modeInstant">⚡ Instant Catharsis</h4>
+        <p data-i18n="modeInstantDesc">Shows "Posted" but sends nothing</p>
+      </div>
+
+      <div class="mode-option" data-mode="preview">
+        <h4 data-i18n="modePreview">👁️ Private Preview</h4>
+        <p data-i18n="modePreviewDesc">View post without publishing</p>
+      </div>
+
+      <div class="mode-option" data-mode="delay">
+        <h4><span data-i18n="modeDelay">⏰ Reflection Delay</span> <span class="premium-badge" data-i18n="premium">PREMIUM</span></h4>
+        <p data-i18n="modeDelayDesc">Save and decide later</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <h3 data-i18n="today">Today</h3>
+      <div class="stat-row">
+        <span data-i18n="postsIntercepted">Posts intercepted</span>
+        <span class="stat-value">3 / 5</span>
+      </div>
+      <div class="stat-row">
+        <span data-i18n="regretsAvoided">Regrets avoided</span>
+        <span class="stat-value">100%</span>
+      </div>
+      <div class="stat-row">
+        <span data-i18n="timeSaved">Time saved</span>
+        <span class="stat-value">~45 min</span>
+      </div>
+    </div>
+
+    <div class="limit-warning" id="limitWarning" style="display: none;" data-i18n="limitWarning">
+      ⚠️ Daily limit reached (5/5)
+    </div>
+
+    <button class="upgrade-btn" data-i18n="upgradePremium">✨ Upgrade to Premium - $4.99/month</button>
+    <button class="dashboard-btn" data-i18n="openDashboard">📊 Open Dashboard</button>
+  </div>
+
+  <script src="../js/popup.js"></script>
+</body>
+</html>

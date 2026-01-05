@@ -1,0 +1,508 @@
+{
+  "extName": {
+    "message": "Eumenides",
+    "description": "Nom de l'extension"
+  },
+  "extDescription": {
+    "message": "Transformez votre rage en sagesse. Publiez sans regret.",
+    "description": "Description de l'extension"
+  },
+  "protectionActive": {
+    "message": "Protection active"
+  },
+  "protectionMode": {
+    "message": "Mode de protection"
+  },
+  "modeInstant": {
+    "message": "⚡ Catharsis instantanée"
+  },
+  "modeInstantDesc": {
+    "message": "Affiche \"Posté\" mais n'envoie rien"
+  },
+  "modePreview": {
+    "message": "👁️ Aperçu privé"
+  },
+  "modePreviewDesc": {
+    "message": "Voir le post sans le publier"
+  },
+  "modeDelay": {
+    "message": "⏰ Délai de réflexion"
+  },
+  "modeDelayDesc": {
+    "message": "Sauvegarder et décider plus tard"
+  },
+  "premium": {
+    "message": "PREMIUM"
+  },
+  "today": {
+    "message": "Aujourd'hui"
+  },
+  "postsIntercepted": {
+    "message": "Posts interceptés"
+  },
+  "regretsAvoided": {
+    "message": "Regrets évités"
+  },
+  "timeSaved": {
+    "message": "Temps économisé"
+  },
+  "limitWarning": {
+    "message": "⚠️ Limite quotidienne atteinte (5/5)"
+  },
+  "upgradePremium": {
+    "message": "✨ Passer à Premium - 4,99€/mois"
+  },
+  "openDashboard": {
+    "message": "📊 Ouvrir le Dashboard"
+  },
+  "postSending": {
+    "message": "Envoi..."
+  },
+  "postSent": {
+    "message": "Post envoyé ! (En réalité, il est en sécurité)"
+  },
+  "postSaved": {
+    "message": "Post sauvegardé. On te redemandera dans 6h."
+  },
+  "limitReached": {
+    "message": "⚠️ Limite quotidienne atteinte (5/5). Passe à Premium pour continuer !"
+  },
+  "premiumRequired": {
+    "message": "⚡ Mode Délai réservé aux membres Premium"
+  },
+  "previewTitle": {
+    "message": "👁️ Aperçu de ton post"
+  },
+  "previewNote": {
+    "message": "Ce post ne sera PAS publié. C'est juste un aperçu pour te permettre de réfléchir."
+  },
+  "noContent": {
+    "message": "Aucun contenu"
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "angerIntense": {
+    "message": "Colère intense"
+  },
+  "frustration": {
+    "message": "Frustration"
+  },
+  "irritation": {
+    "message": "Irritation"
+  },
+  "notifDelayedPostTitle": {
+    "message": "⏰ Post en attente de validation"
+  },
+  "notifDelayedPostMessage": {
+    "message": "Il y a $TIME$, tu voulais poster : \"$CONTENT$...\"",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      },
+      "content": {
+        "content": "$2"
+      }
+    }
+  },
+  "postNow": {
+    "message": "Poster maintenant"
+  },
+  "delete": {
+    "message": "Supprimer"
+  },
+  "notifSuggestionTitle": {
+    "message": "💡 Suggestion Eumenides"
+  },
+  "notifSuggestionMessage": {
+    "message": "Tu sembles particulièrement énervé(e) en ce moment. Active le mode automatique pour les prochaines heures ?"
+  },
+  "activate2h": {
+    "message": "Activer pour 2h"
+  },
+  "noThanks": {
+    "message": "Non merci"
+  },
+  "notifBadgeTitle": {
+    "message": "🏆 Nouveau badge débloqué !"
+  },
+  "notifBadgeMessage": {
+    "message": "Tu as obtenu le badge \"$NAME$\" !",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeAgoLessThan1h": {
+    "message": "moins d'une heure"
+  },
+  "timeAgo1h": {
+    "message": "1 heure"
+  },
+  "timeAgoHours": {
+    "message": "$HOURS$ heures",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeAgo1d": {
+    "message": "1 jour"
+  },
+  "timeAgoDays": {
+    "message": "$DAYS$ jours",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "delayModeRequiresPremium": {
+    "message": "Le mode Délai nécessite un abonnement Premium"
+  },
+  "dashboardTitle": {
+    "message": "⚡ Eumenides Dashboard"
+  },
+  "periodToday": {
+    "message": "Aujourd'hui"
+  },
+  "periodWeek": {
+    "message": "Cette semaine"
+  },
+  "periodMonth": {
+    "message": "Ce mois"
+  },
+  "periodAll": {
+    "message": "Tout"
+  },
+  "statPostsIntercepted": {
+    "message": "Posts interceptés"
+  },
+  "statTimeSaved": {
+    "message": "Temps économisé"
+  },
+  "statRegretsAvoided": {
+    "message": "Regrets évités"
+  },
+  "statCurrentStreak": {
+    "message": "Streak actuel"
+  },
+  "statChangeVsLastWeek": {
+    "message": "vs semaine dernière"
+  },
+  "statMinPerDebate": {
+    "message": "Temps économisé par post (frappe + réflexion)"
+  },
+  "statNoPosts": {
+    "message": "Aucun post encore"
+  },
+  "statDaysNoRegret": {
+    "message": "Jours sans regret"
+  },
+  "chartEmotionalActivity": {
+    "message": "📊 Activité émotionnelle"
+  },
+  "chartWordCloud": {
+    "message": "☁️ Nuage de mots - Cette semaine"
+  },
+  "recentPostsTitle": {
+    "message": "📝 Derniers posts non-envoyés"
+  },
+  "noPostsYet": {
+    "message": "Aucun post intercepté pour le moment. Commence à écrire sur les réseaux sociaux !"
+  },
+  "badgesTitle": {
+    "message": "🏆 Badges débloqués"
+  },
+  "noBadgesYet": {
+    "message": "Continue à utiliser Eumenides pour débloquer des badges !"
+  },
+  "noWordsDetected": {
+    "message": "Aucun mot détecté pour le moment"
+  },
+  "insightPatternTitle": {
+    "message": "💡 Pattern détecté"
+  },
+  "insightPatternEmpty": {
+    "message": "Commence à utiliser Eumenides pour voir tes patterns de rage posting."
+  },
+  "insightProgressTitle": {
+    "message": "🎯 Progression"
+  },
+  "insightProgressEmpty": {
+    "message": "Intercepte plus de posts pour voir ta progression émotionnelle."
+  },
+  "insightImprovementTitle": {
+    "message": "📈 Amélioration"
+  },
+  "insightImprovementEmpty": {
+    "message": "Tes statistiques d'amélioration s'afficheront ici."
+  },
+  "activatePremiumTitle": {
+    "message": "✨ Activer Premium"
+  },
+  "activatePremiumSubtitle": {
+    "message": "Débloquer les posts illimités et le mode délai"
+  },
+  "activatePremiumStatus": {
+    "message": "Clique sur le bouton ci-dessous pour activer les fonctionnalités premium"
+  },
+  "activatePremiumButton": {
+    "message": "🎁 Activer Premium Maintenant"
+  },
+  "premiumFeaturesTitle": {
+    "message": "Fonctionnalités Premium :"
+  },
+  "premiumFeature1": {
+    "message": "Posts quotidiens illimités (pas de limite 5/5)"
+  },
+  "premiumFeature2": {
+    "message": "Mode délai (revue des posts après 6 heures)"
+  },
+  "premiumFeature3": {
+    "message": "Analyses avancées"
+  },
+  "premiumFeature4": {
+    "message": "Support prioritaire"
+  },
+  "premiumActivated": {
+    "message": "✅ Premium activé ! Recharge la page ou rouvre l'extension."
+  },
+  "welcomeTitle": {
+    "message": "Bienvenue sur Eumenides"
+  },
+  "welcomeSubtitle": {
+    "message": "Transforme ta rage en sagesse"
+  },
+  "welcomeDescription": {
+    "message": "Eumenides t'aide à intercepter tes posts rageux avant qu'ils ne soient publiés. Prends le temps de réfléchir, et poste sans regret."
+  },
+  "howItWorksTitle": {
+    "message": "Comment ça marche ?"
+  },
+  "step1Title": {
+    "message": "1. Écris ton post"
+  },
+  "step1Desc": {
+    "message": "Sur Twitter, Reddit, Facebook ou LinkedIn"
+  },
+  "step2Title": {
+    "message": "2. Eumenides intercepte"
+  },
+  "step2Desc": {
+    "message": "Avant que tu ne postes quelque chose que tu vas regretter"
+  },
+  "step3Title": {
+    "message": "3. Choisis ton mode"
+  },
+  "step3Desc": {
+    "message": "Catharsis instantanée, aperçu privé, ou délai de réflexion"
+  },
+  "getStartedButton": {
+    "message": "Commencer"
+  },
+  "welcomeHero": {
+    "message": "⚡ Eumenides"
+  },
+  "welcomeTagline": {
+    "message": "Transformez votre rage en sagesse"
+  },
+  "welcomeSubtagline": {
+    "message": "L'extension qui protège votre réputation en ligne"
+  },
+  "featureInstantTitle": {
+    "message": "Protection instantanée"
+  },
+  "featureInstantDesc": {
+    "message": "Intercepte automatiquement vos posts rageux avant qu'ils ne causent des dégâts"
+  },
+  "featureDelayTitle": {
+    "message": "Délai de réflexion"
+  },
+  "featureDelayDesc": {
+    "message": "Recevez vos posts 6h plus tard quand l'émotion est retombée"
+  },
+  "featureAnalyticsTitle": {
+    "message": "Analytics détaillés"
+  },
+  "featureAnalyticsDesc": {
+    "message": "Comprenez vos patterns émotionnels et progressez"
+  },
+  "welcomeStep1Title": {
+    "message": "Activez l'extension"
+  },
+  "welcomeStep1Desc": {
+    "message": "Cliquez sur l'icône Eumenides dans votre barre d'outils et activez la protection"
+  },
+  "welcomeStep2Title": {
+    "message": "Choisissez votre mode"
+  },
+  "welcomeStep2Desc": {
+    "message": "Catharsis instantanée, aperçu privé, ou délai de réflexion - à vous de choisir"
+  },
+  "welcomeStep3Title": {
+    "message": "Postez normalement"
+  },
+  "welcomeStep3Desc": {
+    "message": "Écrivez et cliquez sur \"Publier\" comme d'habitude - Eumenides fait le reste"
+  },
+  "welcomeStep4Title": {
+    "message": "Évitez les regrets"
+  },
+  "welcomeStep4Desc": {
+    "message": "Votre post est intercepté. Vous ressentez le soulagement sans les conséquences"
+  },
+  "welcomeCtaButton": {
+    "message": "C'est parti ! 🚀"
+  },
+  "philosophyTitle": {
+    "message": "🏛️ La philosophie des Euménides"
+  },
+  "philosophyText": {
+    "message": "Dans la mythologie grecque, les Érinyes (Furies) poursuivaient sans relâche ceux qui avaient commis des crimes. Mais une fois apaisées, elles devenaient les Euménides - les \"Bienveillantes\". Cette extension incarne cette transformation : elle capture votre rage impulsive et la transforme en sagesse réfléchie. Parce que parfois, le plus grand pouvoir est celui de ne pas agir."
+  },
+  "wordCloudPrefix": {
+    "message": "Mots les plus utilisés :"
+  },
+  "postIntercepted": {
+    "message": "Post intercepté !"
+  },
+  "postInterceptedMessage": {
+    "message": "Ton post a été intercepté et mis en sécurité."
+  },
+  "reallyPostIt": {
+    "message": "Le publier quand même"
+  },
+  "keepItSafe": {
+    "message": "Non merci, le garder"
+  },
+  "postingNow": {
+    "message": "Publication en cours..."
+  },
+  "vsLastWeek": {
+    "message": "vs semaine dernière"
+  },
+  "recentPostsTitle": {
+    "message": "📝 Derniers posts non-envoyés"
+  },
+  "badgeCenturion": {
+    "message": "Centurion"
+  },
+  "badgeCenturionDesc": {
+    "message": "100 posts interceptés"
+  },
+  "badgeStoic": {
+    "message": "Sage stoïcien"
+  },
+  "badgeStoicDesc": {
+    "message": "30 posts interceptés"
+  },
+  "badgeTimeMaster": {
+    "message": "Maître du temps"
+  },
+  "badgeTimeMasterDesc": {
+    "message": "$HOURS$h économisées",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "badgeNightGuardian": {
+    "message": "Gardien nocturne"
+  },
+  "badgeNightGuardianDesc": {
+    "message": "$COUNT$ posts nocturnes interceptés",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightPattern": {
+    "message": "Tu es $MULTIPLIER$x plus susceptible d'écrire des posts rageux autour de $HOUR$h. Considère activer le mode automatique durant ces heures.",
+    "placeholders": {
+      "multiplier": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightVocabulary": {
+    "message": "Ton vocabulaire émotionnel s'est adouci de $PERCENT$% récemment. Tu utilises moins de termes extrêmes dans tes posts non-envoyés.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStreak": {
+    "message": "Tu as maintenu $DAYS$ jours sans poster de contenu rageux. Continue comme ça !",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "justNow": {
+    "message": "À l'instant"
+  },
+  "minutesAgo": {
+    "message": "Il y a $MINUTES$ min",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "Il y a $HOURS$h",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "yesterday": {
+    "message": "Hier"
+  },
+  "daysAgo": {
+    "message": "Il y a $DAYS$j",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "emotionAnger": {
+    "message": "😤 Colère intense"
+  },
+  "emotionFrustration": {
+    "message": "🙄 Frustration"
+  },
+  "emotionIrritation": {
+    "message": "😠 Irritation"
+  },
+  "emotionNeutral": {
+    "message": "😐 Neutre"
+  },
+  "emotionUnclassified": {
+    "message": "😐 Non classé"
+  },
+  "badgeFirstSteps": {
+    "message": "Premiers pas"
+  },
+  "badgeApprentice": {
+    "message": "Apprenti sage"
+  },
+  "badgeMaster": {
+    "message": "Maître stoïcien"
+  },
+  "badgeLegend": {
+    "message": "Légende"
+  }
+}

@@ -1,0 +1,508 @@
+{
+  "extName": {
+    "message": "Eumenides",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Transform your rage into wisdom. Post without regret.",
+    "description": "Extension description"
+  },
+  "protectionActive": {
+    "message": "Protection active"
+  },
+  "protectionMode": {
+    "message": "Protection mode"
+  },
+  "modeInstant": {
+    "message": "⚡ Instant Catharsis"
+  },
+  "modeInstantDesc": {
+    "message": "Shows 'Posted' but sends nothing"
+  },
+  "modePreview": {
+    "message": "👁️ Private Preview"
+  },
+  "modePreviewDesc": {
+    "message": "View post without publishing"
+  },
+  "modeDelay": {
+    "message": "⏰ Reflection Delay"
+  },
+  "modeDelayDesc": {
+    "message": "Save and decide later"
+  },
+  "premium": {
+    "message": "PREMIUM"
+  },
+  "today": {
+    "message": "Today"
+  },
+  "postsIntercepted": {
+    "message": "Posts intercepted"
+  },
+  "regretsAvoided": {
+    "message": "Regrets avoided"
+  },
+  "timeSaved": {
+    "message": "Time saved"
+  },
+  "limitWarning": {
+    "message": "⚠️ Daily limit reached (5/5)"
+  },
+  "upgradePremium": {
+    "message": "✨ Upgrade to Premium - $4.99/month"
+  },
+  "openDashboard": {
+    "message": "📊 Open Dashboard"
+  },
+  "postSending": {
+    "message": "Sending..."
+  },
+  "postSent": {
+    "message": "Post sent! (Actually, it's safe)"
+  },
+  "postSaved": {
+    "message": "Post saved. We'll ask you again in 6h."
+  },
+  "limitReached": {
+    "message": "⚠️ Daily limit reached (5/5). Upgrade to Premium to continue!"
+  },
+  "premiumRequired": {
+    "message": "⚡ Delay mode reserved for Premium members"
+  },
+  "previewTitle": {
+    "message": "👁️ Preview of your post"
+  },
+  "previewNote": {
+    "message": "This post will NOT be published. It's just a preview to let you think."
+  },
+  "noContent": {
+    "message": "No content"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "angerIntense": {
+    "message": "Intense anger"
+  },
+  "frustration": {
+    "message": "Frustration"
+  },
+  "irritation": {
+    "message": "Irritation"
+  },
+  "notifDelayedPostTitle": {
+    "message": "⏰ Post awaiting validation"
+  },
+  "notifDelayedPostMessage": {
+    "message": "$TIME$ ago, you wanted to post: \"$CONTENT$...\"",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      },
+      "content": {
+        "content": "$2"
+      }
+    }
+  },
+  "postNow": {
+    "message": "Post now"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "notifSuggestionTitle": {
+    "message": "💡 Eumenides Suggestion"
+  },
+  "notifSuggestionMessage": {
+    "message": "You seem particularly angry right now. Activate automatic mode for the next few hours?"
+  },
+  "activate2h": {
+    "message": "Activate for 2h"
+  },
+  "noThanks": {
+    "message": "No thanks"
+  },
+  "notifBadgeTitle": {
+    "message": "🏆 New badge unlocked!"
+  },
+  "notifBadgeMessage": {
+    "message": "You earned the \"$NAME$\" badge!",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeAgoLessThan1h": {
+    "message": "less than an hour"
+  },
+  "timeAgo1h": {
+    "message": "1 hour"
+  },
+  "timeAgoHours": {
+    "message": "$HOURS$ hours",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "timeAgo1d": {
+    "message": "1 day"
+  },
+  "timeAgoDays": {
+    "message": "$DAYS$ days",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "delayModeRequiresPremium": {
+    "message": "Delay mode requires a Premium subscription"
+  },
+  "dashboardTitle": {
+    "message": "⚡ Eumenides Dashboard"
+  },
+  "periodToday": {
+    "message": "Today"
+  },
+  "periodWeek": {
+    "message": "This week"
+  },
+  "periodMonth": {
+    "message": "This month"
+  },
+  "periodAll": {
+    "message": "All"
+  },
+  "statPostsIntercepted": {
+    "message": "Posts intercepted"
+  },
+  "statTimeSaved": {
+    "message": "Time saved"
+  },
+  "statRegretsAvoided": {
+    "message": "Regrets avoided"
+  },
+  "statCurrentStreak": {
+    "message": "Current streak"
+  },
+  "statChangeVsLastWeek": {
+    "message": "vs last week"
+  },
+  "statMinPerDebate": {
+    "message": "Time saved per post (typing + reflection)"
+  },
+  "statNoPosts": {
+    "message": "No posts yet"
+  },
+  "statDaysNoRegret": {
+    "message": "Days without regret"
+  },
+  "chartEmotionalActivity": {
+    "message": "📊 Emotional activity"
+  },
+  "chartWordCloud": {
+    "message": "☁️ Word cloud - This week"
+  },
+  "recentPostsTitle": {
+    "message": "📝 Recent unsent posts"
+  },
+  "noPostsYet": {
+    "message": "No posts intercepted yet. Start writing on social media!"
+  },
+  "badgesTitle": {
+    "message": "🏆 Unlocked badges"
+  },
+  "noBadgesYet": {
+    "message": "Keep using Eumenides to unlock badges!"
+  },
+  "noWordsDetected": {
+    "message": "No words detected yet"
+  },
+  "insightPatternTitle": {
+    "message": "💡 Pattern detected"
+  },
+  "insightPatternEmpty": {
+    "message": "Start using Eumenides to see your rage posting patterns."
+  },
+  "insightProgressTitle": {
+    "message": "🎯 Progress"
+  },
+  "insightProgressEmpty": {
+    "message": "Intercept more posts to see your emotional progress."
+  },
+  "insightImprovementTitle": {
+    "message": "📈 Improvement"
+  },
+  "insightImprovementEmpty": {
+    "message": "Your improvement statistics will appear here."
+  },
+  "activatePremiumTitle": {
+    "message": "✨ Activate Premium"
+  },
+  "activatePremiumSubtitle": {
+    "message": "Unlock unlimited posts and delay mode"
+  },
+  "activatePremiumStatus": {
+    "message": "Click the button below to activate premium features"
+  },
+  "activatePremiumButton": {
+    "message": "🎁 Activate Premium Now"
+  },
+  "premiumFeaturesTitle": {
+    "message": "Premium Features:"
+  },
+  "premiumFeature1": {
+    "message": "Unlimited daily posts (no 5/5 limit)"
+  },
+  "premiumFeature2": {
+    "message": "Delay mode (review posts after 6 hours)"
+  },
+  "premiumFeature3": {
+    "message": "Advanced analytics"
+  },
+  "premiumFeature4": {
+    "message": "Priority support"
+  },
+  "premiumActivated": {
+    "message": "✅ Premium activated! Reload the page or reopen the extension."
+  },
+  "welcomeTitle": {
+    "message": "Welcome to Eumenides"
+  },
+  "welcomeSubtitle": {
+    "message": "Transform your rage into wisdom"
+  },
+  "welcomeDescription": {
+    "message": "Eumenides helps you intercept your angry posts before they're published. Take time to reflect, and post without regret."
+  },
+  "howItWorksTitle": {
+    "message": "How does it work?"
+  },
+  "step1Title": {
+    "message": "1. Write your post"
+  },
+  "step1Desc": {
+    "message": "On Twitter, Reddit, Facebook or LinkedIn"
+  },
+  "step2Title": {
+    "message": "2. Eumenides intercepts"
+  },
+  "step2Desc": {
+    "message": "Before you post something you'll regret"
+  },
+  "step3Title": {
+    "message": "3. Choose your mode"
+  },
+  "step3Desc": {
+    "message": "Instant catharsis, private preview, or reflection delay"
+  },
+  "getStartedButton": {
+    "message": "Get Started"
+  },
+  "welcomeHero": {
+    "message": "⚡ Eumenides"
+  },
+  "welcomeTagline": {
+    "message": "Transform your rage into wisdom"
+  },
+  "welcomeSubtagline": {
+    "message": "The extension that protects your online reputation"
+  },
+  "featureInstantTitle": {
+    "message": "Instant protection"
+  },
+  "featureInstantDesc": {
+    "message": "Automatically intercepts your angry posts before they cause damage"
+  },
+  "featureDelayTitle": {
+    "message": "Reflection delay"
+  },
+  "featureDelayDesc": {
+    "message": "Receive your posts 6h later when emotions have cooled down"
+  },
+  "featureAnalyticsTitle": {
+    "message": "Detailed analytics"
+  },
+  "featureAnalyticsDesc": {
+    "message": "Understand your emotional patterns and progress"
+  },
+  "welcomeStep1Title": {
+    "message": "Enable the extension"
+  },
+  "welcomeStep1Desc": {
+    "message": "Click the Eumenides icon in your toolbar and activate protection"
+  },
+  "welcomeStep2Title": {
+    "message": "Choose your mode"
+  },
+  "welcomeStep2Desc": {
+    "message": "Instant catharsis, private preview, or reflection delay - you choose"
+  },
+  "welcomeStep3Title": {
+    "message": "Post normally"
+  },
+  "welcomeStep3Desc": {
+    "message": "Write and click \"Post\" as usual - Eumenides does the rest"
+  },
+  "welcomeStep4Title": {
+    "message": "Avoid regrets"
+  },
+  "welcomeStep4Desc": {
+    "message": "Your post is intercepted. You feel the relief without the consequences"
+  },
+  "welcomeCtaButton": {
+    "message": "Let's go! 🚀"
+  },
+  "philosophyTitle": {
+    "message": "🏛️ The philosophy of Eumenides"
+  },
+  "philosophyText": {
+    "message": "In Greek mythology, the Erinyes (Furies) relentlessly pursued those who had committed crimes. But once appeased, they became the Eumenides - the \"Kindly Ones\". This extension embodies this transformation: it captures your impulsive rage and transforms it into thoughtful wisdom. Because sometimes, the greatest power is the power not to act."
+  },
+  "wordCloudPrefix": {
+    "message": "Most used words:"
+  },
+  "postIntercepted": {
+    "message": "Post intercepted!"
+  },
+  "postInterceptedMessage": {
+    "message": "Your post was intercepted and kept safe."
+  },
+  "reallyPostIt": {
+    "message": "Post it anyway"
+  },
+  "keepItSafe": {
+    "message": "No thanks, keep it safe"
+  },
+  "postingNow": {
+    "message": "Posting now..."
+  },
+  "vsLastWeek": {
+    "message": "vs last week"
+  },
+  "recentPostsTitle": {
+    "message": "📝 Recent unsent posts"
+  },
+  "badgeCenturion": {
+    "message": "Centurion"
+  },
+  "badgeCenturionDesc": {
+    "message": "100 posts intercepted"
+  },
+  "badgeStoic": {
+    "message": "Stoic Sage"
+  },
+  "badgeStoicDesc": {
+    "message": "30 posts intercepted"
+  },
+  "badgeTimeMaster": {
+    "message": "Time Master"
+  },
+  "badgeTimeMasterDesc": {
+    "message": "$HOURS$h saved",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "badgeNightGuardian": {
+    "message": "Night Guardian"
+  },
+  "badgeNightGuardianDesc": {
+    "message": "$COUNT$ nighttime posts intercepted",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightPattern": {
+    "message": "You are $MULTIPLIER$x more likely to write angry posts around $HOUR$h. Consider activating automatic mode during these hours.",
+    "placeholders": {
+      "multiplier": {
+        "content": "$1"
+      },
+      "hour": {
+        "content": "$2"
+      }
+    }
+  },
+  "insightVocabulary": {
+    "message": "Your emotional vocabulary has softened by $PERCENT$% recently. You use fewer extreme terms in your unsent posts.",
+    "placeholders": {
+      "percent": {
+        "content": "$1"
+      }
+    }
+  },
+  "insightStreak": {
+    "message": "You've maintained $DAYS$ days without posting angry content. Keep it up!",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$ min ago",
+    "placeholders": {
+      "minutes": {
+        "content": "$1"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$h ago",
+    "placeholders": {
+      "hours": {
+        "content": "$1"
+      }
+    }
+  },
+  "yesterday": {
+    "message": "Yesterday"
+  },
+  "daysAgo": {
+    "message": "$DAYS$d ago",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "emotionAnger": {
+    "message": "😤 Intense anger"
+  },
+  "emotionFrustration": {
+    "message": "🙄 Frustration"
+  },
+  "emotionIrritation": {
+    "message": "😠 Irritation"
+  },
+  "emotionNeutral": {
+    "message": "😐 Neutral"
+  },
+  "emotionUnclassified": {
+    "message": "😐 Unclassified"
+  },
+  "badgeFirstSteps": {
+    "message": "First Steps"
+  },
+  "badgeApprentice": {
+    "message": "Apprentice Sage"
+  },
+  "badgeMaster": {
+    "message": "Stoic Master"
+  },
+  "badgeLegend": {
+    "message": "Legend"
+  }
+}

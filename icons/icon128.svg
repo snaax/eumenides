@@ -1,0 +1,59 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6b7eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Outer shield shape with shadow -->
+  <path d="M64 8 L112 24 L112 64 Q112 96 64 120 Q16 96 16 64 L16 24 Z"
+        fill="url(#grad128)"
+        filter="url(#shadow)"/>
+
+  <!-- Inner shield highlight -->
+  <path d="M64 16 L104 30 L104 64 Q104 92 64 112 Q24 92 24 64 L24 30 Z"
+        fill="none"
+        stroke="rgba(255,255,255,0.2)"
+        stroke-width="2"/>
+
+  <!-- Second inner highlight -->
+  <path d="M64 20 L100 32 L100 64 Q100 90 64 108 Q28 90 28 64 L28 32 Z"
+        fill="none"
+        stroke="rgba(255,255,255,0.1)"
+        stroke-width="1"/>
+
+  <!-- Large checkmark -->
+  <path d="M40 64 L56 80 L88 40"
+        fill="none"
+        stroke="#fff"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.95"/>
+
+  <!-- Three stars representing the three Eumenides goddesses -->
+  <g opacity="0.9">
+    <!-- Top star -->
+    <circle cx="64" cy="28" r="3" fill="#fff"/>
+    <circle cx="64" cy="28" r="1.5" fill="rgba(255,255,255,0.5)"/>
+
+    <!-- Left star -->
+    <circle cx="54" cy="34" r="2.5" fill="#fff"/>
+    <circle cx="54" cy="34" r="1.2" fill="rgba(255,255,255,0.5)"/>
+
+    <!-- Right star -->
+    <circle cx="74" cy="34" r="2.5" fill="#fff"/>
+    <circle cx="74" cy="34" r="1.2" fill="rgba(255,255,255,0.5)"/>
+  </g>
+
+  <!-- Subtle glow effect -->
+  <ellipse cx="64" cy="64" rx="48" ry="48"
+           fill="none"
+           stroke="rgba(255,255,255,0.1)"
+           stroke-width="3"/>
+</svg>

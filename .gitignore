@@ -1,0 +1,28 @@
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+
+# Node modules (if you add build tools later)
+node_modules/
+
+# Package files
+*.zip
+*.crx
+*.pem
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+.cache/

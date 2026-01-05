@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eumenides Premium</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f23;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .header h1 {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+    
+    .header p {
+      font-size: 20px;
+      opacity: 0.8;
+    }
+    
+    .pricing-card {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 24px;
+      padding: 50px;
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+    }
+    
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    
+    .price {
+      font-size: 72px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    .price-sub {
+      font-size: 18px;
+      opacity: 0.7;
+      margin-bottom: 30px;
+    }
+    
+    .buy-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #000;
+      padding: 20px 60px;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
+    }
+    
+    .buy-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(255, 215, 0, 0.7);
+    }
+    
+    .guarantee {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+    
+    .feature-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      transition: 0.3s;
+    }
+    
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+    
+    .feature-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    
+    .feature-content h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .feature-content p {
+      font-size: 14px;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+    
+    .comparison {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 50px;
+    }
+    
+    .comparison h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    
+    .comparison-table {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .comparison-header {
+      font-weight: 700;
+      padding: 15px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    
+    .comparison-row {
+      display: contents;
+    }
+    
+    .comparison-cell {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .comparison-cell:first-child {
+      justify-content: flex-start;
+    }
+    
+    .check {
+      color: #4ade80;
+      font-size: 20px;
+    }
+    
+    .cross {
+      color: #ff6b6b;
+      font-size: 20px;
+    }
+    
+    .testimonials {
+      margin-bottom: 50px;
+    }
+    
+    .testimonials h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    
+    .testimonial {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .testimonial-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .testimonial-info h4 {
+      font-size: 16px;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+    
+    .testimonial-info p {
+      font-size: 13px;
+      opacity: 0.6;
+    }
+    
+    .testimonial-text {
+      font-size: 15px;
+      line-height: 1.7;
+      opacity: 0.9;
+      font-style: italic;
+    }
+    
+    .faq {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    
+    .faq h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    
+    .faq-item {
+      margin-bottom: 25px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .faq-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .faq-question {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+    
+    .faq-answer {
+      font-size: 15px;
+      opacity: 0.8;
+      line-height: 1.7;
+    }
+    
+    @media (max-width: 768px) {
+      .comparison-table {
+        grid-template-columns: 1fr;
+      }
+      
+      .comparison-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .pricing-card {
+        padding: 30px 20px;
+      }
+      
+      .price {
+        font-size: 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚡ Eumenides Premium</h1>
+      <p>Débloquez tout le potentiel de la sagesse numérique</p>
+    </div>
+    
+    <div class="pricing-card">
+      <div class="badge">✨ OFFRE DE LANCEMENT</div>
+      <div class="price">4,99€</div>
+      <div class="price-sub">par mois, sans engagement</div>
+      <button class="buy-button">Passer à Premium</button>
+      <div class="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">♾️</div>
+        <div class="feature-content">
+          <h3>Posts illimités</h3>
+          <p>Plus de limite quotidienne. Protégez-vous autant que nécessaire.</p>
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-content">
+          <h3>Toutes les plateformes</h3>
+          <p>Débloquez Reddit, Instagram, YouTube et plus encore.</p>
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">⏰</div>
+        <div class="feature-content">
+          <h3>Mode Délai personnalisable</h3>
+          <p>Choisissez quand recevoir vos notifications : 1h, 6h, 12h ou 24h.</p>
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div class="feature-content">
+          <h3>Analytics avancés</h3>
+          <p>Dashboard complet avec insights, tendances et patterns émotionnels.</p>
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">☁️</div>
+        <div class="feature-content">
+          <h3>Synchronisation cloud</h3>
+          <p>Accédez à vos données sur tous vos appareils.</p>
+        </div>
+      </div>
+      
+      <div class="feature-item">
+        <div class="feature-icon">🏆</div>
+        <div class="feature-content">
+          <h3>Badges exclusifs</h3>
+          <p>Débloquez des achievements et suivez votre progression.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="comparison">
+      <h2>Gratuit vs Premium</h2>
+      <div class="comparison-table">
+        <div class="comparison-header">Fonctionnalité</div>
+        <div class="comparison-header">Gratuit</div>
+        <div class="comparison-header" style="background: rgba(255, 215, 0, 0.1);">Premium</div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Posts protégés par jour</div>
+          <div class="comparison-cell">5</div>
+          <div class="comparison-cell"><span class="check">∞</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Plateformes supportées</div>
+          <div class="comparison-cell">3</div>
+          <div class="comparison-cell"><span class="check">Toutes</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Mode Catharsis</div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Mode Aperçu</div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Mode Délai</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Dashboard analytics</div>
+          <div class="comparison-cell">Basique</div>
+          <div class="comparison-cell"><span class="check">Complet</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Synchronisation cloud</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-cell">Export des données</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="testimonials">
+      <h2>Ce que disent nos utilisateurs</h2>
+      
+      <div class="testimonial">
+        <div class="testimonial-header">
+          <div class="testimonial-avatar">👨‍💼</div>
+          <div class="testimonial-info">
+            <h4>Marc D.</h4>
+            <p>Consultant en tech</p>
+          </div>
+        </div>
+        <div class="testimonial-text">
+          "J'ai failli perdre un client à cause d'un tweet rageux sur LinkedIn. Depuis que j'utilise Eumenides Premium, j'ai intercepté 47 posts qui auraient pu détruire ma réputation. Meilleur investissement de l'année."
+        </div>
+      </div>
+      
+      <div class="testimonial">
+        <div class="testimonial-header">
+          <div class="testimonial-avatar">👩‍🎨</div>
+          <div class="testimonial-info">
+            <h4>Sophie L.</h4>
+            <p>Designer freelance</p>
+          </div>
+        </div>
+        <div class="testimonial-text">
+          "Le mode délai m'a sauvé la vie. Je recevais mes posts 6h plus tard et 90% du temps je décidais de ne pas les envoyer. J'ai économisé des heures de drama inutile."
+        </div>
+      </div>
+      
+      <div class="testimonial">
+        <div class="testimonial-header">
+          <div class="testimonial-avatar">👨‍💻</div>
+          <div class="testimonial-info">
+            <h4>Thomas B.</h4>
+            <p>Développeur</p>
+          </div>
+        </div>
+        <div class="testimonial-text">
+          "Les analytics sont incroyables. J'ai découvert que je postais surtout des trucs rageux entre 23h et minuit. Maintenant j'active le mode auto pendant ces heures. Game changer."
+        </div>
+      </div>
+    </div>
+    
+    <div class="faq">
+      <h2>Questions fréquentes</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question">💳 Comment fonctionne le paiement ?</div>
+        <div class="faq-answer">
+          Paiement sécurisé par carte bancaire via Stripe. L'abonnement se renouvelle automatiquement chaque mois mais vous pouvez annuler à tout moment.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">🔄 Puis-je annuler à tout moment ?</div>
+        <div class="faq-answer">
+          Oui, absolument. Pas d'engagement, pas de frais cachés. Vous pouvez annuler en un clic depuis les paramètres.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">💾 Que deviennent mes données si j'annule ?</div>
+        <div class="faq-answer">
+          Vos données locales restent accessibles. Seule la synchronisation cloud et les fonctionnalités premium deviennent indisponibles. Vous pouvez exporter toutes vos données avant d'annuler.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">🔒 Mes données sont-elles sécurisées ?</div>
+        <div class="faq-answer">
+          Absolument. Toutes les données sont chiffrées de bout en bout. Nous ne lisons jamais vos posts et ne les partageons avec personne. Voir notre politique de confidentialité pour plus de détails.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">📱 Fonctionne sur mobile ?</div>
+        <div class="faq-answer">
+          L'extension fonctionne sur les navigateurs desktop (Chrome, Firefox, Edge). Une version mobile est en développement et sera disponible pour les membres Premium en priorité.
+        </div>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 50px;">
+      <button class="buy-button">Commencer maintenant</button>
+    </div>
+  </div>
+
+  <script src="../js/premium.js"></script>
+</body>
+</html>
