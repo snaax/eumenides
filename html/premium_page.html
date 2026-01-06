@@ -65,6 +65,9 @@
       position: relative;
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-height: 650px;
     }
 
     .pricing-card:hover {
@@ -113,6 +116,11 @@
       margin-bottom: 30px;
     }
     
+    .button-container {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
     .buy-button {
       display: inline-block;
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
@@ -126,11 +134,18 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
+      width: 100%;
+      max-width: 280px;
     }
-    
+
     .buy-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 50px rgba(255, 215, 0, 0.7);
+    }
+
+    .buy-button:disabled {
+      cursor: default;
+      opacity: 0.6;
     }
     
     .guarantee {
@@ -142,6 +157,7 @@
     .plan-features {
       margin: 25px 0;
       text-align: left;
+      flex-grow: 1;
     }
 
     .plan-feature {
@@ -149,10 +165,22 @@
       font-size: 15px;
       opacity: 0.9;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .plan-feature:last-child {
       border-bottom: none;
+    }
+
+    /* Ensure emojis/icons are visible */
+    .plan-feature::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
     }
     
     .features-grid {
@@ -386,8 +414,10 @@
           <div class="plan-feature" data-i18n="planFreeFeature3">❌ Pas de délai de réflexion</div>
           <div class="plan-feature" data-i18n="planFreeFeature4">❌ Pas de dashboard</div>
         </div>
-        <button class="buy-button" style="background: rgba(255,255,255,0.1); cursor: default;" disabled data-i18n="currentPlanButton">Plan actuel</button>
-        <div class="guarantee" style="opacity: 0.5;">Gratuit pour toujours</div>
+        <div class="button-container">
+          <button class="buy-button" style="background: rgba(255,255,255,0.1);" disabled data-i18n="currentPlanButton">Plan actuel</button>
+          <div class="guarantee" style="opacity: 0.5;" data-i18n="freeForever">Gratuit pour toujours</div>
+        </div>
       </div>
 
       <!-- Basic Plan -->
@@ -401,8 +431,10 @@
           <div class="plan-feature" data-i18n="planBasicFeature3">⏰ Mode Délai de réflexion</div>
           <div class="plan-feature" data-i18n="planBasicFeature4">📊 Dashboard basique</div>
         </div>
-        <button class="buy-button" data-plan="basic" data-i18n="buyBasicButton">Passer à Basic</button>
-        <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+        <div class="button-container">
+          <button class="buy-button" data-plan="basic" data-i18n="buyBasicButton">Passer à Basic</button>
+          <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+        </div>
       </div>
 
       <!-- Full Plan -->
@@ -419,8 +451,10 @@
           <div class="plan-feature" data-i18n="planFullFeature6">☁️ Synchronisation cloud</div>
           <div class="plan-feature" data-i18n="planFullFeature7">🏆 Badges exclusifs</div>
         </div>
-        <button class="buy-button" data-plan="full" data-i18n="buyFullButton">Passer à Full</button>
-        <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+        <div class="button-container">
+          <button class="buy-button" data-plan="full" data-i18n="buyFullButton">Passer à Full</button>
+          <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+        </div>
       </div>
     </div>
     

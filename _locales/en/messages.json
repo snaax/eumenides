@@ -592,6 +592,9 @@
   "guarantee": {
     "message": "🔒 30-day money-back guarantee"
   },
+  "freeForever": {
+    "message": "Free forever"
+  },
   "enterEmail": {
     "message": "Enter your email"
   },

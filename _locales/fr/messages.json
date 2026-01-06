@@ -592,6 +592,9 @@
   "guarantee": {
     "message": "🔒 Garantie satisfait ou remboursé 30 jours"
   },
+  "freeForever": {
+    "message": "Gratuit pour toujours"
+  },
   "enterEmail": {
     "message": "Entrez votre email"
   },
