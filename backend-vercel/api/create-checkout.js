@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { email, extensionId } = req.body;
+    const { email, extensionId, plan = 'basic' } = req.body;
 
     // Validate inputs
     const emailValidation = validateEmail(email);
@@ -35,12 +35,18 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: extValidation.error });
     }
 
-    // Create checkout session
-    const session = await createCheckoutSession(email, extensionId);
+    // Validate plan
+    if (!['basic', 'full'].includes(plan)) {
+      return res.status(400).json({ error: 'Invalid plan. Must be "basic" or "full"' });
+    }
+
+    // Create checkout session with selected plan
+    const session = await createCheckoutSession(email, extensionId, plan);
 
     res.status(200).json({
       url: session.url,
-      sessionId: session.id
+      sessionId: session.id,
+      plan: plan
     });
   } catch (error) {
     console.error('Checkout error:', error);

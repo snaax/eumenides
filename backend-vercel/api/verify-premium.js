@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
 
     // Query database
     const result = await pool.query(
-      'SELECT email, premium_until FROM users WHERE premium_key = $1',
+      'SELECT email, premium_until, subscription_tier FROM users WHERE premium_key = $1',
       [premiumKey]
     );
 
@@ -50,7 +50,8 @@ module.exports = async (req, res) => {
     res.status(200).json({
       valid: true,
       email: user.email,
-      expiresAt: user.premium_until
+      expiresAt: user.premium_until,
+      plan: user.subscription_tier || 'basic'
     });
   } catch (error) {
     console.error('Verify error:', error);

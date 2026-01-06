@@ -53,26 +53,29 @@ async function handleCheckoutCompleted(session) {
 
   const premiumKey = uuidv4();
   const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
+  const subscriptionTier = session.metadata?.subscription_tier || 'basic';
 
   try {
     await pool.query(`
-      INSERT INTO users (email, premium_key, stripe_customer_id, stripe_subscription_id, premium_until)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO users (email, premium_key, stripe_customer_id, stripe_subscription_id, premium_until, subscription_tier)
+      VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (email)
       DO UPDATE SET
         premium_key = $2,
         stripe_subscription_id = $4,
         premium_until = $5,
+        subscription_tier = $6,
         updated_at = NOW()
     `, [
       session.customer_email,
       premiumKey,
       session.customer,
       session.subscription,
-      expiresAt
+      expiresAt,
+      subscriptionTier
     ]);
 
-    console.log('Premium key generated:', premiumKey);
+    console.log('Premium key generated:', premiumKey, 'Plan:', subscriptionTier);
 
     // TODO: Send email to user with premium key
     // You can use SendGrid, AWS SES, or other email service
