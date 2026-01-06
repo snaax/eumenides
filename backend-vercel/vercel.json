@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "installCommand": "npm install --legacy-peer-deps --loglevel verbose || true",
-  "buildCommand": "echo 'Build complete'",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 10
