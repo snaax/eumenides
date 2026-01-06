@@ -41,7 +41,7 @@ echo ""
 # Function to get value from .env file
 get_env_value() {
   local key=$1
-  local value=$(grep "^${key}=" "$ENV_FILE" | cut -d '=' -f 2-)
+  local value=$(grep "^${key}=" "$ENV_FILE" | cut -d '=' -f 2- | tr -d '\r\n' | sed 's/[[:space:]]*$//')
   echo "$value"
 }
 
