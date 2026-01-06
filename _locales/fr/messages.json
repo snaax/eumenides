@@ -504,5 +504,107 @@
   },
   "badgeLegend": {
     "message": "Légende"
+  },
+  "premiumPageTitle": {
+    "message": "⚡ Eumenides Premium"
+  },
+  "premiumPageSubtitle": {
+    "message": "Débloquez tout le potentiel de la sagesse numérique"
+  },
+  "planFreeBadge": {
+    "message": "🆓 GRATUIT"
+  },
+  "planBasicBadge": {
+    "message": "✨ BASIC"
+  },
+  "planFullBadge": {
+    "message": "⭐ FULL - RECOMMANDÉ"
+  },
+  "planFreePrice": {
+    "message": "0€"
+  },
+  "planBasicPrice": {
+    "message": "1,99€"
+  },
+  "planFullPrice": {
+    "message": "4,99€"
+  },
+  "planPriceSub": {
+    "message": "par mois, sans engagement"
+  },
+  "planFreeFeature1": {
+    "message": "5️⃣ 5 posts par jour"
+  },
+  "planFreeFeature2": {
+    "message": "🌐 X et Reddit"
+  },
+  "planFreeFeature3": {
+    "message": "❌ Pas de délai de réflexion"
+  },
+  "planFreeFeature4": {
+    "message": "❌ Pas de dashboard"
+  },
+  "planBasicFeature1": {
+    "message": "1️⃣5️⃣ 15 posts par jour"
+  },
+  "planBasicFeature2": {
+    "message": "🌐 X, Reddit, Facebook"
+  },
+  "planBasicFeature3": {
+    "message": "⏰ Mode Délai de réflexion"
+  },
+  "planBasicFeature4": {
+    "message": "📊 Dashboard basique"
+  },
+  "planFullFeature1": {
+    "message": "♾️ Posts illimités"
+  },
+  "planFullFeature2": {
+    "message": "🌐 Toutes les plateformes"
+  },
+  "planFullFeature3": {
+    "message": "⏰ Mode Délai personnalisable"
+  },
+  "planFullFeature4": {
+    "message": "📊 Dashboard complet"
+  },
+  "planFullFeature5": {
+    "message": "📈 Statistiques avancées"
+  },
+  "planFullFeature6": {
+    "message": "☁️ Synchronisation cloud"
+  },
+  "planFullFeature7": {
+    "message": "🏆 Badges exclusifs"
+  },
+  "currentPlanButton": {
+    "message": "Plan actuel"
+  },
+  "buyBasicButton": {
+    "message": "Passer à Basic"
+  },
+  "buyFullButton": {
+    "message": "Passer à Full"
+  },
+  "buyNowButton": {
+    "message": "Commencer maintenant"
+  },
+  "guarantee": {
+    "message": "🔒 Garantie satisfait ou remboursé 30 jours"
+  },
+  "enterEmail": {
+    "message": "Entrez votre email"
+  },
+  "emailPlaceholder": {
+    "message": "votre.email@exemple.com"
+  },
+  "processing": {
+    "message": "Traitement en cours..."
+  },
+  "errorInvalidEmail": {
+    "message": "Veuillez entrer une adresse email valide"
+  },
+  "errorCheckoutFailed": {
+    "message": "Échec de la création de la session de paiement. Veuillez réessayer."
   }
 }

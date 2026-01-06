@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('Upgrade button:', upgradeBtn);
   upgradeBtn.addEventListener('click', function() {
     console.log('Upgrade button clicked!');
-    chrome.tabs.create({ url: 'html/activate-premium.html' });
+    chrome.tabs.create({ url: 'html/premium_page.html' });
   });
 
   // Dashboard

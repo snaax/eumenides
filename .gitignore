@@ -33,3 +33,6 @@ node_modules/
 .env.local
 backend-vercel/.env
 backend-vercel/.env*
+
+# Generated config files
+js/config-generated.js

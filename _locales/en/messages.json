@@ -504,5 +504,107 @@
   },
   "badgeLegend": {
     "message": "Legend"
+  },
+  "premiumPageTitle": {
+    "message": "⚡ Eumenides Premium"
+  },
+  "premiumPageSubtitle": {
+    "message": "Unlock the full potential of digital wisdom"
+  },
+  "planFreeBadge": {
+    "message": "🆓 FREE"
+  },
+  "planBasicBadge": {
+    "message": "✨ BASIC"
+  },
+  "planFullBadge": {
+    "message": "⭐ FULL - RECOMMENDED"
+  },
+  "planFreePrice": {
+    "message": "$0"
+  },
+  "planBasicPrice": {
+    "message": "$1.99"
+  },
+  "planFullPrice": {
+    "message": "$4.99"
+  },
+  "planPriceSub": {
+    "message": "per month, no commitment"
+  },
+  "planFreeFeature1": {
+    "message": "5️⃣ 5 posts per day"
+  },
+  "planFreeFeature2": {
+    "message": "🌐 X and Reddit"
+  },
+  "planFreeFeature3": {
+    "message": "❌ No reflection delay"
+  },
+  "planFreeFeature4": {
+    "message": "❌ No dashboard"
+  },
+  "planBasicFeature1": {
+    "message": "1️⃣5️⃣ 15 posts per day"
+  },
+  "planBasicFeature2": {
+    "message": "🌐 X, Reddit, Facebook"
+  },
+  "planBasicFeature3": {
+    "message": "⏰ Reflection Delay Mode"
+  },
+  "planBasicFeature4": {
+    "message": "📊 Basic dashboard"
+  },
+  "planFullFeature1": {
+    "message": "♾️ Unlimited posts"
+  },
+  "planFullFeature2": {
+    "message": "🌐 All platforms"
+  },
+  "planFullFeature3": {
+    "message": "⏰ Customizable Delay Mode"
+  },
+  "planFullFeature4": {
+    "message": "📊 Full dashboard"
+  },
+  "planFullFeature5": {
+    "message": "📈 Advanced statistics"
+  },
+  "planFullFeature6": {
+    "message": "☁️ Cloud sync"
+  },
+  "planFullFeature7": {
+    "message": "🏆 Exclusive badges"
+  },
+  "currentPlanButton": {
+    "message": "Current plan"
+  },
+  "buyBasicButton": {
+    "message": "Get Basic"
+  },
+  "buyFullButton": {
+    "message": "Get Full"
+  },
+  "buyNowButton": {
+    "message": "Get started now"
+  },
+  "guarantee": {
+    "message": "🔒 30-day money-back guarantee"
+  },
+  "enterEmail": {
+    "message": "Enter your email"
+  },
+  "emailPlaceholder": {
+    "message": "your.email@example.com"
+  },
+  "processing": {
+    "message": "Processing..."
+  },
+  "errorInvalidEmail": {
+    "message": "Please enter a valid email address"
+  },
+  "errorCheckoutFailed": {
+    "message": "Failed to create checkout session. Please try again."
   }
 }

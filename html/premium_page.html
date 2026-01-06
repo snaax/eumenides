@@ -43,15 +43,38 @@
       opacity: 0.8;
     }
     
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 1024px) {
+      .pricing-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .pricing-card {
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
       border: 2px solid rgba(255, 215, 0, 0.3);
       border-radius: 24px;
-      padding: 50px;
+      padding: 40px 30px;
       text-align: center;
-      margin-bottom: 50px;
       position: relative;
       overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(255, 215, 0, 0.6);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
     }
     
     .pricing-card::before {
@@ -115,6 +138,22 @@
       font-size: 14px;
       opacity: 0.7;
     }
+
+    .plan-features {
+      margin: 25px 0;
+      text-align: left;
+    }
+
+    .plan-feature {
+      padding: 10px 0;
+      font-size: 15px;
+      opacity: 0.9;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .plan-feature:last-child {
+      border-bottom: none;
+    }
     
     .features-grid {
       display: grid;
@@ -173,7 +212,7 @@
     
     .comparison-table {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 15px;
     }
     
@@ -309,18 +348,19 @@
       .comparison-table {
         grid-template-columns: 1fr;
       }
-      
+
       .comparison-row {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
-        gap: 10px;
+        grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr;
+        gap: 5px;
         margin-bottom: 10px;
+        font-size: 13px;
       }
-      
+
       .pricing-card {
         padding: 30px 20px;
       }
-      
+
       .price {
         font-size: 56px;
       }
@@ -330,16 +370,58 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>⚡ Eumenides Premium</h1>
-      <p>Débloquez tout le potentiel de la sagesse numérique</p>
+      <h1 data-i18n="premiumPageTitle">⚡ Eumenides Premium</h1>
+      <p data-i18n="premiumPageSubtitle">Débloquez tout le potentiel de la sagesse numérique</p>
     </div>
-    
-    <div class="pricing-card">
-      <div class="badge">✨ OFFRE DE LANCEMENT</div>
-      <div class="price">4,99€</div>
-      <div class="price-sub">par mois, sans engagement</div>
-      <button class="buy-button">Passer à Premium</button>
-      <div class="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+
+    <div class="pricing-cards">
+      <!-- Free Plan -->
+      <div class="pricing-card">
+        <div class="badge" data-i18n="planFreeBadge">🆓 GRATUIT</div>
+        <div class="price" data-i18n="planFreePrice">0€</div>
+        <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="planFreeFeature1">5️⃣ 5 posts par jour</div>
+          <div class="plan-feature" data-i18n="planFreeFeature2">🌐 X et Reddit</div>
+          <div class="plan-feature" data-i18n="planFreeFeature3">❌ Pas de délai de réflexion</div>
+          <div class="plan-feature" data-i18n="planFreeFeature4">❌ Pas de dashboard</div>
+        </div>
+        <button class="buy-button" style="background: rgba(255,255,255,0.1); cursor: default;" disabled data-i18n="currentPlanButton">Plan actuel</button>
+        <div class="guarantee" style="opacity: 0.5;">Gratuit pour toujours</div>
+      </div>
+
+      <!-- Basic Plan -->
+      <div class="pricing-card">
+        <div class="badge" data-i18n="planBasicBadge">✨ BASIC</div>
+        <div class="price" data-i18n="planBasicPrice">1,99€</div>
+        <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="planBasicFeature1">1️⃣5️⃣ 15 posts par jour</div>
+          <div class="plan-feature" data-i18n="planBasicFeature2">🌐 X, Reddit, Facebook</div>
+          <div class="plan-feature" data-i18n="planBasicFeature3">⏰ Mode Délai de réflexion</div>
+          <div class="plan-feature" data-i18n="planBasicFeature4">📊 Dashboard basique</div>
+        </div>
+        <button class="buy-button" data-plan="basic" data-i18n="buyBasicButton">Passer à Basic</button>
+        <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+      </div>
+
+      <!-- Full Plan -->
+      <div class="pricing-card featured">
+        <div class="badge" data-i18n="planFullBadge">⭐ FULL - RECOMMANDÉ</div>
+        <div class="price" data-i18n="planFullPrice">4,99€</div>
+        <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="planFullFeature1">♾️ Posts illimités</div>
+          <div class="plan-feature" data-i18n="planFullFeature2">🌐 Toutes les plateformes</div>
+          <div class="plan-feature" data-i18n="planFullFeature3">⏰ Mode Délai personnalisable</div>
+          <div class="plan-feature" data-i18n="planFullFeature4">📊 Dashboard complet</div>
+          <div class="plan-feature" data-i18n="planFullFeature5">📈 Statistiques avancées</div>
+          <div class="plan-feature" data-i18n="planFullFeature6">☁️ Synchronisation cloud</div>
+          <div class="plan-feature" data-i18n="planFullFeature7">🏆 Badges exclusifs</div>
+        </div>
+        <button class="buy-button" data-plan="full" data-i18n="buyFullButton">Passer à Full</button>
+        <div class="guarantee" data-i18n="guarantee">🔒 Garantie satisfait ou remboursé 30 jours</div>
+      </div>
     </div>
     
     <div class="features-grid">
@@ -393,56 +475,72 @@
     </div>
     
     <div class="comparison">
-      <h2>Gratuit vs Premium</h2>
+      <h2>Comparaison des plans</h2>
       <div class="comparison-table">
         <div class="comparison-header">Fonctionnalité</div>
         <div class="comparison-header">Gratuit</div>
-        <div class="comparison-header" style="background: rgba(255, 215, 0, 0.1);">Premium</div>
-        
+        <div class="comparison-header">Basic</div>
+        <div class="comparison-header" style="background: rgba(255, 215, 0, 0.1);">Full</div>
+
         <div class="comparison-row">
-          <div class="comparison-cell">Posts protégés par jour</div>
+          <div class="comparison-cell">Posts par jour</div>
           <div class="comparison-cell">5</div>
+          <div class="comparison-cell">15</div>
           <div class="comparison-cell"><span class="check">∞</span></div>
         </div>
-        
+
         <div class="comparison-row">
-          <div class="comparison-cell">Plateformes supportées</div>
-          <div class="comparison-cell">3</div>
+          <div class="comparison-cell">Plateformes</div>
+          <div class="comparison-cell">X, Reddit</div>
+          <div class="comparison-cell">X, Reddit, Facebook</div>
           <div class="comparison-cell"><span class="check">Toutes</span></div>
         </div>
-        
+
         <div class="comparison-row">
           <div class="comparison-cell">Mode Catharsis</div>
           <div class="comparison-cell"><span class="check">✓</span></div>
           <div class="comparison-cell"><span class="check">✓</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
         </div>
-        
+
         <div class="comparison-row">
           <div class="comparison-cell">Mode Aperçu</div>
           <div class="comparison-cell"><span class="check">✓</span></div>
           <div class="comparison-cell"><span class="check">✓</span></div>
+          <div class="comparison-cell"><span class="check">✓</span></div>
         </div>
-        
+
         <div class="comparison-row">
           <div class="comparison-cell">Mode Délai</div>
           <div class="comparison-cell"><span class="cross">✗</span></div>
           <div class="comparison-cell"><span class="check">✓</span></div>
+          <div class="comparison-cell"><span class="check">✓ Personnalisable</span></div>
         </div>
-        
+
         <div class="comparison-row">
-          <div class="comparison-cell">Dashboard analytics</div>
+          <div class="comparison-cell">Dashboard</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
           <div class="comparison-cell">Basique</div>
           <div class="comparison-cell"><span class="check">Complet</span></div>
         </div>
-        
+
+        <div class="comparison-row">
+          <div class="comparison-cell">Statistiques</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="check">✓ Avancées</span></div>
+        </div>
+
         <div class="comparison-row">
           <div class="comparison-cell">Synchronisation cloud</div>
           <div class="comparison-cell"><span class="cross">✗</span></div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
           <div class="comparison-cell"><span class="check">✓</span></div>
         </div>
-        
+
         <div class="comparison-row">
-          <div class="comparison-cell">Export des données</div>
+          <div class="comparison-cell">Badges exclusifs</div>
+          <div class="comparison-cell"><span class="cross">✗</span></div>
           <div class="comparison-cell"><span class="cross">✗</span></div>
           <div class="comparison-cell"><span class="check">✓</span></div>
         </div>
@@ -532,10 +630,23 @@
     </div>
     
     <div style="text-align: center; margin-top: 50px;">
-      <button class="buy-button">Commencer maintenant</button>
+      <button class="buy-button" data-plan="full" data-i18n="buyNowButton">Commencer maintenant</button>
     </div>
   </div>
 
+  <script src="../js/config-generated.js"></script>
+  <script>
+    // Apply i18n translations
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const message = chrome.i18n.getMessage(key);
+        if (message) {
+          element.textContent = message;
+        }
+      });
+    });
+  </script>
   <script src="../js/premium.js"></script>
 </body>
 </html>

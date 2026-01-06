@@ -1,0 +1,23 @@
+{
+  "name": "eumenides-extension",
+  "version": "1.0.0",
+  "description": "Eumenides - Transform your rage into wisdom. Post without regret.",
+  "scripts": {
+    "build:preview": "node build-config.js preview",
+    "build:prod": "node build-config.js production",
+    "build:dev": "node build-config.js development",
+    "build": "npm run build:preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snaax/eumenides.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "social-media",
+    "self-control",
+    "mental-health"
+  ],
+  "author": "snaax",
+  "license": "MIT"
+}
