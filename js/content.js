@@ -881,6 +881,57 @@
       if (history.length > 100) history.pop();
       safeLocalStorageSet({ history });
     });
+
+    // Submit stats to backend for premium users
+    submitStatsToBackend(entry);
+  }
+
+  function submitStatsToBackend(entry) {
+    // Only submit for premium users
+    safeStorageGet(['premium', 'premiumEmail'], async (data) => {
+      if (!data.premium || !data.premiumEmail) {
+        return; // Skip for free users
+      }
+
+      const API_BASE_URL = 'https://eumenides-git-preview-snaxs-projects-47698530.vercel.app';
+
+      // Determine hour range
+      const hour = new Date().getHours();
+      let hourRange = '00-05';
+      if (hour >= 6 && hour <= 11) hourRange = '06-11';
+      else if (hour >= 12 && hour <= 17) hourRange = '12-17';
+      else if (hour >= 18 && hour <= 23) hourRange = '18-23';
+
+      const stats = {
+        postsIntercepted: 1,
+        timeSavedMinutes: entry.timeSaved || 3,
+        emotions: {
+          [entry.emotion]: 1
+        },
+        platforms: {
+          [entry.platform]: 1
+        },
+        hourlyPattern: {
+          [hourRange]: 1
+        }
+      };
+
+      try {
+        await fetch(`${API_BASE_URL}/api/submit-stats`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.premiumEmail,
+            stats: stats
+          })
+        });
+      } catch (error) {
+        console.error('Failed to submit stats:', error);
+        // Silent fail - don't interrupt user experience
+      }
+    });
   }
   
   function detectEmotion(text) {

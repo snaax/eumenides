@@ -675,5 +675,20 @@
   },
   "comparisonBadges": {
     "message": "Badges exclusifs"
+  },
+  "currentPlan": {
+    "message": "Votre abonnement actuel"
+  },
+  "cancelSubscription": {
+    "message": "Annuler l'abonnement"
+  },
+  "manageSubscription": {
+    "message": "⚙️ Gérer l'abonnement"
+  },
+  "subscriptionCanceled": {
+    "message": "⚠️ Abonnement annulé"
+  },
+  "upgradeToFull": {
+    "message": "⭐ Passer au plan complet"
   }
 }

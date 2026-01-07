@@ -243,18 +243,18 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (premiumPlan === 'basic') {
       // Basic plan - show upgrade to full
       if (isCanceled) {
-        upgradeBtn.textContent = '⚠️ Subscription Canceled';
+        upgradeBtn.textContent = chrome.i18n.getMessage('subscriptionCanceled') || '⚠️ Subscription Canceled';
         upgradeBtn.style.background = 'rgba(255, 107, 107, 0.3)';
         upgradeBtn.style.color = '#fff';
       } else {
-        upgradeBtn.textContent = '⭐ Upgrade to Full Plan';
+        upgradeBtn.textContent = chrome.i18n.getMessage('upgradeToFull') || '⭐ Upgrade to Full Plan';
       }
       upgradeBtn.style.display = 'block';
       // Hide dashboard for basic users
       dashboardBtn.style.display = 'none';
     } else if (premiumPlan === 'full') {
       // Full plan - show manage subscription button instead of upgrade
-      upgradeBtn.textContent = '⚙️ Manage Subscription';
+      upgradeBtn.textContent = chrome.i18n.getMessage('manageSubscription') || '⚙️ Manage Subscription';
       upgradeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
       upgradeBtn.style.color = '#fff';
       upgradeBtn.style.display = 'block';

@@ -675,5 +675,20 @@
   },
   "comparisonBadges": {
     "message": "Exclusive badges"
+  },
+  "currentPlan": {
+    "message": "Your Current Plan"
+  },
+  "cancelSubscription": {
+    "message": "Cancel Subscription"
+  },
+  "manageSubscription": {
+    "message": "⚙️ Manage Subscription"
+  },
+  "subscriptionCanceled": {
+    "message": "⚠️ Subscription Canceled"
+  },
+  "upgradeToFull": {
+    "message": "⭐ Upgrade to Full Plan"
   }
 }

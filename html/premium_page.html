@@ -33,6 +33,7 @@
       font-size: 48px;
       font-weight: 700;
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 15px;
@@ -116,6 +117,7 @@
       font-size: 72px;
       font-weight: 700;
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 10px;
@@ -445,10 +447,10 @@
 
     <!-- Premium Status Banner (shown when user has premium) -->
     <div class="premium-status" id="premiumStatus" style="display: none;">
-      <div class="status-title" id="statusTitle">Current Plan</div>
+      <div class="status-title" id="statusTitle" data-i18n="currentPlan">Current Plan</div>
       <div class="status-plan" id="statusPlan">Loading...</div>
       <div class="status-details" id="statusDetails"></div>
-      <button class="cancel-subscription-btn" id="cancelSubscriptionBtn" style="display: none;">
+      <button class="cancel-subscription-btn" id="cancelSubscriptionBtn" style="display: none;" data-i18n="cancelSubscription">
         Cancel Subscription
       </button>
     </div>
@@ -460,7 +462,7 @@
         <div class="price" data-i18n="planFreePrice">0€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
-          <div class="plan-feature" data-i18n="planFreeFeature1">5️⃣ 5 posts par jour</div>
+          <div class="plan-feature" data-i18n="planFreeFeature1">📝 5 posts par jour</div>
           <div class="plan-feature" data-i18n="planFreeFeature2">🌐 X et Reddit</div>
           <div class="plan-feature" data-i18n="planFreeFeature3">❌ Pas de délai de réflexion</div>
           <div class="plan-feature" data-i18n="planFreeFeature4">❌ Pas de dashboard</div>
@@ -476,7 +478,7 @@
         <div class="price" data-i18n="planBasicPrice">1,99€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
-          <div class="plan-feature" data-i18n="planBasicFeature1">1️⃣5️⃣ 15 posts par jour</div>
+          <div class="plan-feature" data-i18n="planBasicFeature1">📝 15 posts par jour</div>
           <div class="plan-feature" data-i18n="planBasicFeature2">🌐 X, Reddit, Facebook</div>
           <div class="plan-feature" data-i18n="planBasicFeature3">⏰ Mode Délai de réflexion</div>
           <div class="plan-feature" data-i18n="planBasicFeature4">📊 Dashboard basique</div>
