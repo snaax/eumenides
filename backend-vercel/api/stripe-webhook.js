@@ -9,28 +9,39 @@ const { v4: uuidv4 } = require('uuid');
  * IMPORTANT: Vercel requires special handling for raw body
  */
 module.exports = async (req, res) => {
+  console.log('=== WEBHOOK RECEIVED ===');
+  console.log('Method:', req.method);
+  console.log('Headers:', JSON.stringify(req.headers));
+
   // Only POST allowed
   if (req.method !== 'POST') {
+    console.log('ERROR: Method not allowed');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const sig = req.headers['stripe-signature'];
+    console.log('Stripe signature present:', !!sig);
 
     // Construct event (verifies signature)
     const event = await constructWebhookEvent(req.body, sig);
+    console.log('Event type:', event.type);
+    console.log('Event ID:', event.id);
 
     // Handle different event types
     switch (event.type) {
       case 'checkout.session.completed':
+        console.log('Processing checkout.session.completed');
         await handleCheckoutCompleted(event.data.object);
         break;
 
       case 'customer.subscription.deleted':
+        console.log('Processing customer.subscription.deleted');
         await handleSubscriptionCanceled(event.data.object);
         break;
 
       case 'invoice.payment_failed':
+        console.log('Processing invoice.payment_failed');
         await handlePaymentFailed(event.data.object);
         break;
 
@@ -38,9 +49,13 @@ module.exports = async (req, res) => {
         console.log(`Unhandled event type: ${event.type}`);
     }
 
+    console.log('=== WEBHOOK SUCCESS ===');
     res.status(200).json({ received: true });
   } catch (error) {
-    console.error('Webhook error:', error);
+    console.error('=== WEBHOOK ERROR ===');
+    console.error('Error type:', error.constructor.name);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
     res.status(400).json({ error: error.message });
   }
 };
