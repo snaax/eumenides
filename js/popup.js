@@ -71,6 +71,7 @@ async function updatePremiumBadge() {
     if (result.premium && result.premiumPlan) {
       const planText = result.premiumPlan === 'full' ? '⭐ FULL' : '✨ BASIC';
       premiumBadge.textContent = planText;
+      premiumBadge.className = 'premium-badge ' + result.premiumPlan; // Add plan-specific class
       premiumBadge.style.display = 'inline-block';
     } else {
       premiumBadge.style.display = 'none';
