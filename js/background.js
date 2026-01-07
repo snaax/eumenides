@@ -501,6 +501,37 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     return true;
   }
+
+  if (request.action === 'submitStats') {
+    // Handle stats submission from content script
+    chrome.storage.sync.get(['premium', 'premiumEmail'], async (data) => {
+      if (!data.premium || !data.premiumEmail) {
+        sendResponse({ success: false, error: 'Not premium or no email' });
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/submit-stats`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.premiumEmail,
+            stats: request.stats
+          })
+        });
+
+        const result = await response.json();
+        console.log('Stats submitted successfully:', result);
+        sendResponse({ success: true, result });
+      } catch (error) {
+        console.error('Failed to submit stats:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    });
+    return true; // Keep message channel open for async response
+  }
 });
 
 async function verifyPremiumPayment(userId, transactionId) {
