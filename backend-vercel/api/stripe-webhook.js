@@ -98,7 +98,7 @@ async function handleCheckoutCompleted(session) {
   console.log('Checkout completed:', session.customer_email);
 
   const premiumKey = uuidv4();
-  const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
+  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 1 month (30 days)
   const subscriptionTier = session.metadata?.subscription_tier || 'basic';
 
   try {
