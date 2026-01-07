@@ -140,6 +140,9 @@ module.exports = async (req, res) => {
 
     console.log('Redirect params:', { extensionId, success, canceled, sessionId, apiBaseUrl });
 
+    let retryCount = 0;
+    const maxRetries = 10; // Try for ~10 seconds (10 attempts * 1 second)
+
     async function redirect() {
       if (!extensionId || extensionId === 'null' || extensionId === 'undefined') {
         showSuccess('Payment successful! You can close this tab and return to the extension to use your premium features.');
@@ -159,11 +162,20 @@ module.exports = async (req, res) => {
             const planName = data.plan === 'full' ? 'Full Plan' : 'Basic Plan';
             showSuccess('Payment successful! Your ' + planName + ' has been activated.\\n\\nYou can close this tab and return to the Eumenides extension.');
           } else {
-            showSuccess('Payment successful! Your premium features are being activated.\\n\\nYou can close this tab and return to the Eumenides extension. If your premium is not active yet, please wait a moment and refresh the extension.');
+            // Premium not activated yet - webhook might still be processing or failed
+            if (retryCount < maxRetries) {
+              retryCount++;
+              console.log('Retry ' + retryCount + '/' + maxRetries + ' - Activation pending:', data.error);
+              setTimeout(redirect, 1000); // Retry after 1 second
+            } else {
+              // After max retries, show error that webhook might have failed
+              showError('Payment successful, but activation is taking longer than expected.\\n\\nPlease wait a few minutes and reload the extension. If the problem persists, contact support with session ID: ' + sessionId);
+            }
           }
         } catch (error) {
           console.error('Error fetching premium details:', error);
-          showSuccess('Payment successful!\\n\\nYou can close this tab and return to the Eumenides extension. Your premium features will be activated shortly.');
+          // Network error - show error instead of false success
+          showError('Unable to verify activation. Please check your internet connection and reload the extension in a few moments.');
         }
       } else if (canceled === 'true') {
         showCanceled('Payment was canceled. You can close this tab.');
@@ -197,6 +209,19 @@ module.exports = async (req, res) => {
       document.getElementById('messageBox').classList.add('show');
       document.getElementById('messageBox').style.background = 'rgba(251, 191, 36, 0.3)';
       document.getElementById('messageBox').style.borderColor = '#fbbf24';
+      document.querySelector('.spinner').style.display = 'none';
+
+      const button = document.getElementById('actionButton');
+      button.textContent = 'Close Tab';
+      button.onclick = function() { window.close(); };
+    }
+
+    function showError(message) {
+      document.getElementById('status').innerHTML = '<strong>Activation Pending</strong>';
+      document.getElementById('message').innerHTML = message.replace(/\\n/g, '<br>');
+      document.getElementById('messageBox').classList.add('show');
+      document.getElementById('messageBox').style.background = 'rgba(255, 107, 107, 0.3)';
+      document.getElementById('messageBox').style.borderColor = '#ff6b6b';
       document.querySelector('.spinner').style.display = 'none';
 
       const button = document.getElementById('actionButton');

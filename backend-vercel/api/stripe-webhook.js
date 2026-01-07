@@ -8,6 +8,14 @@ const { v4: uuidv4 } = require('uuid');
  *
  * IMPORTANT: Vercel requires special handling for raw body
  */
+
+// CRITICAL: Disable body parsing for Stripe signature verification
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 module.exports = async (req, res) => {
   console.log('=== WEBHOOK RECEIVED ===');
   console.log('Method:', req.method);
@@ -23,8 +31,16 @@ module.exports = async (req, res) => {
     const sig = req.headers['stripe-signature'];
     console.log('Stripe signature present:', !!sig);
 
+    // Get raw body from request
+    const chunks = [];
+    for await (const chunk of req) {
+      chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+    }
+    const rawBody = Buffer.concat(chunks);
+    console.log('Raw body length:', rawBody.length);
+
     // Construct event (verifies signature)
-    const event = await constructWebhookEvent(req.body, sig);
+    const event = await constructWebhookEvent(rawBody, sig);
     console.log('Event type:', event.type);
     console.log('Event ID:', event.id);
 
@@ -61,7 +77,17 @@ module.exports = async (req, res) => {
     console.error('Error type:', error.constructor.name);
     console.error('Error message:', error.message);
     console.error('Error stack:', error.stack);
-    res.status(400).json({ error: error.message });
+
+    // Return 200 for signature errors to prevent Stripe from retrying
+    // (wrong signature means it's not from Stripe)
+    if (error.type === 'StripeSignatureVerificationError') {
+      console.error('CRITICAL: Signature verification failed - check STRIPE_WEBHOOK_SECRET');
+      return res.status(400).json({ error: 'Signature verification failed' });
+    }
+
+    // For other errors, return 500 so Stripe retries
+    // This helps if database is temporarily down
+    res.status(500).json({ error: 'Webhook processing failed', details: error.message });
   }
 };
 
