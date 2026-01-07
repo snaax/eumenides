@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Full plan - show manage subscription button instead of upgrade
       upgradeBtn.textContent = '⚙️ Manage Subscription';
       upgradeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+      upgradeBtn.style.color = '#fff';
       upgradeBtn.style.display = 'block';
       // Show dashboard for full users
       dashboardBtn.style.display = 'block';
