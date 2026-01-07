@@ -256,7 +256,10 @@ async function cancelSubscription() {
 // Display premium status
 async function displayPremiumStatus() {
   try {
-    const result = await chrome.storage.sync.get(['premium', 'premiumPlan', 'premiumEmail', 'premiumUntil', 'subscriptionCanceled']);
+    // First check chrome storage
+    const result = await chrome.storage.sync.get(['premium', 'premiumPlan', 'premiumEmail', 'premiumUntil', 'premiumKey', 'subscriptionCanceled']);
+
+    console.log('Premium status from storage:', result);
 
     const statusBanner = document.getElementById('premiumStatus');
     const statusTitle = document.getElementById('statusTitle');
@@ -264,9 +267,36 @@ async function displayPremiumStatus() {
     const statusDetails = document.getElementById('statusDetails');
     const cancelBtn = document.getElementById('cancelSubscriptionBtn');
 
+    // If user has premium key but no premium flag, try to verify from backend
+    if (result.premiumKey && !result.premium) {
+      console.log('Found premium key but no premium flag, verifying from backend...');
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(result.premiumKey)}`);
+        const data = await response.json();
+
+        if (data.success && data.premium) {
+          // Update storage with verified premium status
+          await chrome.storage.sync.set({
+            premium: true,
+            premiumPlan: data.plan,
+            premiumEmail: data.email,
+            premiumUntil: data.expiresAt,
+            subscriptionCanceled: data.subscriptionCanceled || false
+          });
+
+          // Reload with new data
+          return displayPremiumStatus();
+        }
+      } catch (error) {
+        console.error('Error verifying premium key:', error);
+      }
+    }
+
     if (result.premium && result.premiumPlan) {
       // User has premium - show status
       statusBanner.style.display = 'block';
+      statusBanner.classList.remove('free');
+      statusTitle.classList.remove('free');
 
       const planName = result.premiumPlan === 'full' ? 'Full Plan' : 'Basic Plan';
 
@@ -334,4 +364,113 @@ document.addEventListener('DOMContentLoaded', function() {
   if (cancelBtn) {
     cancelBtn.addEventListener('click', cancelSubscription);
   }
+
+  // Add activate button for users who completed checkout but haven't activated
+  addActivateButtonIfNeeded();
 });
+
+// Add activate button if user doesn't have premium yet
+async function addActivateButtonIfNeeded() {
+  const result = await chrome.storage.sync.get(['premium', 'premiumKey']);
+
+  // Only show activate button if user doesn't have premium or premium key
+  if (result.premium || result.premiumKey) {
+    return;
+  }
+
+  // Add activate button to the premium status banner
+  const statusBanner = document.getElementById('premiumStatus');
+  const activateHTML = `
+    <div style="margin-top: 20px; text-align: center;">
+      <p style="margin-bottom: 15px; opacity: 0.9;">Already completed checkout? Activate your premium:</p>
+      <input
+        type="email"
+        id="activateEmailInput"
+        placeholder="your.email@example.com"
+        style="
+          width: 100%;
+          max-width: 400px;
+          padding: 12px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.1);
+          color: #e0e0e0;
+          font-size: 16px;
+          margin-bottom: 15px;
+        "
+      />
+      <br>
+      <button
+        id="quickActivateBtn"
+        style="
+          padding: 12px 30px;
+          background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+          color: #000;
+          border: none;
+          border-radius: 10px;
+          font-size: 16px;
+          font-weight: 700;
+          cursor: pointer;
+        "
+      >Activate Premium</button>
+      <div id="activateMessage" style="margin-top: 15px; display: none;"></div>
+    </div>
+  `;
+
+  statusBanner.insertAdjacentHTML('beforeend', activateHTML);
+
+  document.getElementById('quickActivateBtn').addEventListener('click', async () => {
+    const email = document.getElementById('activateEmailInput').value.trim();
+    const btn = document.getElementById('quickActivateBtn');
+    const message = document.getElementById('activateMessage');
+
+    if (!email || !email.includes('@')) {
+      message.textContent = '❌ Please enter a valid email address';
+      message.style.display = 'block';
+      message.style.color = '#ff6b6b';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Activating...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/activate-by-email?email=${encodeURIComponent(email)}`);
+      const data = await response.json();
+
+      if (data.success && data.premiumKey) {
+        await chrome.storage.sync.set({
+          premium: true,
+          premiumKey: data.premiumKey,
+          premiumPlan: data.plan,
+          premiumEmail: data.email,
+          premiumUntil: data.expiresAt,
+          subscriptionCanceled: data.subscriptionCanceled || false,
+          dailyLimit: data.plan === 'full' ? 999999 : (data.plan === 'basic' ? 15 : 5)
+        });
+
+        message.textContent = `✅ Success! Your ${data.plan === 'full' ? 'Full' : 'Basic'} plan has been activated!`;
+        message.style.display = 'block';
+        message.style.color = '#4ade80';
+
+        // Reload the page after 1 second
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else {
+        message.textContent = '❌ ' + (data.error || 'No subscription found for this email');
+        message.style.display = 'block';
+        message.style.color = '#ff6b6b';
+        btn.disabled = false;
+        btn.textContent = 'Activate Premium';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      message.textContent = '❌ Failed to activate. Please try again.';
+      message.style.display = 'block';
+      message.style.color = '#ff6b6b';
+      btn.disabled = false;
+      btn.textContent = 'Activate Premium';
+    }
+  });
+}

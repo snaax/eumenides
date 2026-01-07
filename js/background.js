@@ -1,5 +1,61 @@
 // Eumenides - Background Service Worker
 
+const API_BASE_URL = 'https://eumenides-git-preview-snaxs-projects-47698530.vercel.app';
+
+// Sync premium status with backend
+async function syncPremiumStatus(currentData) {
+  const premiumKey = currentData.premiumKey;
+
+  // If no premium key, nothing to sync
+  if (!premiumKey) {
+    console.log('No premium key found, skipping sync');
+    return;
+  }
+
+  console.log('Syncing premium status from backend...');
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(premiumKey)}`);
+    const data = await response.json();
+
+    if (data.success && data.premium) {
+      console.log('Premium verified:', data.plan);
+
+      // Update storage with latest premium status from backend
+      await chrome.storage.sync.set({
+        premium: true,
+        premiumPlan: data.plan,
+        premiumEmail: data.email,
+        premiumUntil: data.expiresAt,
+        subscriptionCanceled: data.subscriptionCanceled || false,
+        dailyLimit: data.plan === 'full' ? 999999 : (data.plan === 'basic' ? 15 : 5)
+      });
+
+      userSettings.premium = true;
+      userSettings.premiumPlan = data.plan;
+
+      console.log('Premium status synced successfully');
+    } else {
+      console.log('Premium key invalid or expired:', data.error);
+
+      // Premium expired or invalid - clear premium status
+      if (currentData.premium) {
+        await chrome.storage.sync.set({
+          premium: false,
+          premiumPlan: null,
+          dailyLimit: 5
+        });
+
+        userSettings.premium = false;
+        userSettings.premiumPlan = null;
+      }
+    }
+  } catch (error) {
+    console.error('Error syncing premium status:', error);
+    // Keep existing premium status if sync fails
+  }
+}
+
 // Update extension icon based on enabled state
 function updateIcon(enabled) {
   console.log('updateIcon called with enabled:', enabled);
@@ -58,6 +114,9 @@ chrome.storage.sync.get(null, (data) => {
   // Set icon based on current enabled state on startup
   const isEnabled = data.enabled !== false;
   updateIcon(isEnabled);
+
+  // Check and sync premium status on startup
+  syncPremiumStatus(data);
 });
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
