@@ -243,11 +243,16 @@ async function cancelSubscription() {
       throw new Error(data.error || 'Failed to cancel subscription');
     }
 
+    // Update Chrome storage with canceled status
+    await chrome.storage.sync.set({
+      subscriptionCanceled: true
+    });
+
+    // Refresh the status display first (this will hide the button)
+    await displayPremiumStatus();
+
     alert('Subscription canceled successfully.\n\nYour premium features will remain active until ' +
           (data.activeUntil ? new Date(data.activeUntil).toLocaleDateString() : 'the end of your billing period'));
-
-    // Refresh the status display
-    displayPremiumStatus();
   } catch (error) {
     console.error('Error canceling subscription:', error);
     alert('Failed to cancel subscription. Please try again or contact support.');
