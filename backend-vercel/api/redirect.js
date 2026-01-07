@@ -4,6 +4,10 @@
  * as an intermediary that redirects to the extension
  */
 module.exports = async (req, res) => {
+  console.log('=== REDIRECT PAGE ===');
+  console.log('Query params:', JSON.stringify(req.query));
+  console.log('Full URL:', req.url);
+
   // Get parameters
   const { extension_id, success, canceled, session_id } = req.query;
 
