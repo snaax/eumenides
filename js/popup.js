@@ -62,11 +62,32 @@ function selectMode(mode, element) {
 }
 
 // Wait for DOM to be ready
+// Update premium badge
+async function updatePremiumBadge() {
+  try {
+    const result = await chrome.storage.sync.get(['premium', 'premiumPlan']);
+    const premiumBadge = document.getElementById('premiumBadge');
+
+    if (result.premium && result.premiumPlan) {
+      const planText = result.premiumPlan === 'full' ? '⭐ FULL' : '✨ BASIC';
+      premiumBadge.textContent = planText;
+      premiumBadge.style.display = 'inline-block';
+    } else {
+      premiumBadge.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error updating premium badge:', error);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM loaded, setting up event listeners');
 
   // Apply translations first
   applyTranslations();
+
+  // Update premium badge
+  updatePremiumBadge();
 
   // Toggle enable/disable
   const mainToggle = document.getElementById('mainToggle');

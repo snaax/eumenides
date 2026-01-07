@@ -512,13 +512,13 @@
     "message": "Débloquez tout le potentiel de la sagesse numérique"
   },
   "planFreeBadge": {
-    "message": "🆓 GRATUIT"
+    "message": "GRATUIT"
   },
   "planBasicBadge": {
-    "message": "✨ BASIC"
+    "message": "BASIC"
   },
   "planFullBadge": {
-    "message": "⭐ FULL - RECOMMANDÉ"
+    "message": "FULL - RECOMMANDÉ"
   },
   "planFreePrice": {
     "message": "0€"

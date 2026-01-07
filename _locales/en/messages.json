@@ -512,13 +512,13 @@
     "message": "Unlock the full potential of digital wisdom"
   },
   "planFreeBadge": {
-    "message": "🆓 FREE"
+    "message": "FREE"
   },
   "planBasicBadge": {
-    "message": "✨ BASIC"
+    "message": "BASIC"
   },
   "planFullBadge": {
-    "message": "⭐ FULL - RECOMMENDED"
+    "message": "FULL - RECOMMENDED"
   },
   "planFreePrice": {
     "message": "$0"
