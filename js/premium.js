@@ -39,11 +39,13 @@ async function createCheckoutSession(email, plan) {
       })
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('Failed to create checkout session');
+      // Return error details from server
+      throw new Error(data.error || 'Failed to create checkout session');
     }
 
-    const data = await response.json();
     console.log('Checkout session created:', data);
     return data;
   } catch (error) {
@@ -171,7 +173,8 @@ function showEmailModal(plan) {
       // Redirect to Stripe checkout
       window.location.href = url;
     } catch (error) {
-      errorDiv.textContent = getMessage('errorCheckoutFailed');
+      // Show the specific error message from the server
+      errorDiv.textContent = error.message || getMessage('errorCheckoutFailed');
       errorDiv.style.display = 'block';
       submitBtn.disabled = false;
       submitBtn.textContent = plan === 'basic' ? getMessage('buyBasicButton') : getMessage('buyFullButton');
