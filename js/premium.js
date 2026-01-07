@@ -404,13 +404,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 async function addActivateButtonIfNeeded() {
   const result = await chrome.storage.sync.get(['premium', 'premiumKey']);
 
+  console.log('Checking if activation form needed:', result);
+
   // Only show activate button if user doesn't have premium or premium key
   if (result.premium || result.premiumKey) {
+    console.log('User already has premium, skipping activation form');
     return;
   }
 
+  console.log('User needs activation - showing form');
+
   // Add activate section ABOVE pricing cards (before premium status banner)
   const header = document.querySelector('.header');
+
+  if (!header) {
+    console.error('Header element not found!');
+    return;
+  }
+
+  console.log('Adding activation form to page');
+
   const activateHTML = `
     <div id="activateSection" style="
       background: linear-gradient(135deg, rgba(74, 222, 128, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
