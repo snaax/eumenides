@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const data = await response.json();
+      console.log('API response:', data);
 
       if (data.success) {
         renderAllStats(data);
@@ -91,7 +92,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function renderAllStats(data) {
-    const { analytics, insights, daily, totals } = data;
+    console.log('renderAllStats called with data:', data);
+
+    const { analytics, insights, daily } = data;
+
+    if (!analytics) {
+      console.error('No analytics data received');
+      return;
+    }
 
     // Update stat cards
     document.getElementById('postsIntercepted').textContent = analytics.postsIntercepted || 0;
@@ -201,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
     chartData.forEach((day, i) => {
       const x = i * (barWidth + gap) + gap / 2;
       const total = day.emotions.anger + day.emotions.frustration + day.emotions.irritation + day.emotions.neutral;
+      let yOffset = chartHeight; // Declare outside the if/else
 
       if (total === 0) {
         // Draw empty state bar
@@ -208,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillRect(x, 40, barWidth, chartHeight - 40);
       } else {
         // Draw stacked bars
-        let yOffset = chartHeight;
         ['neutral', 'irritation', 'frustration', 'anger'].forEach(emotion => {
           const value = day.emotions[emotion] || 0;
           const barHeight = (value / maxValue) * (chartHeight - 40);
