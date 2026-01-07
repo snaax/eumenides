@@ -91,9 +91,7 @@
     }
     
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
       color: #000;
       padding: 8px 20px;
@@ -103,11 +101,12 @@
       margin-bottom: 20px;
     }
 
-    .badge::before {
-      content: attr(data-emoji);
-      font-size: 16px;
+    .badge span:first-child {
       display: inline-block;
-      margin-right: 4px;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-right: 6px;
     }
     
     .price {
@@ -454,7 +453,7 @@
     <div class="pricing-cards">
       <!-- Free Plan -->
       <div class="pricing-card">
-        <div class="badge" data-emoji="🆓" data-i18n="planFreeBadge">GRATUIT</div>
+        <div class="badge"><span>🆓</span> <span data-i18n="planFreeBadge">GRATUIT</span></div>
         <div class="price" data-i18n="planFreePrice">0€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
@@ -471,7 +470,7 @@
 
       <!-- Basic Plan -->
       <div class="pricing-card">
-        <div class="badge" data-emoji="✨" data-i18n="planBasicBadge">BASIC</div>
+        <div class="badge"><span>✨</span> <span data-i18n="planBasicBadge">BASIC</span></div>
         <div class="price" data-i18n="planBasicPrice">1,99€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
@@ -488,7 +487,7 @@
 
       <!-- Full Plan -->
       <div class="pricing-card featured">
-        <div class="badge" data-emoji="⭐" data-i18n="planFullBadge">FULL - RECOMMANDÉ</div>
+        <div class="badge"><span>⭐</span> <span data-i18n="planFullBadge">FULL - RECOMMANDÉ</span></div>
         <div class="price" data-i18n="planFullPrice">4,99€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
