@@ -27,8 +27,8 @@ async function createCheckoutSession(email, extensionId, plan = 'basic') {
   // Use a web redirect page instead that will redirect to the extension
   const baseUrl = process.env.PUBLIC_URL || 'https://eumenides.vercel.app';
 
-  const successUrl = `${baseUrl}/redirect?extension_id=${cleanExtensionId}&success=true&session_id={CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `${baseUrl}/redirect?extension_id=${cleanExtensionId}&canceled=true`;
+  const successUrl = `${baseUrl}/api/redirect?extension_id=${cleanExtensionId}&success=true&session_id={CHECKOUT_SESSION_ID}`;
+  const cancelUrl = `${baseUrl}/api/redirect?extension_id=${cleanExtensionId}&canceled=true`;
 
   console.log('Success URL:', successUrl);
   console.log('Cancel URL:', cancelUrl);
