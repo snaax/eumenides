@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Hide dashboard for free users
       dashboardBtn.style.display = 'none';
     } else if (premiumPlan === 'basic') {
-      // Basic plan - show upgrade to full + cancel
+      // Basic plan - show upgrade to full
       if (isCanceled) {
         upgradeBtn.textContent = '⚠️ Subscription Canceled';
         upgradeBtn.style.background = 'rgba(255, 107, 107, 0.3)';
@@ -253,8 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Hide dashboard for basic users
       dashboardBtn.style.display = 'none';
     } else if (premiumPlan === 'full') {
-      // Full plan - hide upgrade button, show dashboard
-      upgradeBtn.style.display = 'none';
+      // Full plan - show manage subscription button instead of upgrade
+      upgradeBtn.textContent = '⚙️ Manage Subscription';
+      upgradeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+      upgradeBtn.style.display = 'block';
+      // Show dashboard for full users
       dashboardBtn.style.display = 'block';
     }
   });
