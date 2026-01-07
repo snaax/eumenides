@@ -300,9 +300,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Draw pie chart
-    const centerX = width / 2;
+    const centerX = width / 3;
     const centerY = height / 2;
-    const radius = Math.min(width, height) / 3;
+    const radius = Math.min(width / 3, height / 2) * 0.8;
 
     let currentAngle = -Math.PI / 2;
 
@@ -318,20 +318,28 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillStyle = platform.color;
         ctx.fill();
 
-        // Draw label
-        const labelAngle = currentAngle + sliceAngle / 2;
-        const labelX = centerX + Math.cos(labelAngle) * (radius + 40);
-        const labelY = centerY + Math.sin(labelAngle) * (radius + 40);
-
-        ctx.fillStyle = '#e0e0e0';
-        ctx.font = 'bold 14px -apple-system';
-        ctx.textAlign = 'center';
-        ctx.fillText(`${percent}%`, labelX, labelY);
-        ctx.font = '12px -apple-system';
-        ctx.fillText(platform.label, labelX, labelY + 15);
-
         currentAngle += sliceAngle;
       }
+    });
+
+    // Draw legend on the right
+    let legendY = height / 2 - (platforms.length * 30) / 2;
+    const legendX = width * 0.6;
+
+    platforms.forEach(platform => {
+      const percent = percentages[platform.key] || 0;
+
+      // Draw color box
+      ctx.fillStyle = platform.color;
+      ctx.fillRect(legendX, legendY, 15, 15);
+
+      // Draw label
+      ctx.fillStyle = '#e0e0e0';
+      ctx.font = '13px -apple-system';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${platform.label}${percent > 0 ? ': ' + percent + '%' : ''}`, legendX + 20, legendY + 12);
+
+      legendY += 30;
     });
   }
 
@@ -369,9 +377,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Draw pie chart
-    const centerX = width / 2;
+    const centerX = width / 3;
     const centerY = height / 2;
-    const radius = Math.min(width, height) / 3;
+    const radius = Math.min(width / 3, height / 2) * 0.8;
 
     let currentAngle = -Math.PI / 2;
 
@@ -387,20 +395,28 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillStyle = emotion.color;
         ctx.fill();
 
-        // Draw label
-        const labelAngle = currentAngle + sliceAngle / 2;
-        const labelX = centerX + Math.cos(labelAngle) * (radius + 40);
-        const labelY = centerY + Math.sin(labelAngle) * (radius + 40);
-
-        ctx.fillStyle = '#e0e0e0';
-        ctx.font = 'bold 14px -apple-system';
-        ctx.textAlign = 'center';
-        ctx.fillText(`${percent}%`, labelX, labelY);
-        ctx.font = '12px -apple-system';
-        ctx.fillText(emotion.label, labelX, labelY + 15);
-
         currentAngle += sliceAngle;
       }
+    });
+
+    // Draw legend on the right
+    let legendY = height / 2 - (emotions.length * 30) / 2;
+    const legendX = width * 0.6;
+
+    emotions.forEach(emotion => {
+      const percent = percentages[emotion.key] || 0;
+
+      // Draw color box
+      ctx.fillStyle = emotion.color;
+      ctx.fillRect(legendX, legendY, 15, 15);
+
+      // Draw label
+      ctx.fillStyle = '#e0e0e0';
+      ctx.font = '13px -apple-system';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${emotion.label}${percent > 0 ? ': ' + percent + '%' : ''}`, legendX + 20, legendY + 12);
+
+      legendY += 30;
     });
   }
 
