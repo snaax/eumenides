@@ -161,26 +161,13 @@ module.exports = async (req, res) => {
           if (data.success && data.premiumKey) {
             const planName = data.plan === 'full' ? 'Full Plan' : 'Basic Plan';
 
-            // Try to activate in extension automatically
-            const activationUrl = 'chrome-extension://' + extensionId + '/html/activate.html' +
-              '?key=' + encodeURIComponent(data.premiumKey) +
-              '&plan=' + encodeURIComponent(data.plan) +
-              '&email=' + encodeURIComponent(data.email) +
-              '&expires=' + encodeURIComponent(data.expiresAt) +
-              '&canceled=' + encodeURIComponent(data.subscriptionCanceled || false);
-
-            // Try to redirect to extension
-            try {
-              window.location.href = activationUrl;
-            } catch (e) {
-              console.log('Could not auto-redirect to extension, showing instructions');
-            }
-
-            showSuccess('Payment successful! Your ' + planName + ' has been activated.\\n\\nClick the button below to complete activation in the extension.');
-
-            // Add a button to manually activate
-            const messageBox = document.getElementById('messageBox');
-            messageBox.innerHTML += '<br><br><button onclick="window.location.href=\\'' + activationUrl + '\\'" style="background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #000; padding: 15px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 15px;">Activate in Extension</button>';
+            showSuccess('✅ Payment successful! Your ' + planName + ' has been activated.\\n\\n' +
+              '📧 Email: <strong>' + data.email + '</strong>\\n\\n' +
+              'Next steps:\\n' +
+              '1. Click the Eumenides extension icon\\n' +
+              '2. Go to the Premium page\\n' +
+              '3. Enter your email (' + data.email + ') to activate\\n\\n' +
+              'You can close this tab now.');
           } else {
             // Premium not activated yet - webhook might still be processing or failed
             if (retryCount < maxRetries) {
