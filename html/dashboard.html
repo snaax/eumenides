@@ -336,28 +336,28 @@
       <div class="stat-card">
         <div class="stat-icon">⏰</div>
         <div class="stat-value" id="peakHour">--</div>
-        <div class="stat-label">Heure de pointe</div>
+        <div class="stat-label" data-i18n="peakHour">Heure de pointe</div>
         <div class="stat-change" id="peakHourPercent">0% de tes posts</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon">🏆</div>
         <div class="stat-value" id="bestDayCount">0</div>
-        <div class="stat-label">Meilleur jour</div>
+        <div class="stat-label" data-i18n="bestDay">Meilleur jour</div>
         <div class="stat-change" id="bestDayDate">--</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon">🌡️</div>
         <div class="stat-value" id="angerScore">0.0</div>
-        <div class="stat-label">Score de rage</div>
-        <div class="stat-change">sur 3.0</div>
+        <div class="stat-label" data-i18n="rageScore">Score de rage</div>
+        <div class="stat-change" data-i18n="outOf3">sur 3.0</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-icon">📅</div>
         <div class="stat-value" id="weekdayPercent">0%</div>
-        <div class="stat-label">Posts en semaine</div>
+        <div class="stat-label" data-i18n="weekdayPosts">Posts en semaine</div>
         <div class="stat-change" id="weekendPercent">0% le weekend</div>
       </div>
     </div>
@@ -369,23 +369,23 @@
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 30px;">
       <div class="chart-section" style="margin-bottom: 0;">
-        <h2>📱 Répartition par plateforme</h2>
+        <h2 data-i18n="platformBreakdown">📱 Répartition par plateforme</h2>
         <canvas id="platformChart" style="max-height: 300px;"></canvas>
       </div>
 
       <div class="chart-section" style="margin-bottom: 0;">
-        <h2>😡 Composition émotionnelle</h2>
+        <h2 data-i18n="emotionalComposition">😡 Composition émotionnelle</h2>
         <canvas id="emotionChart" style="max-height: 300px;"></canvas>
       </div>
     </div>
 
     <div class="chart-section">
-      <h2>⏰ Pattern horaire (24h)</h2>
+      <h2 data-i18n="hourlyPattern">⏰ Pattern horaire (24h)</h2>
       <canvas id="hourlyPatternChart"></canvas>
     </div>
 
     <div class="chart-section">
-      <h2>📈 Tendance mensuelle</h2>
+      <h2 data-i18n="monthlyTrend">📈 Tendance mensuelle</h2>
       <canvas id="monthlyTrendChart"></canvas>
     </div>
 
@@ -395,7 +395,7 @@
     </div>
 
     <div class="chart-section">
-      <h2>💡 Insights personnalisés</h2>
+      <h2 data-i18n="personalizedInsights">💡 Insights personnalisés</h2>
       <div class="insights-section" id="insightsList">
         <div class="insight-card">
           <h3 data-i18n="insightPatternTitle">💡 Pattern détecté</h3>

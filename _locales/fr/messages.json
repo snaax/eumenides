@@ -690,5 +690,68 @@
   },
   "upgradeToFull": {
     "message": "⭐ Passer au plan complet"
+  },
+  "platformBreakdown": {
+    "message": "📱 Répartition par plateforme"
+  },
+  "emotionalComposition": {
+    "message": "😡 Composition émotionnelle"
+  },
+  "hourlyPattern": {
+    "message": "⏰ Pattern horaire (24h)"
+  },
+  "monthlyTrend": {
+    "message": "📈 Tendance mensuelle"
+  },
+  "personalizedInsights": {
+    "message": "💡 Insights personnalisés"
+  },
+  "peakHour": {
+    "message": "Heure de pointe"
+  },
+  "bestDay": {
+    "message": "Meilleur jour"
+  },
+  "rageScore": {
+    "message": "Score de rage"
+  },
+  "weekdayPosts": {
+    "message": "Posts en semaine"
+  },
+  "avgTimePerPost": {
+    "message": "~{time} min par post"
+  },
+  "calmDays": {
+    "message": "{count} jours calmes"
+  },
+  "longestStreakLabel": {
+    "message": "Record: {count} jours"
+  },
+  "weekendPercent": {
+    "message": "{percent}% le weekend"
+  },
+  "ofYourPosts": {
+    "message": "{percent}% de tes posts"
+  },
+  "outOf3": {
+    "message": "sur 3.0"
+  },
+  "chartLabelAnger": {
+    "message": "Colère"
+  },
+  "chartLabelFrustration": {
+    "message": "Frustration"
+  },
+  "chartLabelIrritation": {
+    "message": "Irritation"
+  },
+  "chartLabelNeutral": {
+    "message": "Neutre"
+  },
+  "noDataAvailable": {
+    "message": "Aucune donnée disponible"
+  },
+  "todayShort": {
+    "message": "Auj."
   }
 }

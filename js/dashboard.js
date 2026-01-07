@@ -122,17 +122,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Avg time per post
-    document.getElementById('avgTimePerPost').textContent = `~${analytics.avgTimePerPost || 0} min par post`;
+    const avgTimeMsg = chrome.i18n.getMessage('avgTimePerPost') || '~{time} min par post';
+    document.getElementById('avgTimePerPost').textContent = avgTimeMsg.replace('{time}', analytics.avgTimePerPost || 0);
 
     // Calm days
-    document.getElementById('calmDaysInfo').textContent = `${analytics.calmDays || 0} jours calmes`;
+    const calmDaysMsg = chrome.i18n.getMessage('calmDays') || '{count} jours calmes';
+    document.getElementById('calmDaysInfo').textContent = calmDaysMsg.replace('{count}', analytics.calmDays || 0);
 
     // Longest streak
-    document.getElementById('longestStreak').textContent = `Record: ${analytics.longestStreak || 0} jours`;
+    const longestStreakMsg = chrome.i18n.getMessage('longestStreakLabel') || 'Record: {count} jours';
+    document.getElementById('longestStreak').textContent = longestStreakMsg.replace('{count}', analytics.longestStreak || 0);
 
     // Peak hour
     document.getElementById('peakHour').textContent = analytics.peakHour || '--';
-    document.getElementById('peakHourPercent').textContent = `${analytics.peakHourPercentage || 0}% de tes posts`;
+    const peakHourMsg = chrome.i18n.getMessage('ofYourPosts') || '{percent}% de tes posts';
+    document.getElementById('peakHourPercent').textContent = peakHourMsg.replace('{percent}', analytics.peakHourPercentage || 0);
 
     // Best day
     if (analytics.bestDay) {
@@ -149,7 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Weekday vs weekend
     document.getElementById('weekdayPercent').textContent = `${analytics.weekdayPercentage || 0}%`;
-    document.getElementById('weekendPercent').textContent = `${analytics.weekendPercentage || 0}% le weekend`;
+    const weekendMsg = chrome.i18n.getMessage('weekendPercent') || '{percent}% le weekend';
+    document.getElementById('weekendPercent').textContent = weekendMsg.replace('{percent}', analytics.weekendPercentage || 0);
 
     // Render charts
     renderEmotionalActivityChart(daily);
@@ -185,7 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Aucune donnée disponible', width / 2, height / 2);
+      const noDataMsg = chrome.i18n.getMessage('noDataAvailable') || 'Aucune donnée disponible';
+      ctx.fillText(noDataMsg, width / 2, height / 2);
       return;
     }
 
@@ -231,7 +237,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Draw date label
       const date = new Date(day.date);
-      const label = i === chartData.length - 1 ? "Auj." : date.toLocaleDateString('fr-FR', { weekday: 'short' });
+      const todayLabel = chrome.i18n.getMessage('todayShort') || 'Today';
+      const label = i === chartData.length - 1 ? todayLabel : date.toLocaleDateString('fr-FR', { weekday: 'short' });
       ctx.fillStyle = '#e0e0e0';
       ctx.font = '12px -apple-system';
       ctx.textAlign = 'center';
@@ -249,10 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const legendY = 15;
     let legendX = 10;
     const emotions = [
-      { key: 'anger', label: 'Colère' },
-      { key: 'frustration', label: 'Frustration' },
-      { key: 'irritation', label: 'Irritation' },
-      { key: 'neutral', label: 'Neutre' }
+      { key: 'anger', label: chrome.i18n.getMessage('chartLabelAnger') || 'Anger' },
+      { key: 'frustration', label: chrome.i18n.getMessage('chartLabelFrustration') || 'Frustration' },
+      { key: 'irritation', label: chrome.i18n.getMessage('chartLabelIrritation') || 'Irritation' },
+      { key: 'neutral', label: chrome.i18n.getMessage('chartLabelNeutral') || 'Neutral' }
     ];
 
     emotions.forEach(emotion => {
@@ -295,7 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.font = '14px -apple-system';
       ctx.textAlign = 'center';
-      ctx.fillText('Aucune donnée', width / 2, height / 2);
+      const noDataMsg = chrome.i18n.getMessage('noDataAvailable') || 'No data available';
+      ctx.fillText(noDataMsg, width / 2, height / 2);
       return;
     }
 
@@ -360,10 +368,10 @@ document.addEventListener('DOMContentLoaded', function() {
     ctx.clearRect(0, 0, width, height);
 
     const emotions = [
-      { key: 'anger', label: 'Colère', color: '#ff6b6b' },
-      { key: 'frustration', label: 'Frustration', color: '#ffa500' },
-      { key: 'irritation', label: 'Irritation', color: '#ffcc00' },
-      { key: 'neutral', label: 'Neutre', color: '#4ade80' }
+      { key: 'anger', label: chrome.i18n.getMessage('chartLabelAnger') || 'Anger', color: '#ff6b6b' },
+      { key: 'frustration', label: chrome.i18n.getMessage('chartLabelFrustration') || 'Frustration', color: '#ffa500' },
+      { key: 'irritation', label: chrome.i18n.getMessage('chartLabelIrritation') || 'Irritation', color: '#ffcc00' },
+      { key: 'neutral', label: chrome.i18n.getMessage('chartLabelNeutral') || 'Neutral', color: '#4ade80' }
     ];
 
     const total = Object.values(percentages).reduce((sum, val) => sum + val, 0);
@@ -372,7 +380,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.font = '14px -apple-system';
       ctx.textAlign = 'center';
-      ctx.fillText('Aucune donnée', width / 2, height / 2);
+      const noDataMsg = chrome.i18n.getMessage('noDataAvailable') || 'No data available';
+      ctx.fillText(noDataMsg, width / 2, height / 2);
       return;
     }
 
@@ -497,7 +506,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.font = '14px -apple-system';
       ctx.textAlign = 'center';
-      ctx.fillText('Aucune donnée disponible', width / 2, height / 2);
+      const noDataMsg = chrome.i18n.getMessage('noDataAvailable') || 'No data available';
+      ctx.fillText(noDataMsg, width / 2, height / 2);
       return;
     }
 
@@ -548,9 +558,9 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.textAlign = 'center';
       ctx.fillText(week.total.toString(), x, y - 10);
 
-      // Draw week label
+      // Draw week label with date
       const date = new Date(week.date);
-      const label = `S${week.week}`;
+      const label = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
       ctx.font = '11px -apple-system';
       ctx.fillText(label, x, height - 10);
     });

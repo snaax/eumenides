@@ -690,5 +690,68 @@
   },
   "upgradeToFull": {
     "message": "⭐ Upgrade to Full Plan"
+  },
+  "platformBreakdown": {
+    "message": "📱 Platform Breakdown"
+  },
+  "emotionalComposition": {
+    "message": "😡 Emotional Composition"
+  },
+  "hourlyPattern": {
+    "message": "⏰ Hourly Pattern (24h)"
+  },
+  "monthlyTrend": {
+    "message": "📈 Monthly Trend"
+  },
+  "personalizedInsights": {
+    "message": "💡 Personalized Insights"
+  },
+  "peakHour": {
+    "message": "Peak Hour"
+  },
+  "bestDay": {
+    "message": "Best Day"
+  },
+  "rageScore": {
+    "message": "Rage Score"
+  },
+  "weekdayPosts": {
+    "message": "Weekday Posts"
+  },
+  "avgTimePerPost": {
+    "message": "~{time} min per post"
+  },
+  "calmDays": {
+    "message": "{count} calm days"
+  },
+  "longestStreakLabel": {
+    "message": "Record: {count} days"
+  },
+  "weekendPercent": {
+    "message": "{percent}% on weekends"
+  },
+  "ofYourPosts": {
+    "message": "{percent}% of your posts"
+  },
+  "outOf3": {
+    "message": "out of 3.0"
+  },
+  "chartLabelAnger": {
+    "message": "Anger"
+  },
+  "chartLabelFrustration": {
+    "message": "Frustration"
+  },
+  "chartLabelIrritation": {
+    "message": "Irritation"
+  },
+  "chartLabelNeutral": {
+    "message": "Neutral"
+  },
+  "noDataAvailable": {
+    "message": "No data available"
+  },
+  "todayShort": {
+    "message": "Today"
   }
 }
