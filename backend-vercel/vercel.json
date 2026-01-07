@@ -4,5 +4,11 @@
     "api/**/*.js": {
       "maxDuration": 10
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/redirect",
+      "destination": "/public/redirect.html"
+    }
+  ]
 }

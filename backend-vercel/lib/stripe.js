@@ -23,8 +23,12 @@ async function createCheckoutSession(email, extensionId, plan = 'basic') {
     throw new Error(`Price ID not configured for plan: ${plan}`);
   }
 
-  const successUrl = `chrome-extension://${cleanExtensionId}/html/activate-premium.html?success=true&session_id={CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `chrome-extension://${cleanExtensionId}/html/activate-premium.html?canceled=true`;
+  // Stripe doesn't properly support chrome-extension:// URLs
+  // Use a web redirect page instead that will redirect to the extension
+  const baseUrl = process.env.PUBLIC_URL || 'https://eumenides.vercel.app';
+
+  const successUrl = `${baseUrl}/redirect?extension_id=${cleanExtensionId}&success=true&session_id={CHECKOUT_SESSION_ID}`;
+  const cancelUrl = `${baseUrl}/redirect?extension_id=${cleanExtensionId}&canceled=true`;
 
   console.log('Success URL:', successUrl);
   console.log('Cancel URL:', cancelUrl);
