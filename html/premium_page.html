@@ -101,14 +101,15 @@
       margin-bottom: 20px;
     }
 
-    .badge span:first-child {
-      display: inline-block;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 2px 6px;
-      border-radius: 6px;
-      margin-right: 6px;
-      font-size: 16px;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    /* Different badge colors for each plan */
+    .pricing-card:nth-child(2) .badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+
+    .pricing-card:nth-child(3) .badge {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: #fff;
     }
     
     .price {
@@ -455,7 +456,7 @@
     <div class="pricing-cards">
       <!-- Free Plan -->
       <div class="pricing-card">
-        <div class="badge"><span>🆓</span> <span data-i18n="planFreeBadge">GRATUIT</span></div>
+        <div class="badge">🆓 <span data-i18n="planFreeBadge">GRATUIT</span></div>
         <div class="price" data-i18n="planFreePrice">0€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
@@ -472,7 +473,7 @@
 
       <!-- Basic Plan -->
       <div class="pricing-card">
-        <div class="badge"><span>✨</span> <span data-i18n="planBasicBadge">BASIC</span></div>
+        <div class="badge">✨ <span data-i18n="planBasicBadge">BASIC</span></div>
         <div class="price" data-i18n="planBasicPrice">1,99€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
@@ -489,7 +490,7 @@
 
       <!-- Full Plan -->
       <div class="pricing-card featured">
-        <div class="badge"><span>⭐</span> <span data-i18n="planFullBadge">FULL - RECOMMANDÉ</span></div>
+        <div class="badge">⭐ <span data-i18n="planFullBadge">FULL - RECOMMANDÉ</span></div>
         <div class="price" data-i18n="planFullPrice">4,99€</div>
         <div class="price-sub" data-i18n="planPriceSub">par mois, sans engagement</div>
         <div class="plan-features">
