@@ -899,7 +899,7 @@
 
     const stats = {
       postsIntercepted: 1,
-      timeSavedMinutes: entry.timeSaved || 3,
+      timeSavedMinutes: Math.round(entry.timeSaved || 3), // Round to integer
       emotions: {
         [entry.emotion]: 1
       },
