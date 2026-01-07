@@ -109,7 +109,7 @@ module.exports = async (req, res) => {
 <body>
   <div class="container">
     <h1>⚡ Eumenides</h1>
-    <p id="status">Redirecting to your extension...</p>
+    <p id="status">Processing your payment...</p>
     <div class="spinner"></div>
 
     <!-- Debug info -->
@@ -145,9 +145,8 @@ module.exports = async (req, res) => {
         return;
       }
 
-      // Build the extension URL
+      // Build the extension URL for display purposes
       let extensionUrl = 'chrome-extension://' + extensionId + '/html/activate-premium.html?';
-      document.getElementById('debugUrl').textContent = extensionUrl;
 
       if (success === 'true') {
         extensionUrl += 'success=true&session_id=' + sessionId;
@@ -155,19 +154,16 @@ module.exports = async (req, res) => {
         extensionUrl += 'canceled=true';
       }
 
-      console.log('Redirecting to:', extensionUrl);
+      document.getElementById('debugUrl').textContent = extensionUrl;
+      console.log('Extension URL (for reference):', extensionUrl);
 
-      // Try to redirect
-      try {
-        window.location.href = extensionUrl;
-
-        // If still here after 2 seconds, show success message instead
-        setTimeout(function() {
-          showSuccess('Payment successful! You can close this tab and return to the extension to use your premium features.');
-        }, 2000);
-      } catch (error) {
-        console.error('Redirect error:', error);
-        showSuccess('Payment successful! You can close this tab and return to the extension to use your premium features.');
+      // Show success message - don't try to redirect as Chrome blocks chrome-extension:// redirects
+      if (success === 'true') {
+        showSuccess('✅ Payment successful! You can close this tab and return to the Eumenides extension. Your premium features will be activated automatically.');
+      } else if (canceled === 'true') {
+        showCanceled('Payment was canceled. You can close this tab.');
+      } else {
+        showSuccess('You can close this tab and return to the extension.');
       }
     }
 
@@ -177,6 +173,20 @@ module.exports = async (req, res) => {
       document.getElementById('error').classList.add('show');
       document.getElementById('error').style.background = 'rgba(74, 222, 128, 0.3)';
       document.getElementById('error').style.borderColor = '#4ade80';
+      document.querySelector('.spinner').style.display = 'none';
+
+      // Change button to "Close Tab"
+      const button = document.querySelector('button');
+      button.textContent = 'Close Tab';
+      button.onclick = function() { window.close(); };
+    }
+
+    function showCanceled(message) {
+      document.getElementById('status').innerHTML = '<strong>⚠️ Canceled</strong>';
+      document.getElementById('errorMessage').textContent = message;
+      document.getElementById('error').classList.add('show');
+      document.getElementById('error').style.background = 'rgba(251, 191, 36, 0.3)';
+      document.getElementById('error').style.borderColor = '#fbbf24';
       document.querySelector('.spinner').style.display = 'none';
 
       // Change button to "Close Tab"
