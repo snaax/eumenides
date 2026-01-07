@@ -339,24 +339,55 @@ async function displayPremiumStatus() {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   // Display premium status
-  displayPremiumStatus();
+  await displayPremiumStatus();
 
-  // Get all buy buttons
+  // Check if user already has premium - if so, disable buy buttons
+  const storage = await chrome.storage.sync.get(['premium', 'premiumKey', 'premiumPlan']);
   const buyButtons = document.querySelectorAll('.buy-button');
 
   buyButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const plan = this.getAttribute('data-plan');
+    const buttonPlan = button.getAttribute('data-plan');
 
-      if (!plan) {
-        console.error('No plan specified on button');
-        return;
+    // If user has premium already
+    if (storage.premium && storage.premiumPlan) {
+      // Disable buy buttons for plans at or below current plan
+      if (storage.premiumPlan === 'full') {
+        // Full plan user - disable all buttons
+        button.disabled = true;
+        button.style.opacity = '0.5';
+        button.style.cursor = 'not-allowed';
+        if (buttonPlan === 'full') {
+          button.textContent = '✓ Current Plan';
+        } else {
+          button.textContent = 'Not Available';
+        }
+      } else if (storage.premiumPlan === 'basic' && buttonPlan === 'basic') {
+        // Basic plan user - disable basic button
+        button.disabled = true;
+        button.style.opacity = '0.5';
+        button.style.cursor = 'not-allowed';
+        button.textContent = '✓ Current Plan';
+      } else if (storage.premiumPlan === 'basic' && buttonPlan === 'full') {
+        // Basic plan user can upgrade to full
+        button.addEventListener('click', function() {
+          showEmailModal(buttonPlan);
+        });
       }
+    } else {
+      // No premium - allow checkout for all plans
+      button.addEventListener('click', function() {
+        const plan = this.getAttribute('data-plan');
 
-      showEmailModal(plan);
-    });
+        if (!plan) {
+          console.error('No plan specified on button');
+          return;
+        }
+
+        showEmailModal(plan);
+      });
+    }
   });
 
   // Cancel subscription button
@@ -366,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Add activate button for users who completed checkout but haven't activated
-  addActivateButtonIfNeeded();
+  await addActivateButtonIfNeeded();
 });
 
 // Add activate button if user doesn't have premium yet
@@ -378,11 +409,20 @@ async function addActivateButtonIfNeeded() {
     return;
   }
 
-  // Add activate button to the premium status banner
-  const statusBanner = document.getElementById('premiumStatus');
+  // Add activate section ABOVE pricing cards (before premium status banner)
+  const header = document.querySelector('.header');
   const activateHTML = `
-    <div style="margin-top: 20px; text-align: center;">
-      <p style="margin-bottom: 15px; opacity: 0.9;">Already completed checkout? Activate your premium:</p>
+    <div id="activateSection" style="
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
+      border: 2px solid rgba(74, 222, 128, 0.5);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 600px;
+      text-align: center;
+    ">
+      <h2 style="font-size: 24px; margin-bottom: 10px; color: #4ade80;">🎉 Checkout Complete!</h2>
+      <p style="margin-bottom: 20px; opacity: 0.9;">Enter your email to activate your premium subscription:</p>
       <input
         type="email"
         id="activateEmailInput"
@@ -417,7 +457,8 @@ async function addActivateButtonIfNeeded() {
     </div>
   `;
 
-  statusBanner.insertAdjacentHTML('beforeend', activateHTML);
+  // Insert after header, before everything else
+  header.insertAdjacentHTML('afterend', activateHTML);
 
   document.getElementById('quickActivateBtn').addEventListener('click', async () => {
     const email = document.getElementById('activateEmailInput').value.trim();
