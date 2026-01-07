@@ -402,17 +402,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Add activate button if user doesn't have premium yet
 async function addActivateButtonIfNeeded() {
-  const result = await chrome.storage.sync.get(['premium', 'premiumKey']);
+  const result = await chrome.storage.sync.get(['premium', 'premiumKey', 'premiumPlan', 'premiumEmail']);
 
   console.log('Checking if activation form needed:', result);
 
-  // Only show activate button if user doesn't have premium or premium key
-  if (result.premium || result.premiumKey) {
-    console.log('User already has premium, skipping activation form');
+  // Show activation form if:
+  // - No premium at all, OR
+  // - Has premium flag but missing key/plan/email (incomplete activation)
+  const needsActivation = !result.premium || !result.premiumKey || !result.premiumPlan || !result.premiumEmail;
+
+  if (!needsActivation) {
+    console.log('User fully activated, skipping activation form');
     return;
   }
 
-  console.log('User needs activation - showing form');
+  console.log('User needs activation - showing form (incomplete data)');
 
   // Add activate section ABOVE pricing cards (before premium status banner)
   const header = document.querySelector('.header');
