@@ -360,10 +360,17 @@
     .status-plan {
       font-size: 28px;
       font-weight: 700;
-      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffd700;
       margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .status-plan span {
+      background: none;
+      -webkit-text-fill-color: initial;
     }
 
     .status-details {

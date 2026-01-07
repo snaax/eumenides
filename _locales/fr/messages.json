@@ -577,6 +577,9 @@
   "planFullFeature7": {
     "message": "🏆 Badges exclusifs"
   },
+  "currentPlan": {
+    "message": "Votre abonnement actuel"
+  },
   "currentPlanButton": {
     "message": "Plan actuel"
   },

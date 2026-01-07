@@ -269,10 +269,9 @@ async function displayPremiumStatus() {
       statusBanner.style.display = 'block';
 
       const planName = result.premiumPlan === 'full' ? 'Full Plan' : 'Basic Plan';
-      const planEmoji = result.premiumPlan === 'full' ? '⭐' : '✨';
 
       statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
-      statusPlan.textContent = `${planEmoji} ${planName}`;
+      statusPlan.innerHTML = `<span style="font-size: 32px;">${result.premiumPlan === 'full' ? '⭐' : '✨'}</span> ${planName}`;
 
       if (result.premiumUntil) {
         const expiryDate = new Date(result.premiumUntil);
@@ -283,10 +282,10 @@ async function displayPremiumStatus() {
         });
 
         if (result.subscriptionCanceled) {
-          statusDetails.textContent = `Subscription canceled - Access until ${formattedDate} • ${result.premiumEmail || ''}`;
+          statusDetails.innerHTML = `Subscription canceled - Access until <strong>${formattedDate}</strong> • ${result.premiumEmail || ''}`;
           cancelBtn.style.display = 'none';
         } else {
-          statusDetails.textContent = `Active until ${formattedDate} • ${result.premiumEmail || ''}`;
+          statusDetails.innerHTML = `Active until <strong>${formattedDate}</strong> • ${result.premiumEmail || ''}`;
           cancelBtn.style.display = 'inline-block';
         }
       } else {
@@ -300,7 +299,7 @@ async function displayPremiumStatus() {
       statusTitle.classList.add('free');
 
       statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
-      statusPlan.textContent = '🆓 Free Plan';
+      statusPlan.innerHTML = '<span style="font-size: 32px;">🆓</span> Free Plan';
       statusDetails.textContent = 'Upgrade to unlock all features';
       cancelBtn.style.display = 'none';
     }
