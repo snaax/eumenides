@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
             premium: true,
             premiumPlan: data.plan || 'basic',
             premiumEmail: data.email,
-            premiumUntil: data.expiresAt
+            premiumUntil: data.expiresAt,
+            subscriptionCanceled: data.subscriptionCanceled || false
           });
 
           statusDiv.classList.remove('processing');

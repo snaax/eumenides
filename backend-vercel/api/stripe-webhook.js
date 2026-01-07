@@ -35,9 +35,14 @@ module.exports = async (req, res) => {
         await handleCheckoutCompleted(event.data.object);
         break;
 
+      case 'customer.subscription.updated':
+        console.log('Processing customer.subscription.updated');
+        await handleSubscriptionUpdated(event.data.object);
+        break;
+
       case 'customer.subscription.deleted':
         console.log('Processing customer.subscription.deleted');
-        await handleSubscriptionCanceled(event.data.object);
+        await handleSubscriptionDeleted(event.data.object);
         break;
 
       case 'invoice.payment_failed':
@@ -104,17 +109,52 @@ async function handleCheckoutCompleted(session) {
 }
 
 /**
- * Handle subscription cancellation
+ * Handle subscription update (e.g., when cancel_at_period_end is set)
  */
-async function handleSubscriptionCanceled(subscription) {
-  console.log('Subscription canceled:', subscription.id);
+async function handleSubscriptionUpdated(subscription) {
+  console.log('Subscription updated:', subscription.id);
+  console.log('Cancel at period end:', subscription.cancel_at_period_end);
+  console.log('Current period end:', new Date(subscription.current_period_end * 1000));
 
   try {
+    if (subscription.cancel_at_period_end) {
+      // User has requested cancellation - mark as canceled in DB
+      await pool.query(`
+        UPDATE users
+        SET subscription_canceled = true
+        WHERE stripe_subscription_id = $1
+      `, [subscription.id]);
+      console.log('Subscription marked as canceled (will remain active until period end)');
+    } else {
+      // Subscription was reactivated - clear the canceled flag
+      await pool.query(`
+        UPDATE users
+        SET subscription_canceled = false
+        WHERE stripe_subscription_id = $1
+      `, [subscription.id]);
+      console.log('Subscription reactivated');
+    }
+  } catch (error) {
+    console.error('Database error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Handle subscription deletion (when it actually ends)
+ */
+async function handleSubscriptionDeleted(subscription) {
+  console.log('Subscription deleted (ended):', subscription.id);
+
+  try {
+    // Set premium_until to NOW to immediately disable premium
     await pool.query(`
       UPDATE users
-      SET premium_until = NOW()
+      SET premium_until = NOW(),
+          subscription_canceled = true
       WHERE stripe_subscription_id = $1
     `, [subscription.id]);
+    console.log('Premium access disabled');
   } catch (error) {
     console.error('Database error:', error);
     throw error;

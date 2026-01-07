@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
   stripe_subscription_id VARCHAR(255),
   stripe_session_id VARCHAR(255),
 
+  -- Subscription status
+  subscription_canceled BOOLEAN DEFAULT false,
+
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -66,3 +69,4 @@ CREATE INDEX idx_user_stats_date ON user_stats(stat_date);
 -- Only run if you already have a users table without these columns
 -- ALTER TABLE users ADD COLUMN IF NOT EXISTS subscription_tier VARCHAR(50) DEFAULT 'basic';
 -- ALTER TABLE users ADD COLUMN IF NOT EXISTS stripe_session_id VARCHAR(255);
+-- ALTER TABLE users ADD COLUMN IF NOT EXISTS subscription_canceled BOOLEAN DEFAULT false;

@@ -199,8 +199,121 @@ function showEmailModal(plan) {
   });
 }
 
+// Cancel subscription
+async function cancelSubscription() {
+  const result = await chrome.storage.sync.get(['premiumKey']);
+
+  if (!result.premiumKey) {
+    alert('No active subscription found');
+    return;
+  }
+
+  const confirmed = confirm(
+    'Are you sure you want to cancel your subscription?\n\n' +
+    'Your premium features will remain active until the end of your billing period.\n\n' +
+    'You can resubscribe at any time.'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+  const originalText = cancelBtn.textContent;
+  cancelBtn.disabled = true;
+  cancelBtn.textContent = 'Canceling...';
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/cancel-subscription`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        premiumKey: result.premiumKey
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Failed to cancel subscription');
+    }
+
+    alert('Subscription canceled successfully.\n\nYour premium features will remain active until ' +
+          (data.activeUntil ? new Date(data.activeUntil).toLocaleDateString() : 'the end of your billing period'));
+
+    // Refresh the status display
+    displayPremiumStatus();
+  } catch (error) {
+    console.error('Error canceling subscription:', error);
+    alert('Failed to cancel subscription. Please try again or contact support.');
+    cancelBtn.disabled = false;
+    cancelBtn.textContent = originalText;
+  }
+}
+
+// Display premium status
+async function displayPremiumStatus() {
+  try {
+    const result = await chrome.storage.sync.get(['premium', 'premiumPlan', 'premiumEmail', 'premiumUntil', 'subscriptionCanceled']);
+
+    const statusBanner = document.getElementById('premiumStatus');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusPlan = document.getElementById('statusPlan');
+    const statusDetails = document.getElementById('statusDetails');
+    const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+
+    if (result.premium && result.premiumPlan) {
+      // User has premium - show status
+      statusBanner.style.display = 'block';
+
+      const planName = result.premiumPlan === 'full' ? 'Full Plan' : 'Basic Plan';
+      const planEmoji = result.premiumPlan === 'full' ? '⭐' : '✨';
+
+      statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
+      statusPlan.textContent = `${planEmoji} ${planName}`;
+
+      if (result.premiumUntil) {
+        const expiryDate = new Date(result.premiumUntil);
+        const formattedDate = expiryDate.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        if (result.subscriptionCanceled) {
+          statusDetails.textContent = `Subscription canceled - Access until ${formattedDate} • ${result.premiumEmail || ''}`;
+          cancelBtn.style.display = 'none';
+        } else {
+          statusDetails.textContent = `Active until ${formattedDate} • ${result.premiumEmail || ''}`;
+          cancelBtn.style.display = 'inline-block';
+        }
+      } else {
+        statusDetails.textContent = result.premiumEmail || 'Premium Active';
+        cancelBtn.style.display = 'inline-block';
+      }
+    } else {
+      // User is on free plan
+      statusBanner.style.display = 'block';
+      statusBanner.classList.add('free');
+      statusTitle.classList.add('free');
+
+      statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
+      statusPlan.textContent = '🆓 Free Plan';
+      statusDetails.textContent = 'Upgrade to unlock all features';
+      cancelBtn.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error displaying premium status:', error);
+  }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // Display premium status
+  displayPremiumStatus();
+
   // Get all buy buttons
   const buyButtons = document.querySelectorAll('.buy-button');
 
@@ -216,4 +329,10 @@ document.addEventListener('DOMContentLoaded', function() {
       showEmailModal(plan);
     });
   });
+
+  // Cancel subscription button
+  const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', cancelSubscription);
+  }
 });

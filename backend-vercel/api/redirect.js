@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
 
   // Get parameters
   const { extension_id, success, canceled, session_id } = req.query;
+  const apiBaseUrl = process.env.PUBLIC_URL || 'https://eumenides.vercel.app';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -138,15 +139,31 @@ module.exports = async (req, res) => {
 
     console.log('Redirect params:', { extensionId, success, canceled, sessionId });
 
-    function redirect() {
+    async function redirect() {
       if (!extensionId || extensionId === 'null' || extensionId === 'undefined') {
         showSuccess('Payment successful! You can close this tab and return to the extension to use your premium features.');
         return;
       }
 
       // Show success message - don't try to redirect as Chrome blocks chrome-extension:// redirects
-      if (success === 'true') {
-        showSuccess('Payment successful! You can close this tab and return to the Eumenides extension. Your premium features will be activated automatically.');
+      if (success === 'true' && sessionId) {
+        // Try to get premium details from the session
+        showProcessing('Activating your premium features...');
+
+        try {
+          const response = await fetch('${apiBaseUrl}/api/verify-session?session_id=' + encodeURIComponent(sessionId));
+          const data = await response.json();
+
+          if (data.success && data.premiumKey) {
+            const planName = data.plan === 'full' ? 'Full Plan' : 'Basic Plan';
+            showSuccess('Payment successful! Your ' + planName + ' has been activated.\\n\\nYou can close this tab and return to the Eumenides extension.');
+          } else {
+            showSuccess('Payment successful! Your premium features are being activated.\\n\\nYou can close this tab and return to the Eumenides extension. If your premium is not active yet, please wait a moment and refresh the extension.');
+          }
+        } catch (error) {
+          console.error('Error fetching premium details:', error);
+          showSuccess('Payment successful!\\n\\nYou can close this tab and return to the Eumenides extension. Your premium features will be activated shortly.');
+        }
       } else if (canceled === 'true') {
         showCanceled('Payment was canceled. You can close this tab.');
       } else {
@@ -154,9 +171,15 @@ module.exports = async (req, res) => {
       }
     }
 
+    function showProcessing(message) {
+      document.getElementById('status').textContent = message;
+      document.querySelector('.spinner').style.display = 'block';
+      document.getElementById('messageBox').classList.remove('show');
+    }
+
     function showSuccess(message) {
       document.getElementById('status').innerHTML = '<strong>Success!</strong>';
-      document.getElementById('message').textContent = message;
+      document.getElementById('message').innerHTML = message.replace(/\\n/g, '<br>');
       document.getElementById('messageBox').classList.add('show');
       document.getElementById('messageBox').style.background = 'rgba(74, 222, 128, 0.3)';
       document.getElementById('messageBox').style.borderColor = '#4ade80';
@@ -169,7 +192,7 @@ module.exports = async (req, res) => {
 
     function showCanceled(message) {
       document.getElementById('status').innerHTML = '<strong>Canceled</strong>';
-      document.getElementById('message').textContent = message;
+      document.getElementById('message').innerHTML = message.replace(/\\n/g, '<br>');
       document.getElementById('messageBox').classList.add('show');
       document.getElementById('messageBox').style.background = 'rgba(251, 191, 36, 0.3)';
       document.getElementById('messageBox').style.borderColor = '#fbbf24';

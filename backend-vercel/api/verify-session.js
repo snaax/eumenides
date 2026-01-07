@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
 
     // Get user from database by email
     const result = await pool.query(
-      'SELECT email, premium_key, subscription_tier, premium_until FROM users WHERE email = $1',
+      'SELECT email, premium_key, subscription_tier, premium_until, subscription_canceled FROM users WHERE email = $1',
       [session.customer_email]
     );
 
@@ -66,7 +66,8 @@ module.exports = async (req, res) => {
       premiumKey: user.premium_key,
       plan: user.subscription_tier,
       email: user.email,
-      expiresAt: user.premium_until
+      expiresAt: user.premium_until,
+      subscriptionCanceled: user.subscription_canceled || false
     });
 
   } catch (error) {
