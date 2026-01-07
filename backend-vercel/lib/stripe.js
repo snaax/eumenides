@@ -25,13 +25,16 @@ async function createCheckoutSession(email, extensionId, plan = 'basic') {
 
   // Stripe doesn't properly support chrome-extension:// URLs
   // Use a web redirect page instead that will redirect to the extension
-  const baseUrl = process.env.PUBLIC_URL || 'https://eumenides.vercel.app';
+  const baseUrl = (process.env.PUBLIC_URL || 'https://eumenides.vercel.app').trim();
 
-  const successUrl = `${baseUrl}/api/redirect?extension_id=${cleanExtensionId}&success=true&session_id={CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `${baseUrl}/api/redirect?extension_id=${cleanExtensionId}&canceled=true`;
+  // URL-encode the extension_id parameter
+  const encodedExtensionId = encodeURIComponent(cleanExtensionId);
 
-  console.log('Success URL:', successUrl);
-  console.log('Cancel URL:', cancelUrl);
+  const successUrl = `${baseUrl}/api/redirect?extension_id=${encodedExtensionId}&success=true&session_id={CHECKOUT_SESSION_ID}`;
+  const cancelUrl = `${baseUrl}/api/redirect?extension_id=${encodedExtensionId}&canceled=true`;
+
+  console.log('Success URL:', JSON.stringify(successUrl));
+  console.log('Cancel URL:', JSON.stringify(cancelUrl));
 
   return await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
