@@ -136,8 +136,9 @@ module.exports = async (req, res) => {
     const success = ${JSON.stringify(success)};
     const canceled = ${JSON.stringify(canceled)};
     const sessionId = ${JSON.stringify(session_id)};
+    const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
 
-    console.log('Redirect params:', { extensionId, success, canceled, sessionId });
+    console.log('Redirect params:', { extensionId, success, canceled, sessionId, apiBaseUrl });
 
     async function redirect() {
       if (!extensionId || extensionId === 'null' || extensionId === 'undefined') {
@@ -151,7 +152,7 @@ module.exports = async (req, res) => {
         showProcessing('Activating your premium features...');
 
         try {
-          const response = await fetch('${apiBaseUrl}/api/verify-session?session_id=' + encodeURIComponent(sessionId));
+          const response = await fetch(apiBaseUrl + '/api/verify-session?session_id=' + encodeURIComponent(sessionId));
           const data = await response.json();
 
           if (data.success && data.premiumKey) {
