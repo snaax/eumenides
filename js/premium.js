@@ -16,12 +16,17 @@ function isValidEmail(email) {
 
 // Get extension ID
 function getExtensionId() {
-  return chrome.runtime.id;
+  const id = chrome.runtime.id;
+  console.log('Extension ID:', id);
+  return id;
 }
 
 // Create checkout session
 async function createCheckoutSession(email, plan) {
   try {
+    const extensionId = getExtensionId();
+    console.log('Creating checkout with:', { email, extensionId, plan });
+
     const response = await fetch(`${API_BASE_URL}/api/create-checkout`, {
       method: 'POST',
       headers: {
@@ -29,7 +34,7 @@ async function createCheckoutSession(email, plan) {
       },
       body: JSON.stringify({
         email: email,
-        extensionId: getExtensionId(),
+        extensionId: extensionId,
         plan: plan
       })
     });
@@ -39,6 +44,7 @@ async function createCheckoutSession(email, plan) {
     }
 
     const data = await response.json();
+    console.log('Checkout session created:', data);
     return data;
   } catch (error) {
     console.error('Error creating checkout session:', error);
