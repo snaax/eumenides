@@ -31,6 +31,20 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: emailValidation.error });
     }
 
+    // Additional email validation: block disposable email domains
+    const disposableDomains = [
+      'tempmail.com', 'guerrillamail.com', '10minutemail.com', 'mailinator.com',
+      'throwaway.email', 'temp-mail.org', 'fakeinbox.com', 'trashmail.com'
+    ];
+
+    const emailDomain = email.split('@')[1].toLowerCase();
+    if (disposableDomains.includes(emailDomain)) {
+      console.warn('Blocked disposable email:', email);
+      return res.status(400).json({
+        error: 'Disposable email addresses are not allowed. Please use a permanent email address.'
+      });
+    }
+
     const extValidation = validateExtensionId(extensionId);
     if (!extValidation.valid) {
       return res.status(400).json({ error: extValidation.error });
@@ -43,7 +57,7 @@ module.exports = async (req, res) => {
 
     // Check if email already has an active subscription
     const existingUser = await pool.query(
-      'SELECT email, premium_until, subscription_tier, subscription_canceled FROM users WHERE email = $1',
+      'SELECT email, premium_until, subscription_tier, subscription_canceled, created_at FROM users WHERE email = $1',
       [email.toLowerCase()]
     );
 
@@ -63,6 +77,22 @@ module.exports = async (req, res) => {
 
       // If subscription is canceled or expired, allow checkout
       // This will create a new subscription and reactivate the account
+    }
+
+    // Rate limiting: Check for suspicious activity
+    // Prevent someone from creating multiple checkouts in a short time
+    const recentCheckouts = await pool.query(
+      `SELECT COUNT(*) as count FROM users
+       WHERE created_at > NOW() - INTERVAL '1 hour'
+       AND email = $1`,
+      [email.toLowerCase()]
+    );
+
+    if (recentCheckouts.rows[0].count > 3) {
+      console.warn('Rate limit exceeded for email:', email);
+      return res.status(429).json({
+        error: 'Too many checkout attempts. Please try again later.'
+      });
     }
 
     // Create checkout session with selected plan
