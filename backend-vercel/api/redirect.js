@@ -111,6 +111,15 @@ module.exports = async (req, res) => {
     <h1>⚡ Eumenides</h1>
     <p id="status">Redirecting to your extension...</p>
     <div class="spinner"></div>
+
+    <!-- Debug info -->
+    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px; font-family: monospace; font-size: 12px; text-align: left;">
+      <div>Extension ID: <span id="debugExtId">...</span></div>
+      <div>Success: <span id="debugSuccess">...</span></div>
+      <div>Session ID: <span id="debugSession">...</span></div>
+      <div>Redirect URL: <span id="debugUrl">...</span></div>
+    </div>
+
     <div class="error" id="error">
       <p id="errorMessage">Unable to redirect. Please make sure the Eumenides extension is installed.</p>
       <button onclick="retry()">Retry</button>
@@ -125,6 +134,11 @@ module.exports = async (req, res) => {
 
     console.log('Redirect params:', { extensionId, success, canceled, sessionId });
 
+    // Update debug display
+    document.getElementById('debugExtId').textContent = extensionId || 'NULL';
+    document.getElementById('debugSuccess').textContent = success || 'NULL';
+    document.getElementById('debugSession').textContent = sessionId || 'NULL';
+
     function redirect() {
       if (!extensionId || extensionId === 'null' || extensionId === 'undefined') {
         showSuccess('Payment successful! You can close this tab and return to the extension to use your premium features.');
@@ -133,6 +147,7 @@ module.exports = async (req, res) => {
 
       // Build the extension URL
       let extensionUrl = 'chrome-extension://' + extensionId + '/html/activate-premium.html?';
+      document.getElementById('debugUrl').textContent = extensionUrl;
 
       if (success === 'true') {
         extensionUrl += 'success=true&session_id=' + sessionId;
