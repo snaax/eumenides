@@ -609,5 +609,68 @@
   },
   "errorCheckoutFailed": {
     "message": "Failed to create checkout session. Please try again."
+  },
+  "comparisonTitle": {
+    "message": "Plan Comparison"
+  },
+  "comparisonFeature": {
+    "message": "Feature"
+  },
+  "comparisonFree": {
+    "message": "Free"
+  },
+  "comparisonBasic": {
+    "message": "Basic"
+  },
+  "comparisonFull": {
+    "message": "Full"
+  },
+  "comparisonPostsPerDay": {
+    "message": "Posts per day"
+  },
+  "comparisonPlatforms": {
+    "message": "Platforms"
+  },
+  "comparisonPlatformsFree": {
+    "message": "X, Reddit"
+  },
+  "comparisonPlatformsBasic": {
+    "message": "X, Reddit, Facebook"
+  },
+  "comparisonPlatformsFull": {
+    "message": "All"
+  },
+  "comparisonModeCatharsis": {
+    "message": "Catharsis Mode"
+  },
+  "comparisonModePreview": {
+    "message": "Preview Mode"
+  },
+  "comparisonModeDelay": {
+    "message": "Delay Mode"
+  },
+  "comparisonCustomizable": {
+    "message": "Customizable"
+  },
+  "comparisonDashboard": {
+    "message": "Dashboard"
+  },
+  "comparisonDashboardBasic": {
+    "message": "Basic"
+  },
+  "comparisonDashboardFull": {
+    "message": "Full"
+  },
+  "comparisonStats": {
+    "message": "Statistics"
+  },
+  "comparisonStatsAdvanced": {
+    "message": "Advanced"
+  },
+  "comparisonCloudSync": {
+    "message": "Cloud sync"
+  },
+  "comparisonBadges": {
+    "message": "Exclusive badges"
   }
 }

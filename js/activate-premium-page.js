@@ -44,25 +44,27 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   if (success === 'true' && sessionId) {
-    // Payment successful - wait for webhook to process
+    // Payment successful - verify session with backend
     statusDiv.classList.add('processing');
     statusText.textContent = 'Processing your payment... This may take a few moments.';
     button.style.display = 'none';
 
-    // Poll for premium activation (webhook should have processed by now)
-    let pollCount = 0;
-    const maxPolls = 20; // 20 seconds max
-
-    const pollInterval = setInterval(async () => {
-      pollCount++;
-
+    // First, try to verify the session directly with the backend
+    async function verifySession() {
       try {
-        // Check if premium is activated in storage
-        const result = await chrome.storage.sync.get(['premiumKey', 'premium']);
+        const response = await fetch(`${API_BASE_URL}/api/verify-session?session_id=${encodeURIComponent(sessionId)}`);
+        const data = await response.json();
 
-        if (result.premiumKey && result.premium) {
-          // Premium already activated
-          clearInterval(pollInterval);
+        if (data.success && data.premiumKey) {
+          // Store premium key and activate
+          await chrome.storage.sync.set({
+            premiumKey: data.premiumKey,
+            premium: true,
+            premiumPlan: data.plan || 'basic',
+            premiumEmail: data.email,
+            premiumUntil: data.expiresAt
+          });
+
           statusDiv.classList.remove('processing');
           statusDiv.classList.add('success');
           statusText.textContent = chrome.i18n.getMessage('premiumActivated') || '✅ Premium activated successfully!';
@@ -71,25 +73,70 @@ document.addEventListener('DOMContentLoaded', function() {
           button.addEventListener('click', () => {
             chrome.tabs.create({ url: 'dashboard.html' });
           });
-          return;
+          return true;
         }
-
-        if (pollCount >= maxPolls) {
-          // Timeout - webhook might not have processed yet
-          clearInterval(pollInterval);
-          statusDiv.classList.remove('processing');
-          statusDiv.classList.add('warning');
-          statusText.textContent = 'Payment received! Your premium access will be activated shortly. Please check back in a few minutes or reload this page.';
-          button.textContent = 'Reload Page';
-          button.style.display = 'inline-block';
-          button.addEventListener('click', () => {
-            window.location.reload();
-          });
-        }
+        return false;
       } catch (error) {
-        console.error('Error checking premium status:', error);
+        console.error('Error verifying session:', error);
+        return false;
       }
-    }, 1000); // Poll every second
+    }
+
+    // Try to verify session immediately
+    const verified = await verifySession();
+
+    if (!verified) {
+      // If not verified yet, poll for premium activation
+      let pollCount = 0;
+      const maxPolls = 20; // 20 seconds max
+
+      const pollInterval = setInterval(async () => {
+        pollCount++;
+
+        try {
+          // Check if premium is activated in storage
+          const result = await chrome.storage.sync.get(['premiumKey', 'premium']);
+
+          if (result.premiumKey && result.premium) {
+            // Premium already activated
+            clearInterval(pollInterval);
+            statusDiv.classList.remove('processing');
+            statusDiv.classList.add('success');
+            statusText.textContent = chrome.i18n.getMessage('premiumActivated') || '✅ Premium activated successfully!';
+            button.textContent = 'Open Dashboard';
+            button.style.display = 'inline-block';
+            button.addEventListener('click', () => {
+              chrome.tabs.create({ url: 'dashboard.html' });
+            });
+            return;
+          }
+
+          // Try to verify session again
+          if (pollCount % 3 === 0) {
+            const verified = await verifySession();
+            if (verified) {
+              clearInterval(pollInterval);
+              return;
+            }
+          }
+
+          if (pollCount >= maxPolls) {
+            // Timeout - webhook might not have processed yet
+            clearInterval(pollInterval);
+            statusDiv.classList.remove('processing');
+            statusDiv.classList.add('warning');
+            statusText.textContent = 'Payment received! Your premium access will be activated shortly. Please check back in a few minutes or reload this page.';
+            button.textContent = 'Reload Page';
+            button.style.display = 'inline-block';
+            button.addEventListener('click', () => {
+              window.location.reload();
+            });
+          }
+        } catch (error) {
+          console.error('Error checking premium status:', error);
+        }
+      }, 1000); // Poll every second
+    }
 
   } else {
     // No URL parameters - show manual activation option

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
   -- Stripe metadata
   stripe_customer_id VARCHAR(255),
   stripe_subscription_id VARCHAR(255),
+  stripe_session_id VARCHAR(255),
 
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS user_stats (
 CREATE INDEX idx_user_stats_email ON user_stats(email);
 CREATE INDEX idx_user_stats_date ON user_stats(stat_date);
 
--- Migration: Add subscription_tier to existing users table
--- Only run if you already have a users table without this column
+-- Migrations: Run these if you already have a users table
+-- Only run if you already have a users table without these columns
 -- ALTER TABLE users ADD COLUMN IF NOT EXISTS subscription_tier VARCHAR(50) DEFAULT 'basic';
+-- ALTER TABLE users ADD COLUMN IF NOT EXISTS stripe_session_id VARCHAR(255);
