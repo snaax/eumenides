@@ -753,5 +753,11 @@
   },
   "todayShort": {
     "message": "Auj."
+  },
+  "rageScoreExplanation": {
+    "message": "Intensité émotionnelle moyenne (colère=3, frustration=2, irritation=1)"
+  },
+  "regretsAvoidedExplanation": {
+    "message": "100% si tu as intercepté des posts, 0% sinon"
   }
 }
