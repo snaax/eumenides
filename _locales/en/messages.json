@@ -244,13 +244,28 @@
     "message": "✨ Activate Premium"
   },
   "activatePremiumSubtitle": {
-    "message": "Unlock unlimited posts and delay mode"
+    "message": "Unlock unlimited posts and advanced sensitivity levels"
   },
   "activatePremiumStatus": {
-    "message": "Click the button below to activate premium features"
+    "message": "Choose your plan and enter your email to get started"
   },
   "activatePremiumButton": {
-    "message": "🎁 Activate Premium Now"
+    "message": "🎁 Subscribe Now"
+  },
+  "emailLabel": {
+    "message": "Email Address"
+  },
+  "planLabel": {
+    "message": "Choose Your Plan"
+  },
+  "planBasic": {
+    "message": "Basic - $2.99/month (3 sensitivity levels)"
+  },
+  "planFull": {
+    "message": "Premium - $4.99/month (All 7 levels + unlimited posts)"
+  },
+  "manageSubscription": {
+    "message": "⚙️ Manage Subscription"
   },
   "premiumFeaturesTitle": {
     "message": "Premium Features:"
@@ -259,7 +274,7 @@
     "message": "Unlimited daily posts (no 5/5 limit)"
   },
   "premiumFeature2": {
-    "message": "Delay mode (review posts after 6 hours)"
+    "message": "All 7 sensitivity levels unlocked"
   },
   "premiumFeature3": {
     "message": "Advanced analytics"
@@ -268,7 +283,37 @@
     "message": "Priority support"
   },
   "premiumActivated": {
-    "message": "✅ Premium activated! Reload the page or reopen the extension."
+    "message": "✅ Premium activated successfully!"
+  },
+  "alreadyPremium": {
+    "message": "✅ You already have premium!"
+  },
+  "enterEmailError": {
+    "message": "Please enter your email address"
+  },
+  "invalidEmailError": {
+    "message": "Please enter a valid email address"
+  },
+  "creatingCheckout": {
+    "message": "Creating checkout session..."
+  },
+  "checkoutError": {
+    "message": "Error creating checkout. Please try again."
+  },
+  "activatingPremium": {
+    "message": "Activating premium subscription..."
+  },
+  "activationTimeout": {
+    "message": "Activation taking longer than expected. Please check your email and try again."
+  },
+  "noEmailError": {
+    "message": "No email found. Please contact support."
+  },
+  "loadingPortal": {
+    "message": "Loading..."
+  },
+  "portalError": {
+    "message": "Error opening billing portal. Please try again."
   },
   "welcomeTitle": {
     "message": "Welcome to Eumenides"

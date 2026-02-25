@@ -1,15 +1,18 @@
 -- Eumenides Premium Backend - Database Schema
 -- Run this in Supabase SQL Editor
+-- Updated: 2026-02-25 - Removed premium key system, added email-based validation
 
 -- Users table with subscription tiers
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
-  premium_key VARCHAR(255) UNIQUE NOT NULL,
   premium_until TIMESTAMP NOT NULL,
 
   -- Subscription tier: 'basic' or 'full'
   subscription_tier VARCHAR(50) DEFAULT 'basic',
+
+  -- Active status for subscription (false when canceled)
+  is_active BOOLEAN DEFAULT true,
 
   -- Stripe metadata
   stripe_customer_id VARCHAR(255),
@@ -20,8 +23,8 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_premium_key ON users(premium_key);
 CREATE INDEX idx_users_stripe_customer ON users(stripe_customer_id);
+CREATE INDEX idx_users_is_active ON users(is_active);
 
 -- User stats table
 CREATE TABLE IF NOT EXISTS user_stats (
@@ -61,6 +64,11 @@ CREATE TABLE IF NOT EXISTS user_stats (
 CREATE INDEX idx_user_stats_email ON user_stats(email);
 CREATE INDEX idx_user_stats_date ON user_stats(stat_date);
 
--- Migration: Add subscription_tier to existing users table
--- Only run if you already have a users table without this column
--- ALTER TABLE users ADD COLUMN IF NOT EXISTS subscription_tier VARCHAR(50) DEFAULT 'basic';
+-- ============================================================================
+-- MIGRATION NOTES
+-- ============================================================================
+-- If you're upgrading from the old premium key system, run MIGRATION_REMOVE_PREMIUM_KEYS.sql
+-- to migrate your existing users without data loss.
+--
+-- For new installations, simply run this schema file.
+-- ============================================================================

@@ -244,13 +244,28 @@
     "message": "✨ Activer Premium"
   },
   "activatePremiumSubtitle": {
-    "message": "Débloquer les posts illimités et le mode délai"
+    "message": "Débloquer les posts illimités et les niveaux de sensibilité avancés"
   },
   "activatePremiumStatus": {
-    "message": "Clique sur le bouton ci-dessous pour activer les fonctionnalités premium"
+    "message": "Choisis ton plan et entre ton email pour commencer"
   },
   "activatePremiumButton": {
-    "message": "🎁 Activer Premium Maintenant"
+    "message": "🎁 S'abonner Maintenant"
+  },
+  "emailLabel": {
+    "message": "Adresse Email"
+  },
+  "planLabel": {
+    "message": "Choisis Ton Plan"
+  },
+  "planBasic": {
+    "message": "Basique - 2,99€/mois (3 niveaux de sensibilité)"
+  },
+  "planFull": {
+    "message": "Premium - 4,99€/mois (Tous les 7 niveaux + posts illimités)"
+  },
+  "manageSubscription": {
+    "message": "⚙️ Gérer l'Abonnement"
   },
   "premiumFeaturesTitle": {
     "message": "Fonctionnalités Premium :"
@@ -259,7 +274,7 @@
     "message": "Posts quotidiens illimités (pas de limite 5/5)"
   },
   "premiumFeature2": {
-    "message": "Mode délai (revue des posts après 6 heures)"
+    "message": "Tous les 7 niveaux de sensibilité débloqués"
   },
   "premiumFeature3": {
     "message": "Analyses avancées"
@@ -268,7 +283,37 @@
     "message": "Support prioritaire"
   },
   "premiumActivated": {
-    "message": "✅ Premium activé ! Recharge la page ou rouvre l'extension."
+    "message": "✅ Premium activé avec succès !"
+  },
+  "alreadyPremium": {
+    "message": "✅ Tu as déjà premium !"
+  },
+  "enterEmailError": {
+    "message": "Veuillez entrer votre adresse email"
+  },
+  "invalidEmailError": {
+    "message": "Veuillez entrer une adresse email valide"
+  },
+  "creatingCheckout": {
+    "message": "Création de la session de paiement..."
+  },
+  "checkoutError": {
+    "message": "Erreur lors de la création du paiement. Veuillez réessayer."
+  },
+  "activatingPremium": {
+    "message": "Activation de l'abonnement premium..."
+  },
+  "activationTimeout": {
+    "message": "L'activation prend plus de temps que prévu. Vérifiez votre email et réessayez."
+  },
+  "noEmailError": {
+    "message": "Aucun email trouvé. Veuillez contacter le support."
+  },
+  "loadingPortal": {
+    "message": "Chargement..."
+  },
+  "portalError": {
+    "message": "Erreur lors de l'ouverture du portail de facturation. Veuillez réessayer."
   },
   "welcomeTitle": {
     "message": "Bienvenue sur Eumenides"
