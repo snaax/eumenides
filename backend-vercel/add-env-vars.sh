@@ -36,11 +36,22 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 1
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use default
+# Check if Node.js is available (either via nvm or system installation)
+if ! command -v node &> /dev/null; then
+  echo "Error: Node.js is not installed!"
+  echo "Please install Node.js first."
+  exit 1
+fi
+
+# Try to use nvm if available, otherwise use system Node.js
+if [ -d "$HOME/.nvm" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  nvm use default 2>/dev/null || true
+fi
 
 echo "========================================="
+echo "Using Node.js: $(node --version)"
 echo "Adding Environment Variables to Vercel"
 echo "Environment: $ENV"
 echo "Reading from: $ENV_FILE"

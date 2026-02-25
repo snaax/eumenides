@@ -34,5 +34,7 @@ node_modules/
 backend-vercel/.env
 backend-vercel/.env*
 
-# Generated config files
-js/config-generated.js
+# Markdown files (except README.md)
+*.md
+!README.md
+!**/README.md

@@ -244,13 +244,28 @@
     "message": "✨ Activer Premium"
   },
   "activatePremiumSubtitle": {
-    "message": "Débloquer les posts illimités et le mode délai"
+    "message": "Débloquer les posts illimités et les niveaux de sensibilité avancés"
   },
   "activatePremiumStatus": {
-    "message": "Clique sur le bouton ci-dessous pour activer les fonctionnalités premium"
+    "message": "Choisis ton plan et entre ton email pour commencer"
   },
   "activatePremiumButton": {
-    "message": "🎁 Activer Premium Maintenant"
+    "message": "🎁 S'abonner Maintenant"
+  },
+  "emailLabel": {
+    "message": "Adresse Email"
+  },
+  "planLabel": {
+    "message": "Choisis Ton Plan"
+  },
+  "planBasic": {
+    "message": "Basique - 2,99€/mois (3 niveaux de sensibilité)"
+  },
+  "planFull": {
+    "message": "Premium - 4,99€/mois (Tous les 7 niveaux + posts illimités)"
+  },
+  "manageSubscription": {
+    "message": "⚙️ Gérer l'Abonnement"
   },
   "premiumFeaturesTitle": {
     "message": "Fonctionnalités Premium :"
@@ -259,7 +274,7 @@
     "message": "Posts quotidiens illimités (pas de limite 5/5)"
   },
   "premiumFeature2": {
-    "message": "Mode délai (revue des posts après 6 heures)"
+    "message": "Tous les 7 niveaux de sensibilité débloqués"
   },
   "premiumFeature3": {
     "message": "Analyses avancées"
@@ -268,7 +283,37 @@
     "message": "Support prioritaire"
   },
   "premiumActivated": {
-    "message": "✅ Premium activé ! Recharge la page ou rouvre l'extension."
+    "message": "✅ Premium activé avec succès !"
+  },
+  "alreadyPremium": {
+    "message": "✅ Tu as déjà premium !"
+  },
+  "enterEmailError": {
+    "message": "Veuillez entrer votre adresse email"
+  },
+  "invalidEmailError": {
+    "message": "Veuillez entrer une adresse email valide"
+  },
+  "creatingCheckout": {
+    "message": "Création de la session de paiement..."
+  },
+  "checkoutError": {
+    "message": "Erreur lors de la création du paiement. Veuillez réessayer."
+  },
+  "activatingPremium": {
+    "message": "Activation de l'abonnement premium..."
+  },
+  "activationTimeout": {
+    "message": "L'activation prend plus de temps que prévu. Vérifiez votre email et réessayez."
+  },
+  "noEmailError": {
+    "message": "Aucun email trouvé. Veuillez contacter le support."
+  },
+  "loadingPortal": {
+    "message": "Chargement..."
+  },
+  "portalError": {
+    "message": "Erreur lors de l'ouverture du portail de facturation. Veuillez réessayer."
   },
   "welcomeTitle": {
     "message": "Bienvenue sur Eumenides"
@@ -505,259 +550,48 @@
   "badgeLegend": {
     "message": "Légende"
   },
-  "premiumPageTitle": {
-    "message": "⚡ Eumenides Premium"
+  "smartDetection": {
+    "message": "🧠 Détection Intelligente"
   },
-  "premiumPageSubtitle": {
-    "message": "Débloquez tout le potentiel de la sagesse numérique"
+  "onlyInterceptAggressive": {
+    "message": "Intercepter uniquement les posts agressifs"
   },
-  "planFreeBadge": {
-    "message": "GRATUIT"
+  "sensitivity": {
+    "message": "Sensibilité"
   },
-  "planBasicBadge": {
-    "message": "BASIC"
+  "sensitivityLow": {
+    "message": "Faible"
   },
-  "planFullBadge": {
-    "message": "FULL - RECOMMANDÉ"
+  "sensitivityMedium": {
+    "message": "Moyenne"
   },
-  "planFreePrice": {
-    "message": "0€"
+  "sensitivityHigh": {
+    "message": "Élevée"
   },
-  "planBasicPrice": {
-    "message": "1,99€"
+  "sensitivityMinimal": {
+    "message": "🔒 Minimale (Premium)"
   },
-  "planFullPrice": {
-    "message": "4,99€"
+  "sensitivityLowPremium": {
+    "message": "🔒 Faible (Premium)"
   },
-  "planPriceSub": {
-    "message": "par mois, sans engagement"
+  "sensitivityMediumLow": {
+    "message": "🔓 Moyenne-Faible (Basic)"
   },
-  "planFreeFeature1": {
-    "message": "5️⃣ 5 posts par jour"
+  "sensitivityMediumHigh": {
+    "message": "🔓 Moyenne-Élevée (Basic)"
   },
-  "planFreeFeature2": {
-    "message": "🌐 X et Reddit"
+  "sensitivityHighPremium": {
+    "message": "🔒 Élevée (Premium)"
   },
-  "planFreeFeature3": {
-    "message": "❌ Pas de délai de réflexion"
+  "sensitivityMaximum": {
+    "message": "🔒 Maximale (Premium)"
   },
-  "planFreeFeature4": {
-    "message": "❌ Pas de dashboard"
-  },
-  "planBasicFeature1": {
-    "message": "1️⃣5️⃣ 15 posts par jour"
-  },
-  "planBasicFeature2": {
-    "message": "🌐 X, Reddit, Facebook"
-  },
-  "planBasicFeature3": {
-    "message": "⏰ Mode Délai de réflexion"
-  },
-  "planBasicFeature4": {
-    "message": "📊 Dashboard basique"
-  },
-  "planFullFeature1": {
-    "message": "♾️ Posts illimités"
-  },
-  "planFullFeature2": {
-    "message": "🌐 Toutes les plateformes"
-  },
-  "planFullFeature3": {
-    "message": "⏰ Mode Délai personnalisable"
-  },
-  "planFullFeature4": {
-    "message": "📊 Dashboard complet"
-  },
-  "planFullFeature5": {
-    "message": "📈 Statistiques avancées"
-  },
-  "planFullFeature6": {
-    "message": "☁️ Synchronisation cloud"
-  },
-  "planFullFeature7": {
-    "message": "🏆 Badges exclusifs"
-  },
-  "currentPlan": {
-    "message": "Votre abonnement actuel"
-  },
-  "currentPlanButton": {
-    "message": "Plan actuel"
-  },
-  "buyBasicButton": {
-    "message": "Passer à Basic"
-  },
-  "buyFullButton": {
-    "message": "Passer à Full"
-  },
-  "buyNowButton": {
-    "message": "Commencer maintenant"
-  },
-  "guarantee": {
-    "message": "🔒 Garantie satisfait ou remboursé 30 jours"
-  },
-  "freeForever": {
-    "message": "Gratuit pour toujours"
-  },
-  "enterEmail": {
-    "message": "Entrez votre email"
-  },
-  "emailPlaceholder": {
-    "message": "votre.email@exemple.com"
-  },
-  "processing": {
-    "message": "Traitement en cours..."
-  },
-  "errorInvalidEmail": {
-    "message": "Veuillez entrer une adresse email valide"
-  },
-  "errorCheckoutFailed": {
-    "message": "Échec de la création de la session de paiement. Veuillez réessayer."
-  },
-  "comparisonTitle": {
-    "message": "Comparaison des plans"
-  },
-  "comparisonFeature": {
-    "message": "Fonctionnalité"
-  },
-  "comparisonFree": {
-    "message": "Gratuit"
-  },
-  "comparisonBasic": {
-    "message": "Basic"
-  },
-  "comparisonFull": {
-    "message": "Full"
-  },
-  "comparisonPostsPerDay": {
-    "message": "Posts par jour"
-  },
-  "comparisonPlatforms": {
-    "message": "Plateformes"
-  },
-  "comparisonPlatformsFree": {
-    "message": "X, Reddit"
-  },
-  "comparisonPlatformsBasic": {
-    "message": "X, Reddit, Facebook"
-  },
-  "comparisonPlatformsFull": {
-    "message": "Toutes"
-  },
-  "comparisonModeCatharsis": {
-    "message": "Mode Catharsis"
-  },
-  "comparisonModePreview": {
-    "message": "Mode Aperçu"
-  },
-  "comparisonModeDelay": {
-    "message": "Mode Délai"
-  },
-  "comparisonCustomizable": {
-    "message": "Personnalisable"
-  },
-  "comparisonDashboard": {
-    "message": "Dashboard"
-  },
-  "comparisonDashboardBasic": {
-    "message": "Basique"
-  },
-  "comparisonDashboardFull": {
-    "message": "Complet"
-  },
-  "comparisonStats": {
-    "message": "Statistiques"
-  },
-  "comparisonStatsAdvanced": {
-    "message": "Avancées"
-  },
-  "comparisonCloudSync": {
-    "message": "Synchronisation cloud"
-  },
-  "comparisonBadges": {
-    "message": "Badges exclusifs"
-  },
-  "currentPlan": {
-    "message": "Votre abonnement actuel"
-  },
-  "cancelSubscription": {
-    "message": "Annuler l'abonnement"
-  },
-  "manageSubscription": {
-    "message": "⚙️ Gérer l'abonnement"
-  },
-  "subscriptionCanceled": {
-    "message": "⚠️ Abonnement annulé"
-  },
-  "upgradeToFull": {
-    "message": "⭐ Passer au plan complet"
-  },
-  "platformBreakdown": {
-    "message": "📱 Répartition par plateforme"
-  },
-  "emotionalComposition": {
-    "message": "😡 Composition émotionnelle"
-  },
-  "hourlyPattern": {
-    "message": "⏰ Pattern horaire (24h)"
-  },
-  "monthlyTrend": {
-    "message": "📈 Tendance mensuelle"
-  },
-  "personalizedInsights": {
-    "message": "💡 Insights personnalisés"
-  },
-  "peakHour": {
-    "message": "Heure de pointe"
-  },
-  "bestDay": {
-    "message": "Meilleur jour"
-  },
-  "rageScore": {
-    "message": "Score de rage"
-  },
-  "weekdayPosts": {
-    "message": "Posts en semaine"
-  },
-  "avgTimePerPost": {
-    "message": "~{time} min par post"
-  },
-  "calmDays": {
-    "message": "{count} jours calmes"
-  },
-  "longestStreakLabel": {
-    "message": "Record: {count} jours"
-  },
-  "weekendPercent": {
-    "message": "{percent}% le weekend"
-  },
-  "ofYourPosts": {
-    "message": "{percent}% de tes posts"
-  },
-  "outOf3": {
-    "message": "sur 3.0"
-  },
-  "chartLabelAnger": {
-    "message": "Colère"
-  },
-  "chartLabelFrustration": {
-    "message": "Frustration"
-  },
-  "chartLabelIrritation": {
-    "message": "Irritation"
-  },
-  "chartLabelNeutral": {
-    "message": "Neutre"
-  },
-  "noDataAvailable": {
-    "message": "Aucune donnée disponible"
-  },
-  "todayShort": {
-    "message": "Auj."
-  },
-  "rageScoreExplanation": {
-    "message": "Intensité émotionnelle moyenne (colère=3, frustration=2, irritation=1)"
-  },
-  "regretsAvoidedExplanation": {
-    "message": "100% si tu as intercepté des posts, 0% sinon"
+  "sensitivityRequiresTier": {
+    "message": "Ce niveau de sensibilité nécessite un abonnement $TIER$. Passez à la version supérieure pour accéder à plus d'options !",
+    "placeholders": {
+      "tier": {
+        "content": "$1"
+      }
+    }
   }
 }
