@@ -238,17 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Load current settings and update UI
-<<<<<<< HEAD
-  chrome.storage.sync.get(['enabled', 'mode', 'postsToday', 'premium', 'premiumPlan', 'dailyLimit', 'subscriptionCanceled'], (data) => {
-    console.log('Loaded settings:', data);
-    const isEnabled = data.enabled !== false;
-    const currentMode = data.mode || 'instant';
-    const postsToday = data.postsToday || 0;
-    const isPremium = data.premium || false;
-    const premiumPlan = data.premiumPlan || null;
-    const dailyLimit = data.dailyLimit || 5;
-    const isCanceled = data.subscriptionCanceled || false;
-=======
   chrome.storage.sync.get(
     [
       "enabled",
@@ -270,7 +259,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const aggressionDetection = data.aggressionDetection !== false;
       const detectionSensitivity = data.detectionSensitivity || "medium";
       const allowedPostsToday = data.allowedPostsToday || 0;
->>>>>>> main
 
       // Update toggle
       const toggle = document.getElementById("mainToggle");
@@ -352,53 +340,6 @@ document.addEventListener("DOMContentLoaded", function () {
           statsHtml;
       });
 
-<<<<<<< HEAD
-    // Show limit warning
-    const limitWarning = document.getElementById('limitWarning');
-    if (!isPremium && postsToday >= dailyLimit) {
-      limitWarning.style.display = 'block';
-    }
-
-    // Hide PREMIUM label from delay mode if user has premium
-    const delayModeOption = document.querySelector('[data-mode="delay"]');
-    const delayPremiumBadge = delayModeOption.querySelector('.premium-badge');
-    if (isPremium && delayPremiumBadge) {
-      delayPremiumBadge.style.display = 'none';
-    }
-
-    // Update upgrade button text and behavior
-    const upgradeBtn = document.querySelector('.upgrade-btn');
-    const dashboardBtn = document.querySelector('.dashboard-btn');
-
-    if (!isPremium) {
-      // Free plan - show upgrade button
-      upgradeBtn.textContent = chrome.i18n.getMessage('upgradePremium') || '✨ Upgrade to Premium - $4.99/month';
-      upgradeBtn.style.display = 'block';
-      // Hide dashboard for free users
-      dashboardBtn.style.display = 'none';
-    } else if (premiumPlan === 'basic') {
-      // Basic plan - show upgrade to full
-      if (isCanceled) {
-        upgradeBtn.textContent = chrome.i18n.getMessage('subscriptionCanceled') || '⚠️ Subscription Canceled';
-        upgradeBtn.style.background = 'rgba(255, 107, 107, 0.3)';
-        upgradeBtn.style.color = '#fff';
-      } else {
-        upgradeBtn.textContent = chrome.i18n.getMessage('upgradeToFull') || '⭐ Upgrade to Full Plan';
-      }
-      upgradeBtn.style.display = 'block';
-      // Hide dashboard for basic users
-      dashboardBtn.style.display = 'none';
-    } else if (premiumPlan === 'full') {
-      // Full plan - show manage subscription button instead of upgrade
-      upgradeBtn.textContent = chrome.i18n.getMessage('manageSubscription') || '⚙️ Manage Subscription';
-      upgradeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
-      upgradeBtn.style.color = '#fff';
-      upgradeBtn.style.display = 'block';
-      // Show dashboard for full users
-      dashboardBtn.style.display = 'block';
-    }
-  });
-=======
       // Show limit warning
       const limitWarning = document.getElementById("limitWarning");
       if (!isPremium && postsToday >= dailyLimit) {
@@ -406,5 +347,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     },
   );
->>>>>>> main
 });
