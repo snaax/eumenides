@@ -2,50 +2,58 @@
 
 // Update extension icon based on enabled state
 function updateIcon(enabled) {
-  console.log('updateIcon called with enabled:', enabled);
-  const iconPath = enabled ? {
-    "16": "/icons/icon16.png",
-    "48": "/icons/icon48.png",
-    "128": "/icons/icon128.png"
-  } : {
-    "16": "/icons/icon16-disabled.png",
-    "48": "/icons/icon48-disabled.png",
-    "128": "/icons/icon128-disabled.png"
-  };
+  console.log("updateIcon called with enabled:", enabled);
+  const iconPath = enabled
+    ? {
+        16: "/icons/icon16.png",
+        48: "/icons/icon48.png",
+        128: "/icons/icon128.png",
+      }
+    : {
+        16: "/icons/icon16-disabled.png",
+        48: "/icons/icon48-disabled.png",
+        128: "/icons/icon128-disabled.png",
+      };
 
-  console.log('Setting icon path:', iconPath);
+  console.log("Setting icon path:", iconPath);
   chrome.action.setIcon({ path: iconPath }, () => {
     if (chrome.runtime.lastError) {
-      console.error('Error setting icon:', chrome.runtime.lastError.message);
+      console.error("Error setting icon:", chrome.runtime.lastError.message);
     } else {
-      console.log('Icon updated successfully to', enabled ? 'enabled' : 'disabled');
+      console.log(
+        "Icon updated successfully to",
+        enabled ? "enabled" : "disabled",
+      );
     }
   });
 }
 
 let userSettings = {
   enabled: true,
-  mode: 'instant',
+  mode: "instant",
   premium: false,
   dailyLimit: 5,
-  delayDuration: 6
+  delayDuration: 6,
 };
 
 chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === 'install') {
+  if (details.reason === "install") {
     chrome.storage.sync.set({
       enabled: true,
-      mode: 'instant',
+      mode: "instant",
       premium: false,
       postsToday: 0,
+      aggressionDetection: true,
+      detectionSensitivity: "medium",
+      allowedPostsToday: 0,
       installDate: Date.now(),
-      totalPostsIntercepted: 0
+      totalPostsIntercepted: 0,
     });
 
     // Set initial icon (enabled by default)
     updateIcon(true);
 
-    chrome.tabs.create({ url: 'html/welcome.html' });
+    chrome.tabs.create({ url: "html/welcome.html" });
   }
 
   setupDailyReset();
@@ -74,9 +82,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 });
 
 function setupDailyReset() {
-  chrome.alarms.create('dailyReset', {
+  chrome.alarms.create("dailyReset", {
     when: getNextMidnight(),
-    periodInMinutes: 24 * 60
+    periodInMinutes: 24 * 60,
   });
 }
 
@@ -88,136 +96,145 @@ function getNextMidnight() {
 }
 
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === 'dailyReset') {
-    chrome.storage.sync.set({ postsToday: 0 });
+  if (alarm.name === "dailyReset") {
+    chrome.storage.sync.set({ postsToday: 0, allowedPostsToday: 0 });
     generateDailyStats();
   }
-  
-  if (alarm.name.startsWith('delayedPost_')) {
-    const postId = alarm.name.replace('delayedPost_', '');
+
+  if (alarm.name.startsWith("delayedPost_")) {
+    const postId = alarm.name.replace("delayedPost_", "");
     notifyDelayedPost(postId);
   }
 });
 
 function setupDelayedPostChecker() {
-  chrome.alarms.create('checkDelayedPosts', {
-    periodInMinutes: 60
+  chrome.alarms.create("checkDelayedPosts", {
+    periodInMinutes: 60,
   });
 }
 
 async function notifyDelayedPost(postId) {
-  const data = await chrome.storage.local.get(['delayedPosts']);
+  const data = await chrome.storage.local.get(["delayedPosts"]);
   const posts = data.delayedPosts || [];
-  const post = posts.find(p => p.timestamp.toString() === postId);
-  
+  const post = posts.find((p) => p.timestamp.toString() === postId);
+
   if (!post) return;
-  
+
   chrome.notifications.create(`delayedPost_${postId}`, {
-    type: 'basic',
-    title: chrome.i18n.getMessage('notifDelayedPostTitle'),
-    message: chrome.i18n.getMessage('notifDelayedPostMessage', [getTimeAgo(post.timestamp), post.content.substring(0, 100)]),
+    type: "basic",
+    title: chrome.i18n.getMessage("notifDelayedPostTitle"),
+    message: chrome.i18n.getMessage("notifDelayedPostMessage", [
+      getTimeAgo(post.timestamp),
+      post.content.substring(0, 100),
+    ]),
     buttons: [
-      { title: chrome.i18n.getMessage('postNow') },
-      { title: chrome.i18n.getMessage('delete') }
+      { title: chrome.i18n.getMessage("postNow") },
+      { title: chrome.i18n.getMessage("delete") },
     ],
-    requireInteraction: true
+    requireInteraction: true,
   });
 }
 
-chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
-  if (notificationId.startsWith('delayedPost_')) {
-    const postId = notificationId.replace('delayedPost_', '');
-    
-    if (buttonIndex === 0) {
-      openPostEditor(postId);
-    } else {
-      removeDelayedPost(postId);
+chrome.notifications.onButtonClicked.addListener(
+  (notificationId, buttonIndex) => {
+    if (notificationId.startsWith("delayedPost_")) {
+      const postId = notificationId.replace("delayedPost_", "");
+
+      if (buttonIndex === 0) {
+        openPostEditor(postId);
+      } else {
+        removeDelayedPost(postId);
+      }
+
+      chrome.notifications.clear(notificationId);
     }
-    
-    chrome.notifications.clear(notificationId);
-  }
-});
+  },
+);
 
 async function openPostEditor(postId) {
-  const data = await chrome.storage.local.get(['delayedPosts']);
+  const data = await chrome.storage.local.get(["delayedPosts"]);
   const posts = data.delayedPosts || [];
-  const post = posts.find(p => p.timestamp.toString() === postId);
-  
+  const post = posts.find((p) => p.timestamp.toString() === postId);
+
   if (!post) return;
-  
+
   const platformUrls = {
-    twitter: 'https://twitter.com/compose/tweet',
-    facebook: 'https://www.facebook.com',
-    linkedin: 'https://www.linkedin.com/feed/',
-    reddit: 'https://www.reddit.com/submit'
+    twitter: "https://twitter.com/compose/tweet",
+    facebook: "https://www.facebook.com",
+    linkedin: "https://www.linkedin.com/feed/",
+    reddit: "https://www.reddit.com/submit",
   };
-  
+
   const url = platformUrls[post.platform];
   if (url) {
     chrome.tabs.create({ url }, (tab) => {
       chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-        if (tabId === tab.id && info.status === 'complete') {
+        if (tabId === tab.id && info.status === "complete") {
           chrome.tabs.sendMessage(tabId, {
-            action: 'fillContent',
-            content: post.content
+            action: "fillContent",
+            content: post.content,
           });
           chrome.tabs.onUpdated.removeListener(listener);
         }
       });
     });
   }
-  
+
   removeDelayedPost(postId);
 }
 
 async function removeDelayedPost(postId) {
-  const data = await chrome.storage.local.get(['delayedPosts']);
+  const data = await chrome.storage.local.get(["delayedPosts"]);
   const posts = data.delayedPosts || [];
-  const filteredPosts = posts.filter(p => p.timestamp.toString() !== postId);
+  const filteredPosts = posts.filter((p) => p.timestamp.toString() !== postId);
   await chrome.storage.local.set({ delayedPosts: filteredPosts });
 }
 
 function getTimeAgo(timestamp) {
   const hours = Math.floor((Date.now() - timestamp) / (1000 * 60 * 60));
-  if (hours < 1) return chrome.i18n.getMessage('timeAgoLessThan1h');
-  if (hours === 1) return chrome.i18n.getMessage('timeAgo1h');
-  if (hours < 24) return chrome.i18n.getMessage('timeAgoHours', [hours.toString()]);
+  if (hours < 1) return chrome.i18n.getMessage("timeAgoLessThan1h");
+  if (hours === 1) return chrome.i18n.getMessage("timeAgo1h");
+  if (hours < 24)
+    return chrome.i18n.getMessage("timeAgoHours", [hours.toString()]);
   const days = Math.floor(hours / 24);
-  if (days === 1) return chrome.i18n.getMessage('timeAgo1d');
-  return chrome.i18n.getMessage('timeAgoDays', [days.toString()]);
+  if (days === 1) return chrome.i18n.getMessage("timeAgo1d");
+  return chrome.i18n.getMessage("timeAgoDays", [days.toString()]);
 }
 
 async function generateDailyStats() {
-  const data = await chrome.storage.local.get(['history']);
+  const data = await chrome.storage.local.get(["history"]);
   const history = data.history || [];
-  
-  const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-  const yesterdayPosts = history.filter(p => p.timestamp > oneDayAgo);
-  
+
+  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+  const yesterdayPosts = history.filter((p) => p.timestamp > oneDayAgo);
+
   const stats = {
     postsIntercepted: yesterdayPosts.length,
-    timesSaved: yesterdayPosts.reduce((total, post) => total + (post.timeSaved || 3), 0),
+    timesSaved: yesterdayPosts.reduce(
+      (total, post) => total + (post.timeSaved || 3),
+      0,
+    ),
     mostActiveHour: getMostActiveHour(yesterdayPosts),
     dominantEmotion: getDominantEmotion(yesterdayPosts),
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split("T")[0],
   };
-  
-  const statsData = await chrome.storage.local.get(['dailyStats']);
+
+  const statsData = await chrome.storage.local.get(["dailyStats"]);
   const dailyStats = statsData.dailyStats || [];
   dailyStats.unshift(stats);
-  
+
   if (dailyStats.length > 30) dailyStats.pop();
-  
+
   await chrome.storage.local.set({ dailyStats });
 }
 
 function getMostActiveHour(posts) {
   const hourCounts = {};
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const hour = new Date(post.timestamp).getHours();
     hourCounts[hour] = (hourCounts[hour] || 0) + 1;
   });
-  
+
   let maxHour = 0;
   let maxCount = 0;
   for (let hour in hourCounts) {
@@ -226,18 +243,18 @@ function getMostActiveHour(posts) {
       maxHour = hour;
     }
   }
-  
+
   return `${maxHour}h`;
 }
 
 function getDominantEmotion(posts) {
   const emotionCounts = {};
-  posts.forEach(post => {
-    const emotion = post.emotion || 'Neutre';
+  posts.forEach((post) => {
+    const emotion = post.emotion || "Neutre";
     emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
   });
-  
-  let maxEmotion = 'Neutre';
+
+  let maxEmotion = "Neutre";
   let maxCount = 0;
   for (let emotion in emotionCounts) {
     if (emotionCounts[emotion] > maxCount) {
@@ -245,13 +262,13 @@ function getDominantEmotion(posts) {
       maxEmotion = emotion;
     }
   }
-  
+
   return maxEmotion;
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'postIntercepted') {
-    chrome.storage.sync.get(['totalPostsIntercepted'], (data) => {
+  if (request.action === "postIntercepted") {
+    chrome.storage.sync.get(["totalPostsIntercepted"], (data) => {
       const total = (data.totalPostsIntercepted || 0) + 1;
       chrome.storage.sync.set({ totalPostsIntercepted: total });
       checkMilestone(total);
@@ -262,29 +279,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return false;
   }
 
-  if (request.action === 'scheduleDelayedPost') {
+  if (request.action === "scheduleDelayedPost") {
     scheduleDelayedPost(request.post);
     sendResponse({ success: true });
     return false;
   }
 
-  if (request.action === 'getStats') {
-    getStatsForDashboard().then(stats => {
-      sendResponse(stats);
-    }).catch(error => {
-      console.error('Error getting stats:', error);
-      sendResponse({ error: error.message });
-    });
+  if (request.action === "getStats") {
+    getStatsForDashboard()
+      .then((stats) => {
+        sendResponse(stats);
+      })
+      .catch((error) => {
+        console.error("Error getting stats:", error);
+        sendResponse({ error: error.message });
+      });
     return true;
   }
 
-  if (request.action === 'openDashboard') {
-    chrome.tabs.create({ url: 'html/dashboard.html' });
+  if (request.action === "openDashboard") {
+    chrome.tabs.create({ url: "html/dashboard.html" });
     sendResponse({ success: true });
     return false;
   }
 
-  if (request.action === 'checkPremium') {
+  if (request.action === "checkPremium") {
     sendResponse({ premium: userSettings.premium });
     return false;
   }
@@ -293,66 +312,80 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function scheduleDelayedPost(post) {
-  const alarmTime = post.notifyAt || (Date.now() + userSettings.delayDuration * 60 * 60 * 1000);
-  
+  const alarmTime =
+    post.notifyAt || Date.now() + userSettings.delayDuration * 60 * 60 * 1000;
+
   chrome.alarms.create(`delayedPost_${post.timestamp}`, {
-    when: alarmTime
+    when: alarmTime,
   });
 }
 
 function analyzeSentiment(content) {
-  const negativeWords = ['incompétent', 'ridicule', 'stupide', 'nul', 'débile', 'aberrant', 'pathétique'];
-  const veryNegativeWords = ['haine', 'déteste', 'horrible', 'merde'];
-  
+  const negativeWords = [
+    "incompétent",
+    "ridicule",
+    "stupide",
+    "nul",
+    "débile",
+    "aberrant",
+    "pathétique",
+  ];
+  const veryNegativeWords = ["haine", "déteste", "horrible", "merde"];
+
   const lowerContent = content.toLowerCase();
-  
+
   let score = 0;
-  negativeWords.forEach(word => {
+  negativeWords.forEach((word) => {
     if (lowerContent.includes(word)) score += 1;
   });
-  veryNegativeWords.forEach(word => {
+  veryNegativeWords.forEach((word) => {
     if (lowerContent.includes(word)) score += 2;
   });
-  
+
   if (score >= 3) {
     suggestAutoMode();
   }
 }
 
 function suggestAutoMode() {
-  chrome.notifications.create('suggestAutoMode', {
-    type: 'basic',
-    title: chrome.i18n.getMessage('notifSuggestionTitle'),
-    message: chrome.i18n.getMessage('notifSuggestionMessage'),
+  chrome.notifications.create("suggestAutoMode", {
+    type: "basic",
+    title: chrome.i18n.getMessage("notifSuggestionTitle"),
+    message: chrome.i18n.getMessage("notifSuggestionMessage"),
     buttons: [
-      { title: chrome.i18n.getMessage('activate2h') },
-      { title: chrome.i18n.getMessage('noThanks') }
-    ]
+      { title: chrome.i18n.getMessage("activate2h") },
+      { title: chrome.i18n.getMessage("noThanks") },
+    ],
   });
 }
 
-chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
-  if (notificationId === 'suggestAutoMode' && buttonIndex === 0) {
-    chrome.storage.sync.set({ forcedMode: true });
-    
-    setTimeout(() => {
-      chrome.storage.sync.set({ forcedMode: false });
-    }, 2 * 60 * 60 * 1000);
-    
-    chrome.notifications.clear(notificationId);
-  }
-});
+chrome.notifications.onButtonClicked.addListener(
+  (notificationId, buttonIndex) => {
+    if (notificationId === "suggestAutoMode" && buttonIndex === 0) {
+      chrome.storage.sync.set({ forcedMode: true });
+
+      setTimeout(
+        () => {
+          chrome.storage.sync.set({ forcedMode: false });
+        },
+        2 * 60 * 60 * 1000,
+      );
+
+      chrome.notifications.clear(notificationId);
+    }
+  },
+);
 
 function checkMilestone(total) {
   const milestones = [
-    { count: 10, badge: 'first_steps', nameKey: 'badgeFirstSteps' },
-    { count: 50, badge: 'apprentice', nameKey: 'badgeApprentice' },
-    { count: 100, badge: 'centurion', nameKey: 'badgeCenturion' },
-    { count: 500, badge: 'master', nameKey: 'badgeMaster' },
-    { count: 1000, badge: 'legend', nameKey: 'badgeLegend' }
+    { count: 10, badge: "first_steps", nameKey: "badgeFirstSteps" },
+    { count: 50, badge: "apprentice", nameKey: "badgeApprentice" },
+    { count: 100, badge: "centurion", nameKey: "badgeCenturion" },
+    { count: 500, badge: "master", nameKey: "badgeMaster" },
+    { count: 1000, badge: "legend", nameKey: "badgeLegend" },
   ];
-  
-  milestones.forEach(milestone => {
+
+  milestones.forEach((milestone) => {
     if (total === milestone.count) {
       unlockBadge(milestone);
     }
@@ -360,7 +393,7 @@ function checkMilestone(total) {
 }
 
 async function unlockBadge(milestone) {
-  const data = await chrome.storage.local.get(['badges']);
+  const data = await chrome.storage.local.get(["badges"]);
   const badges = data.badges || [];
 
   if (!badges.includes(milestone.badge)) {
@@ -368,24 +401,33 @@ async function unlockBadge(milestone) {
     await chrome.storage.local.set({ badges });
 
     chrome.notifications.create(`badge_${milestone.badge}`, {
-      type: 'basic',
-      title: chrome.i18n.getMessage('notifBadgeTitle'),
-      message: chrome.i18n.getMessage('notifBadgeMessage', [chrome.i18n.getMessage(milestone.nameKey)]),
-      priority: 2
+      type: "basic",
+      title: chrome.i18n.getMessage("notifBadgeTitle"),
+      message: chrome.i18n.getMessage("notifBadgeMessage", [
+        chrome.i18n.getMessage(milestone.nameKey),
+      ]),
+      priority: 2,
     });
   }
 }
 
 async function getStatsForDashboard() {
   const syncData = await chrome.storage.sync.get(null);
-  const localData = await chrome.storage.local.get(['history', 'dailyStats', 'badges']);
-  
+  const localData = await chrome.storage.local.get([
+    "history",
+    "dailyStats",
+    "badges",
+  ]);
+
   const history = localData.history || [];
   const dailyStats = localData.dailyStats || [];
-  
+
   const streak = calculateStreak(dailyStats);
-  const totalTime = history.reduce((total, post) => total + (post.timeSaved || 3), 0);
-  
+  const totalTime = history.reduce(
+    (total, post) => total + (post.timeSaved || 3),
+    0,
+  );
+
   return {
     totalIntercepted: syncData.totalPostsIntercepted || 0,
     postsToday: syncData.postsToday || 0,
@@ -393,53 +435,69 @@ async function getStatsForDashboard() {
     totalTimeMinutes: Math.round(totalTime),
     recentPosts: history.slice(0, 10),
     badges: localData.badges || [],
-    weeklyTrend: calculateWeeklyTrend(dailyStats)
+    weeklyTrend: calculateWeeklyTrend(dailyStats),
   };
 }
 
 function calculateStreak(dailyStats) {
   if (!dailyStats.length) return 0;
-  
+
   let streak = 0;
-  
+
   for (let i = 0; i < dailyStats.length; i++) {
     const expectedDate = new Date();
     expectedDate.setDate(expectedDate.getDate() - i);
-    const expectedDateStr = expectedDate.toISOString().split('T')[0];
-    
-    if (dailyStats[i] && dailyStats[i].date === expectedDateStr && dailyStats[i].postsIntercepted > 0) {
+    const expectedDateStr = expectedDate.toISOString().split("T")[0];
+
+    if (
+      dailyStats[i] &&
+      dailyStats[i].date === expectedDateStr &&
+      dailyStats[i].postsIntercepted > 0
+    ) {
       streak++;
     } else {
       break;
     }
   }
-  
+
   return streak;
 }
 
 function calculateWeeklyTrend(dailyStats) {
   const lastWeek = dailyStats.slice(0, 7);
   const previousWeek = dailyStats.slice(7, 14);
-  
-  const lastWeekTotal = lastWeek.reduce((sum, day) => sum + (day.postsIntercepted || 0), 0);
-  const previousWeekTotal = previousWeek.reduce((sum, day) => sum + (day.postsIntercepted || 0), 0);
-  
+
+  const lastWeekTotal = lastWeek.reduce(
+    (sum, day) => sum + (day.postsIntercepted || 0),
+    0,
+  );
+  const previousWeekTotal = previousWeek.reduce(
+    (sum, day) => sum + (day.postsIntercepted || 0),
+    0,
+  );
+
   if (previousWeekTotal === 0) return 0;
-  
-  return Math.round(((lastWeekTotal - previousWeekTotal) / previousWeekTotal) * 100);
+
+  return Math.round(
+    ((lastWeekTotal - previousWeekTotal) / previousWeekTotal) * 100,
+  );
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'activatePremium') {
-    verifyPremiumPayment(request.userId, request.transactionId)
-      .then(valid => {
+  if (request.action === "activatePremium") {
+    verifyPremiumPayment(request.userId, request.transactionId).then(
+      (valid) => {
         if (valid) {
           chrome.storage.sync.set({ premium: true, premiumSince: Date.now() });
           sendResponse({ success: true });
         } else {
-          sendResponse({ success: false, error: 'Payment verification failed' });
+          sendResponse({
+            success: false,
+            error: "Payment verification failed",
+          });
         }
-      });
+      },
+    );
     return true;
   }
 });
@@ -448,7 +506,9 @@ async function verifyPremiumPayment(userId, transactionId) {
   // SECURITY WARNING: This is a placeholder implementation
   // In production, this MUST call a real backend API to verify payment
   // DO NOT ship this without proper payment verification
-  console.warn('⚠️ Premium verification is mocked - implement real backend verification before production');
+  console.warn(
+    "⚠️ Premium verification is mocked - implement real backend verification before production",
+  );
 
   // Mock implementation - REPLACE WITH REAL API CALL
   // Example:
@@ -462,4 +522,4 @@ async function verifyPremiumPayment(userId, transactionId) {
   return false; // Changed to false by default for security
 }
 
-console.log('Eumenides Background Service Worker initialized');
+console.log("Eumenides Background Service Worker initialized");

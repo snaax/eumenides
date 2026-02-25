@@ -504,5 +504,23 @@
   },
   "badgeLegend": {
     "message": "Legend"
+  },
+  "smartDetection": {
+    "message": "🧠 Smart Detection"
+  },
+  "onlyInterceptAggressive": {
+    "message": "Only intercept aggressive posts"
+  },
+  "sensitivity": {
+    "message": "Sensitivity"
+  },
+  "sensitivityLow": {
+    "message": "Low"
+  },
+  "sensitivityMedium": {
+    "message": "Medium"
+  },
+  "sensitivityHigh": {
+    "message": "High"
   }
 }

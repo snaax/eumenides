@@ -5,11 +5,7 @@
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfheXPrgI9z0vP3rigq6MBjXH5r0bkatcXPpZ6YDWvuAE+aDd7/0NweJqUeZNGW9i+c29grshyLNhiYBFCqEvb1x1sC52qHiwsrk7afLcPzmWpRfNW8FXJbzbBXVnNMnEEL8zIRavRyQfnLyL2MNV04ywhEQzM3zELjUDxZXmFs1K7AdLPQSBpJj2geNwNxlJ566RsaC5Fbqd3ZpC+0MeeRp9n994IWuxSkUqjc2GCCZTBpefblW+ub+zz66KFg7q/z1XdusLtCjBBoGdTaxHhc4XIw7vRBYNqj4syGZNyBFkPNCUTuykp0m7yLZ9xZLpL7Vv/lPc0FrfF/xN892RQIDAQAB",
-  "permissions": [
-    "storage",
-    "notifications",
-    "alarms"
-  ],
+  "permissions": ["storage", "notifications", "alarms"],
   "host_permissions": [
     "https://twitter.com/*",
     "https://x.com/*",
@@ -29,7 +25,16 @@
         "https://www.linkedin.com/*",
         "https://www.reddit.com/*"
       ],
-      "js": ["js/content.js"],
+      "js": [
+        "js/dictionaries/french.js",
+        "js/dictionaries/english.js",
+        "js/dictionaries/spanish.js",
+        "js/dictionaries/german.js",
+        "js/dictionaries/italian.js",
+        "js/dictionaries/portuguese.js",
+        "js/aggression-detector.js",
+        "js/content.js"
+      ],
       "css": ["css/content.css"]
     }
   ],
