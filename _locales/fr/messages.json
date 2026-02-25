@@ -522,5 +522,31 @@
   },
   "sensitivityHigh": {
     "message": "Élevée"
+  },
+  "sensitivityMinimal": {
+    "message": "🔒 Minimale (Premium)"
+  },
+  "sensitivityLowPremium": {
+    "message": "🔒 Faible (Premium)"
+  },
+  "sensitivityMediumLow": {
+    "message": "🔓 Moyenne-Faible (Basic)"
+  },
+  "sensitivityMediumHigh": {
+    "message": "🔓 Moyenne-Élevée (Basic)"
+  },
+  "sensitivityHighPremium": {
+    "message": "🔒 Élevée (Premium)"
+  },
+  "sensitivityMaximum": {
+    "message": "🔒 Maximale (Premium)"
+  },
+  "sensitivityRequiresTier": {
+    "message": "Ce niveau de sensibilité nécessite un abonnement $TIER$. Passez à la version supérieure pour accéder à plus d'options !",
+    "placeholders": {
+      "tier": {
+        "content": "$1"
+      }
+    }
   }
 }

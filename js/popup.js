@@ -276,9 +276,26 @@ document.addEventListener("DOMContentLoaded", function () {
         detectionToggleEl.classList.remove("active");
       }
 
-      // Update sensitivity select
+      // Update sensitivity select and enable/disable based on tier
       const sensitivitySelectEl = document.getElementById("sensitivitySelect");
       sensitivitySelectEl.value = detectionSensitivity;
+
+      // Enable/disable options based on tier
+      const tier = isPremium ? "premium" : "free"; // TODO: Add 'basic' tier detection
+      const options = sensitivitySelectEl.querySelectorAll("option");
+      options.forEach((option) => {
+        const value = option.value;
+        if (
+          window.EumenidesDetector &&
+          window.EumenidesDetector.isSensitivityAvailable
+        ) {
+          const isAvailable = window.EumenidesDetector.isSensitivityAvailable(
+            value,
+            tier,
+          );
+          option.disabled = !isAvailable;
+        }
+      });
 
       // Update mode selection
       document.querySelectorAll(".mode-option").forEach((opt) => {

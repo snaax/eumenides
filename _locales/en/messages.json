@@ -522,5 +522,31 @@
   },
   "sensitivityHigh": {
     "message": "High"
+  },
+  "sensitivityMinimal": {
+    "message": "🔒 Minimal (Premium)"
+  },
+  "sensitivityLowPremium": {
+    "message": "🔒 Low (Premium)"
+  },
+  "sensitivityMediumLow": {
+    "message": "🔓 Medium-Low (Basic)"
+  },
+  "sensitivityMediumHigh": {
+    "message": "🔓 Medium-High (Basic)"
+  },
+  "sensitivityHighPremium": {
+    "message": "🔒 High (Premium)"
+  },
+  "sensitivityMaximum": {
+    "message": "🔒 Maximum (Premium)"
+  },
+  "sensitivityRequiresTier": {
+    "message": "This sensitivity level requires $TIER$ subscription. Upgrade to access more sensitivity options!",
+    "placeholders": {
+      "tier": {
+        "content": "$1"
+      }
+    }
   }
 }
