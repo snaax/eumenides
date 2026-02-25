@@ -43,6 +43,20 @@ function applyTranslations() {
   });
 }
 
+// Update premium badge visibility
+function updatePremiumBadge() {
+  chrome.storage.sync.get(["premium"], (data) => {
+    const premiumBadge = document.querySelector(".premium-badge");
+    if (premiumBadge) {
+      if (data.premium) {
+        premiumBadge.style.display = "inline-block";
+      } else {
+        premiumBadge.style.display = "none";
+      }
+    }
+  });
+}
+
 function selectMode(mode, element) {
   console.log("Selecting mode:", mode);
   document
