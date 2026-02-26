@@ -56,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Get extension ID
+    const extensionId = chrome.runtime?.id;
+    console.log("Extension ID:", extensionId);
+
+    if (!extensionId) {
+      alert("Error: Could not get extension ID. Please reload the extension.");
+      return;
+    }
+
     button.disabled = true;
     statusText.textContent =
       chrome.i18n.getMessage("creatingCheckout") ||
@@ -68,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
-          extensionId: chrome.runtime.id,
+          extensionId: extensionId,
           plan: plan,
         }),
       });
