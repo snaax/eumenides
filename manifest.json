@@ -33,6 +33,7 @@
         "js/dictionaries/italian.js",
         "js/dictionaries/portuguese.js",
         "js/aggression-detector.js",
+        "js/ml-detector.js",
         "js/content.js"
       ],
       "css": ["css/content.css"]

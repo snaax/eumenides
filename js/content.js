@@ -167,26 +167,48 @@
     });
   }
 
-  // Wrapper function that uses the external aggression detector
-  // The actual algorithm is in aggression-detector.js for easier maintenance
-  function isAggressiveContent(text, sensitivity = "medium") {
+  // Wrapper function that uses hybrid ML + rule-based detection
+  // Uses smart detection that chooses between fast rules and ML based on need
+  async function isAggressiveContent(text, sensitivity = "medium") {
+    // Check if detectors are loaded
     if (
-      window.EumenidesDetector &&
-      window.EumenidesDetector.isAggressiveContent
+      !window.EumenidesDetector ||
+      !window.EumenidesDetector.isAggressiveContent
     ) {
-      return window.EumenidesDetector.isAggressiveContent(text, sensitivity);
+      console.warn(
+        "Eumenides: Aggression detector not loaded, allowing post through",
+      );
+      return {
+        isAggressive: false,
+        score: 0,
+        emotion: "neutral",
+        reasons: ["detector not loaded"],
+      };
     }
 
-    // Fallback if detector not loaded (shouldn't happen, but safe)
-    console.warn(
-      "Eumenides: Aggression detector not loaded, allowing post through",
-    );
-    return {
-      isAggressive: false,
-      score: 0,
-      emotion: "neutral",
-      reasons: ["detector not loaded"],
-    };
+    // Check if ML detector is available
+    const mlAvailable = window.EumenidesML && window.EumenidesML.isModelReady();
+
+    if (mlAvailable) {
+      // Use hybrid smart detection (ML + rules)
+      try {
+        return await window.EumenidesML.smartDetect(
+          text,
+          window.EumenidesDetector.isAggressiveContent,
+          sensitivity,
+        );
+      } catch (error) {
+        console.warn(
+          "Eumenides: ML detection failed, falling back to rules:",
+          error,
+        );
+        // Fall back to rule-based only
+        return window.EumenidesDetector.isAggressiveContent(text, sensitivity);
+      }
+    } else {
+      // Use rule-based detection only
+      return window.EumenidesDetector.isAggressiveContent(text, sensitivity);
+    }
   }
 
   function saveAllowedPost(content) {
@@ -215,7 +237,7 @@
   function interceptButton(button) {
     button.addEventListener(
       "click",
-      function (e) {
+      async function (e) {
         if (!isEnabled) return;
 
         // Get post content early to check for aggression
@@ -223,10 +245,21 @@
 
         // NEW: Check if aggression detection is enabled
         if (aggressionDetectionEnabled) {
-          const analysis = isAggressiveContent(
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Show analyzing state (brief)
+          const originalText = button.textContent;
+          const originalDisabled = button.disabled;
+          button.disabled = true;
+
+          const analysis = await isAggressiveContent(
             postContent,
             detectionSensitivity,
           );
+
+          // Restore button state
+          button.disabled = originalDisabled;
 
           // If not aggressive, allow the post through
           if (!analysis.isAggressive) {
@@ -235,9 +268,14 @@
               analysis.score,
               "Reasons:",
               analysis.reasons,
+              analysis.mlUsed
+                ? `(ML: ${analysis.mlConfidence})`
+                : "(Rules only)",
             );
             saveAllowedPost(postContent);
-            return; // Don't preventDefault - let post go through normally
+            // Programmatically click the button to submit
+            button.click();
+            return;
           }
 
           console.log(
@@ -245,7 +283,12 @@
             analysis.score,
             "Reasons:",
             analysis.reasons,
+            analysis.mlUsed ? `(ML: ${analysis.mlConfidence})` : "(Rules only)",
           );
+        } else {
+          // Detection disabled, but still need to handle other checks
+          e.preventDefault();
+          e.stopPropagation();
         }
 
         // Only reach here if aggressive OR detection disabled
@@ -1024,40 +1067,46 @@
 
     // Determine hour range
     const hour = new Date().getHours();
-    let hourRange = '00-05';
-    if (hour >= 6 && hour <= 11) hourRange = '06-11';
-    else if (hour >= 12 && hour <= 17) hourRange = '12-17';
-    else if (hour >= 18 && hour <= 23) hourRange = '18-23';
+    let hourRange = "00-05";
+    if (hour >= 6 && hour <= 11) hourRange = "06-11";
+    else if (hour >= 12 && hour <= 17) hourRange = "12-17";
+    else if (hour >= 18 && hour <= 23) hourRange = "18-23";
 
     const stats = {
       postsIntercepted: 1,
       timeSavedMinutes: Math.round(entry.timeSaved || 3), // Round to integer
       emotions: {
-        [entry.emotion]: 1
+        [entry.emotion]: 1,
       },
       platforms: {
-        [entry.platform]: 1
+        [entry.platform]: 1,
       },
       hourlyPattern: {
-        [hourRange]: 1
-      }
+        [hourRange]: 1,
+      },
     };
 
     try {
       if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
-        chrome.runtime.sendMessage({
-          action: 'submitStats',
-          stats: stats
-        }, (response) => {
-          if (chrome.runtime.lastError) {
-            console.log('Stats message failed:', chrome.runtime.lastError.message);
-          } else {
-            console.log('Stats submitted via background:', response);
-          }
-        });
+        chrome.runtime.sendMessage(
+          {
+            action: "submitStats",
+            stats: stats,
+          },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              console.log(
+                "Stats message failed:",
+                chrome.runtime.lastError.message,
+              );
+            } else {
+              console.log("Stats submitted via background:", response);
+            }
+          },
+        );
       }
     } catch (error) {
-      console.error('Failed to send stats message:', error);
+      console.error("Failed to send stats message:", error);
     }
   }
 

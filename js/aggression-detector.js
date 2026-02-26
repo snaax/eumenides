@@ -89,7 +89,82 @@
     ALL_CAPS: 2,
     EXCESSIVE_PUNCTUATION: 1,
     PERSONAL_ATTACK: 3,
+    MOCKERY_CAPS: 2, // NEW: Alternating caps (sArCaSm)
+    ANGRY_EMOJI: 2, // NEW: Angry emoji clusters
+    PRONOUN_INSULT: 3, // NEW: Direct pronoun + insult
+    IMPERATIVE_NEGATIVE: 1.5, // NEW: Commands with negative words
+    REPETITION: 1, // NEW: Repeated negative words
   };
+
+  // ============================================================================
+  // NEGATION WORDS - Words that negate meaning
+  // ============================================================================
+
+  const NEGATION_WORDS = {
+    en: [
+      "not",
+      "no",
+      "never",
+      "isn't",
+      "wasn't",
+      "doesn't",
+      "won't",
+      "don't",
+      "didn't",
+      "cannot",
+      "can't",
+      "shouldn't",
+      "wouldn't",
+      "couldn't",
+    ],
+    fr: [
+      "pas",
+      "non",
+      "jamais",
+      "n'est",
+      "n'était",
+      "ne",
+      "aucun",
+      "aucune",
+      "ni",
+    ],
+  };
+
+  const ALL_NEGATIONS = [...NEGATION_WORDS.en, ...NEGATION_WORDS.fr].map((w) =>
+    w.toLowerCase(),
+  );
+
+  // ============================================================================
+  // PERSONAL PRONOUNS - For detecting direct attacks
+  // ============================================================================
+
+  const PERSONAL_PRONOUNS = {
+    en: ["you", "your", "you're", "yours", "you've", "you'll", "u", "ur"],
+    fr: ["tu", "vous", "ton", "ta", "tes", "votre", "vos", "toi"],
+  };
+
+  const ALL_PRONOUNS = [...PERSONAL_PRONOUNS.en, ...PERSONAL_PRONOUNS.fr].map(
+    (w) => w.toLowerCase(),
+  );
+
+  // ============================================================================
+  // EMOJI PATTERNS - Angry/aggressive emojis
+  // ============================================================================
+
+  const ANGRY_EMOJIS = [
+    "😡",
+    "🤬",
+    "😠",
+    "💢",
+    "🖕",
+    "😤",
+    "👎",
+    "🤮",
+    "💩",
+    "🔥",
+  ];
+
+  const SARCASTIC_EMOJIS = ["🙄", "😏", "🤡", "💀"];
 
   // ============================================================================
   // SENSITIVITY THRESHOLDS - Tiered System
@@ -133,6 +208,139 @@
   };
 
   // ============================================================================
+  // HELPER FUNCTIONS FOR ENHANCED DETECTION
+  // ============================================================================
+
+  /**
+   * Check if a word is negated (preceded by negation words)
+   * @param {string} text - Full text
+   * @param {number} wordIndex - Index where the word appears
+   * @returns {boolean} - True if word is negated
+   */
+  function isNegated(text, wordIndex) {
+    // Look at 30 characters before the word
+    const before = text
+      .substring(Math.max(0, wordIndex - 30), wordIndex)
+      .toLowerCase();
+
+    // Check if any negation word appears within 3 words before
+    return ALL_NEGATIONS.some((negation) => {
+      const negIndex = before.lastIndexOf(negation);
+      if (negIndex === -1) return false;
+
+      // Count words between negation and target word
+      const between = before.substring(negIndex + negation.length);
+      const wordsBetween = between.trim().split(/\s+/).length;
+
+      // Negation is effective if within 3 words
+      return wordsBetween <= 3;
+    });
+  }
+
+  /**
+   * Detect mockery through alternating caps (tHiS iS sTuPiD)
+   * @param {string} text - Text to analyze
+   * @returns {boolean} - True if mockery pattern detected
+   */
+  function hasMockeryCaps(text) {
+    // Match pattern of alternating lowercase and uppercase (at least 3 alternations)
+    return /([a-z][A-Z]){3,}|([A-Z][a-z]){3,}/.test(text);
+  }
+
+  /**
+   * Count angry emojis in text
+   * @param {string} text - Text to analyze
+   * @returns {number} - Count of angry emojis
+   */
+  function countAngryEmojis(text) {
+    let count = 0;
+    ANGRY_EMOJIS.forEach((emoji) => {
+      const regex = new RegExp(emoji, "g");
+      const matches = text.match(regex);
+      if (matches) count += matches.length;
+    });
+    return count;
+  }
+
+  /**
+   * Count sarcastic emojis in text
+   * @param {string} text - Text to analyze
+   * @returns {number} - Count of sarcastic emojis
+   */
+  function countSarcasticEmojis(text) {
+    let count = 0;
+    SARCASTIC_EMOJIS.forEach((emoji) => {
+      const regex = new RegExp(emoji, "g");
+      const matches = text.match(regex);
+      if (matches) count += matches.length;
+    });
+    return count;
+  }
+
+  /**
+   * Detect pronoun + insult pattern (e.g., "you are stupid")
+   * @param {string} text - Text to analyze
+   * @param {Array} negativeWords - List of negative words to check
+   * @returns {number} - Count of pronoun + insult patterns
+   */
+  function detectPronounInsults(text, negativeWords) {
+    let count = 0;
+    const lowerText = text.toLowerCase();
+
+    ALL_PRONOUNS.forEach((pronoun) => {
+      const pronounRegex = new RegExp(`\\b${pronoun}\\b`, "gi");
+      const matches = [...text.matchAll(pronounRegex)];
+
+      matches.forEach((match) => {
+        const startIndex = match.index;
+        // Check next 50 characters after pronoun
+        const after = lowerText.substring(
+          startIndex,
+          Math.min(lowerText.length, startIndex + 50),
+        );
+
+        // Check if negative word appears within 5 words
+        const hasNegativeNearby = negativeWords.some((word) => {
+          const wordIndex = after.indexOf(word);
+          if (wordIndex === -1) return false;
+
+          // Count words between pronoun and negative word
+          const between = after.substring(0, wordIndex);
+          const wordsBetween = between.trim().split(/\s+/).length;
+
+          return wordsBetween <= 5;
+        });
+
+        if (hasNegativeNearby) count++;
+      });
+    });
+
+    return count;
+  }
+
+  /**
+   * Detect word repetition (same negative word used multiple times)
+   * @param {string} text - Text to analyze
+   * @param {Array} words - Words to check for repetition
+   * @returns {number} - Count of repeated words
+   */
+  function detectRepetition(text, words) {
+    let repetitionScore = 0;
+    const lowerText = text.toLowerCase();
+
+    words.forEach((word) => {
+      const regex = new RegExp(`\\b${word}\\b`, "gi");
+      const matches = lowerText.match(regex);
+      if (matches && matches.length > 1) {
+        // Add score for repetition (more repetitions = more aggressive)
+        repetitionScore += matches.length - 1;
+      }
+    });
+
+    return repetitionScore;
+  }
+
+  // ============================================================================
   // MAIN DETECTION FUNCTION
   // ============================================================================
 
@@ -164,17 +372,34 @@
     const lowerText = text.toLowerCase();
 
     // ========================================================================
-    // 1. CHECK FOR ANGER WORDS
+    // 1. CHECK FOR ANGER WORDS (with negation detection)
     // ========================================================================
     let angerWordCount = 0;
+    let negatedAngerWords = 0;
     WORD_LISTS.anger.forEach((word) => {
-      if (lowerText.includes(word)) {
-        angerWordCount++;
-        score += WEIGHTS.ANGER_WORD;
-      }
+      const wordRegex = new RegExp(`\\b${word}\\b`, "gi");
+      const matches = [...lowerText.matchAll(wordRegex)];
+
+      matches.forEach((match) => {
+        const wordIndex = match.index;
+
+        // Check if this word is negated (e.g., "not stupid")
+        if (isNegated(text, wordIndex)) {
+          negatedAngerWords++;
+          // Negated anger words reduce score slightly (benefit of doubt)
+          score -= 0.5;
+        } else {
+          angerWordCount++;
+          score += WEIGHTS.ANGER_WORD;
+        }
+      });
     });
+
     if (angerWordCount > 0) {
       reasons.push(`anger words (${angerWordCount})`);
+    }
+    if (negatedAngerWords > 0) {
+      reasons.push(`negated anger words (${negatedAngerWords})`);
     }
 
     // ========================================================================
@@ -253,6 +478,55 @@
           return; // Only count once per mention
         }
       });
+    }
+
+    // ========================================================================
+    // 7. CHECK FOR MOCKERY CAPS (aLtErNaTiNg CaPs)
+    // ========================================================================
+    if (hasMockeryCaps(text)) {
+      score += WEIGHTS.MOCKERY_CAPS;
+      reasons.push("mockery caps");
+    }
+
+    // ========================================================================
+    // 8. CHECK FOR ANGRY EMOJIS
+    // ========================================================================
+    const angryEmojiCount = countAngryEmojis(text);
+    if (angryEmojiCount > 0) {
+      score += WEIGHTS.ANGRY_EMOJI * Math.min(angryEmojiCount, 3); // Cap at 3 to avoid over-scoring
+      reasons.push(`angry emojis (${angryEmojiCount})`);
+    }
+
+    // ========================================================================
+    // 9. CHECK FOR SARCASTIC EMOJIS (with context)
+    // ========================================================================
+    const sarcasticEmojiCount = countSarcasticEmojis(text);
+    if (
+      sarcasticEmojiCount > 0 &&
+      (angerWordCount > 0 || veryNegativeCount > 0)
+    ) {
+      // Only count sarcastic emojis if there's also negative language
+      score += 1 * Math.min(sarcasticEmojiCount, 2);
+      reasons.push(`sarcastic emojis (${sarcasticEmojiCount})`);
+    }
+
+    // ========================================================================
+    // 10. CHECK FOR PRONOUN + INSULT PATTERNS (you are stupid)
+    // ========================================================================
+    const allNegativeWords = [...WORD_LISTS.anger, ...WORD_LISTS.very_negative];
+    const pronounInsultCount = detectPronounInsults(text, allNegativeWords);
+    if (pronounInsultCount > 0) {
+      score += WEIGHTS.PRONOUN_INSULT * pronounInsultCount;
+      reasons.push(`direct insults (${pronounInsultCount})`);
+    }
+
+    // ========================================================================
+    // 11. CHECK FOR WORD REPETITION (stupid stupid stupid)
+    // ========================================================================
+    const repetitionScore = detectRepetition(text, allNegativeWords);
+    if (repetitionScore > 0) {
+      score += WEIGHTS.REPETITION * repetitionScore;
+      reasons.push(`repetition (${repetitionScore})`);
     }
 
     // ========================================================================
