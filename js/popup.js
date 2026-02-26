@@ -164,9 +164,13 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Sensitivity changed to:", this.value);
 
     // Check if user has access to this sensitivity level
-    chrome.storage.sync.get(["premium"], (data) => {
+    chrome.storage.sync.get(["premium", "premiumPlan"], (data) => {
       const isPremium = data.premium || false;
-      const tier = isPremium ? "premium" : "free"; // TODO: Add 'basic' tier detection
+      const tier = !isPremium
+        ? "free"
+        : data.premiumPlan === "full"
+          ? "premium"
+          : "basic";
 
       // Validate access (using EumenidesDetector if available)
       if (
@@ -268,6 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "mode",
       "postsToday",
       "premium",
+      "premiumPlan",
       "dailyLimit",
       "aggressionDetection",
       "detectionSensitivity",
@@ -308,7 +313,11 @@ document.addEventListener("DOMContentLoaded", function () {
       sensitivitySelectEl.value = detectionSensitivity;
 
       // Enable/disable options based on tier
-      const tier = isPremium ? "premium" : "free"; // TODO: Add 'basic' tier detection
+      const tier = !isPremium
+        ? "free"
+        : data.premiumPlan === "full"
+          ? "premium"
+          : "basic";
       const options = sensitivitySelectEl.querySelectorAll("option");
       options.forEach((option) => {
         const value = option.value;
