@@ -101,27 +101,37 @@ module.exports = async (req, res) => {
             a:hover { text-decoration: underline; }
           </style>
           <script>
-            // Try to redirect immediately
-            try {
-              window.location.replace('${extensionUrl}');
-            } catch (e) {
-              console.error('Redirect failed:', e);
-            }
-
-            // Show manual link after 1 second
-            setTimeout(function() {
+            // Chrome blocks automatic redirects to chrome-extension:// URLs
+            // Show manual link immediately
+            window.addEventListener('DOMContentLoaded', function() {
               document.getElementById('manual-link').style.display = 'block';
-            }, 1000);
+              document.getElementById('loading-text').style.display = 'none';
+              document.getElementById('spinner').style.display = 'none';
+            });
           </script>
         </head>
         <body>
           <div class="container">
             <h1>${success === "true" ? "✅ Payment Successful!" : "❌ Payment Canceled"}</h1>
-            <p>${success === "true" ? "Redirecting you back to the extension..." : "Redirecting you back to try again..."}</p>
-            <div class="spinner"></div>
+            <p id="loading-text">${success === "true" ? "Preparing your activation..." : "Redirecting you back..."}</p>
+            <div id="spinner" class="spinner"></div>
             <div id="manual-link" style="display: none; margin-top: 20px;">
-              <p>If you're not redirected automatically:</p>
-              <p><a href="${extensionUrl}">Click here to return to the extension</a></p>
+              <p style="font-size: 18px; margin-bottom: 15px; font-weight: 600;">Click below to complete your activation:</p>
+              <a href="${extensionUrl}" style="
+                display: inline-block;
+                background: white;
+                color: #667eea;
+                padding: 15px 40px;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 18px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                transition: all 0.2s;
+              " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.3)'">
+                🚀 Return to Extension & Activate
+              </a>
+              <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">This will open the extension in a new tab</p>
             </div>
           </div>
         </body>
