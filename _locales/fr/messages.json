@@ -581,10 +581,10 @@
     "message": "🔓 Moyenne-Élevée (Basic)"
   },
   "sensitivityHighPremium": {
-    "message": "🔒 Élevée (Premium)"
+    "message": "🔒 Élevée (Complète)"
   },
   "sensitivityMaximum": {
-    "message": "🔒 Maximale (Premium)"
+    "message": "🔒 Maximale (Complète)"
   },
   "sensitivityRequiresTier": {
     "message": "Ce niveau de sensibilité nécessite un abonnement $TIER$. Passez à la version supérieure pour accéder à plus d'options !",

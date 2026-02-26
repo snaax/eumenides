@@ -262,7 +262,7 @@
     "message": "Basic - $1.99/month (3 sensitivity levels)"
   },
   "planFull": {
-    "message": "Premium - $4.99/month (All 7 levels + unlimited posts)"
+    "message": "Full - $4.99/month (All 7 levels + unlimited posts)"
   },
   "manageSubscription": {
     "message": "⚙️ Manage Subscription"
@@ -569,10 +569,10 @@
     "message": "High"
   },
   "sensitivityMinimal": {
-    "message": "🔒 Minimal (Premium)"
+    "message": "🔒 Minimal (Full)"
   },
   "sensitivityLowPremium": {
-    "message": "🔒 Low (Premium)"
+    "message": "🔒 Low (Full)"
   },
   "sensitivityMediumLow": {
     "message": "🔓 Medium-Low (Basic)"
@@ -581,10 +581,10 @@
     "message": "🔓 Medium-High (Basic)"
   },
   "sensitivityHighPremium": {
-    "message": "🔒 High (Premium)"
+    "message": "🔒 High (Full)"
   },
   "sensitivityMaximum": {
-    "message": "🔒 Maximum (Premium)"
+    "message": "🔒 Maximum (Full)"
   },
   "sensitivityRequiresTier": {
     "message": "This sensitivity level requires $TIER$ subscription. Upgrade to access more sensitivity options!",
