@@ -28,6 +28,13 @@ module.exports = async (req, res) => {
   try {
     const sig = req.headers["stripe-signature"];
 
+    // Read raw body for Vercel
+    const chunks = [];
+    for await (const chunk of req) {
+      chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+    }
+    const rawBody = Buffer.concat(chunks).toString("utf8");
+
     // Construct event (verifies signature)
     const event = await constructWebhookEvent(rawBody, sig);
     console.log("Event type:", event.type);
