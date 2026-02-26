@@ -238,6 +238,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Premium upgrade
   const upgradeBtn = document.querySelector(".upgrade-btn");
   console.log("Upgrade button:", upgradeBtn);
+
+  // Hide upgrade button if user has premium
+  chrome.storage.sync.get(["premium"], (data) => {
+    if (data.premium) {
+      upgradeBtn.style.display = "none";
+    } else {
+      upgradeBtn.style.display = "block";
+    }
+  });
+
   upgradeBtn.addEventListener("click", function () {
     console.log("Upgrade button clicked!");
     chrome.tabs.create({ url: "html/activate-premium.html" });
