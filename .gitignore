@@ -38,3 +38,7 @@ backend-vercel/.env*
 *.md
 !README.md
 !**/README.md
+
+# Generated config files (build artifacts)
+js/config-generated.js
+js/sw-config-generated.js
