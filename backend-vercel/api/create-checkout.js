@@ -27,10 +27,28 @@ module.exports = async (req, res) => {
   try {
     const { email, extensionId, plan = "basic" } = req.body;
 
+    console.log("Create checkout request:", { email, extensionId, plan });
+
     // Validate inputs
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
       return res.status(400).json({ error: emailValidation.error });
+    }
+
+    // Validate extension ID
+    if (
+      !extensionId ||
+      extensionId === "undefined" ||
+      extensionId === "null" ||
+      typeof extensionId !== "string"
+    ) {
+      console.error("Invalid extension ID received:", extensionId);
+      return res
+        .status(400)
+        .json({
+          error:
+            "Invalid extension ID. Please reload the extension and try again.",
+        });
     }
 
     // Additional email validation: block disposable email domains

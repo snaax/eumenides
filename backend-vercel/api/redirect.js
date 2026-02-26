@@ -21,8 +21,15 @@ module.exports = async (req, res) => {
   try {
     const { extension_id, success, canceled, session_id } = req.query;
 
+    console.log("Redirect query params:", req.query);
+    console.log("Extension ID received:", extension_id);
+
     // Validate extension_id
-    if (!extension_id) {
+    if (
+      !extension_id ||
+      extension_id === "undefined" ||
+      extension_id === "null"
+    ) {
       return res.status(400).send(`
         <html>
           <head><title>Error - Eumenides</title></head>
