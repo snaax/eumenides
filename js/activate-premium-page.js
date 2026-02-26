@@ -1,4 +1,5 @@
-const API_URL = "https://eumenides-backend.vercel.app"; // Update with your actual API URL
+const API_URL =
+  "https://eumenides-git-preview-snaxs-projects-47698530.vercel.app";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Apply i18n translations
