@@ -578,10 +578,10 @@
     "message": "🔒 Faible (Complet)"
   },
   "sensitivityMediumLow": {
-    "message": "🔓 Moyenne-Faible (Basic)"
+    "message": "🔓 Moyenne-Faible (Basique)"
   },
   "sensitivityMediumHigh": {
-    "message": "🔓 Moyenne-Élevée (Basic)"
+    "message": "🔓 Moyenne-Élevée (Basique)"
   },
   "sensitivityHighPremium": {
     "message": "🔒 Élevée (Complet)"
