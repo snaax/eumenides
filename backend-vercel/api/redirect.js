@@ -50,7 +50,9 @@ module.exports = async (req, res) => {
 
     console.log("Redirecting to:", extensionUrl);
 
-    // Return HTML that redirects to the extension
+    // Try HTTP 302 redirect (may not work with chrome-extension://)
+    // If this fails, browser will show the HTML fallback
+    res.setHeader("Location", extensionUrl);
     res.setHeader("Content-Type", "text/html");
     res.status(200).send(`
       <!DOCTYPE html>
@@ -98,12 +100,18 @@ module.exports = async (req, res) => {
             }
             a:hover { text-decoration: underline; }
           </style>
-          <meta http-equiv="refresh" content="0; url=${extensionUrl}">
           <script>
-            // Show manual link after 2 seconds if auto-redirect fails
+            // Try to redirect immediately
+            try {
+              window.location.replace('${extensionUrl}');
+            } catch (e) {
+              console.error('Redirect failed:', e);
+            }
+
+            // Show manual link after 1 second
             setTimeout(function() {
               document.getElementById('manual-link').style.display = 'block';
-            }, 2000);
+            }, 1000);
           </script>
         </head>
         <body>
