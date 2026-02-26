@@ -102,11 +102,10 @@ async function startPolling(email, plan, stripeTab) {
           dailyLimit: data.plan === "full" ? 999999 : 15,
         });
 
-        document
-          .getElementById("goto-premium")
-          .addEventListener("click", () => {
-            window.location.href = "/html/premium_page.html";
-          });
+        // Auto-redirect to premium page after 2 seconds
+        setTimeout(() => {
+          window.location.href = "/html/premium_page.html";
+        }, 2000);
       } else if (attempts < maxAttempts) {
         // Not activated yet, try again in 1 second
         setTimeout(poll, 1000);
