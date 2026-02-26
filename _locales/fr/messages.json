@@ -262,13 +262,13 @@
     "message": "Basique - 2,99€/mois (3 niveaux de sensibilité)"
   },
   "planFull": {
-    "message": "Complète - 4,99€/mois (Tous les 7 niveaux + posts illimités)"
+    "message": "Complet - 4,99€/mois (Tous les 7 niveaux + posts illimités)"
   },
   "planBasicName": {
     "message": "Plan Basique"
   },
   "planFullName": {
-    "message": "Plan Complète"
+    "message": "Plan Complet"
   },
   "manageSubscription": {
     "message": "⚙️ Gérer l'Abonnement"
@@ -572,10 +572,10 @@
     "message": "Élevée"
   },
   "sensitivityMinimal": {
-    "message": "🔒 Minimale (Premium)"
+    "message": "🔒 Minimale (Complet)"
   },
   "sensitivityLowPremium": {
-    "message": "🔒 Faible (Premium)"
+    "message": "🔒 Faible (Complet)"
   },
   "sensitivityMediumLow": {
     "message": "🔓 Moyenne-Faible (Basic)"
@@ -584,10 +584,10 @@
     "message": "🔓 Moyenne-Élevée (Basic)"
   },
   "sensitivityHighPremium": {
-    "message": "🔒 Élevée (Complète)"
+    "message": "🔒 Élevée (Complet)"
   },
   "sensitivityMaximum": {
-    "message": "🔒 Maximale (Complète)"
+    "message": "🔒 Maximale (Complet)"
   },
   "sensitivityRequiresTier": {
     "message": "Ce niveau de sensibilité nécessite un abonnement $TIER$. Passez à la version supérieure pour accéder à plus d'options !",
