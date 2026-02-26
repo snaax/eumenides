@@ -4,18 +4,18 @@
  */
 module.exports = async (req, res) => {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Handle preflight
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   // Only GET allowed
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -36,14 +36,15 @@ module.exports = async (req, res) => {
     }
 
     // Build the chrome-extension URL
-    const extensionUrl = success === 'true'
-      ? `chrome-extension://${extension_id}/html/activate.html?success=true&session_id=${session_id || ''}`
-      : `chrome-extension://${extension_id}/html/activate-premium.html?canceled=true`;
+    const extensionUrl =
+      success === "true"
+        ? `chrome-extension://${extension_id}/html/activate.html?success=true&session_id=${session_id || ""}`
+        : `chrome-extension://${extension_id}/html/activate-premium.html?canceled=true`;
 
-    console.log('Redirecting to:', extensionUrl);
+    console.log("Redirecting to:", extensionUrl);
 
     // Return HTML that redirects to the extension
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Content-Type", "text/html");
     res.status(200).send(`
       <!DOCTYPE html>
       <html>
@@ -90,11 +91,9 @@ module.exports = async (req, res) => {
             }
             a:hover { text-decoration: underline; }
           </style>
+          <meta http-equiv="refresh" content="0; url=${extensionUrl}">
           <script>
-            // Immediate redirect attempt
-            window.location.href = '${extensionUrl}';
-
-            // Fallback after 2 seconds
+            // Show manual link after 2 seconds if auto-redirect fails
             setTimeout(function() {
               document.getElementById('manual-link').style.display = 'block';
             }, 2000);
@@ -102,8 +101,8 @@ module.exports = async (req, res) => {
         </head>
         <body>
           <div class="container">
-            <h1>${success === 'true' ? '✅ Payment Successful!' : '❌ Payment Canceled'}</h1>
-            <p>${success === 'true' ? 'Redirecting you back to the extension...' : 'Redirecting you back to try again...'}</p>
+            <h1>${success === "true" ? "✅ Payment Successful!" : "❌ Payment Canceled"}</h1>
+            <p>${success === "true" ? "Redirecting you back to the extension..." : "Redirecting you back to try again..."}</p>
             <div class="spinner"></div>
             <div id="manual-link" style="display: none; margin-top: 20px;">
               <p>If you're not redirected automatically:</p>
@@ -114,7 +113,7 @@ module.exports = async (req, res) => {
       </html>
     `);
   } catch (error) {
-    console.error('Redirect error:', error);
+    console.error("Redirect error:", error);
     res.status(500).send(`
       <html>
         <head><title>Error - Eumenides</title></head>
