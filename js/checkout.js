@@ -92,14 +92,14 @@ async function startPolling(email, plan, stripeTab) {
         pollingStatus.style.display = "none";
         successArea.style.display = "block";
 
-        // Save to extension storage
+        // Save to extension storage (using premiumPlan field only)
+        const plan = data.tier || data.plan || "basic";
         await chrome.storage.sync.set({
-          premium: true,
+          premiumPlan: plan,
           premiumEmail: email,
-          premiumPlan: data.plan,
           premiumUntil: data.expiresAt,
           subscriptionCanceled: data.subscriptionCanceled || false,
-          dailyLimit: data.plan === "full" ? 999999 : 15,
+          dailyLimit: plan === "full" ? 999999 : plan === "basic" ? 15 : 5,
         });
 
         // Auto-redirect to premium page after 2 seconds

@@ -275,11 +275,9 @@ async function displayPremiumStatus() {
   try {
     // First check chrome storage
     const result = await chrome.storage.sync.get([
-      "premium",
       "premiumPlan",
       "premiumEmail",
       "premiumUntil",
-      "premiumKey",
       "subscriptionCanceled",
     ]);
 
@@ -291,36 +289,9 @@ async function displayPremiumStatus() {
     const statusDetails = document.getElementById("statusDetails");
     const cancelBtn = document.getElementById("cancelSubscriptionBtn");
 
-    // If user has premium key but no premium flag, try to verify from backend
-    if (result.premiumKey && !result.premium) {
-      console.log(
-        "Found premium key but no premium flag, verifying from backend...",
-      );
-      try {
-        const response = await fetch(
-          `${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(result.premiumKey)}`,
-        );
-        const data = await response.json();
+    const hasPremium = result.premiumPlan && result.premiumPlan !== "free";
 
-        if (data.success && data.premium) {
-          // Update storage with verified premium status
-          await chrome.storage.sync.set({
-            premium: true,
-            premiumPlan: data.plan,
-            premiumEmail: data.email,
-            premiumUntil: data.expiresAt,
-            subscriptionCanceled: data.subscriptionCanceled || false,
-          });
-
-          // Reload with new data
-          return displayPremiumStatus();
-        }
-      } catch (error) {
-        console.error("Error verifying premium key:", error);
-      }
-    }
-
-    if (result.premium && result.premiumPlan) {
+    if (hasPremium) {
       // User has premium - show status
       statusBanner.style.display = "block";
       statusBanner.classList.remove("free");
@@ -376,18 +347,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   await displayPremiumStatus();
 
   // Check if user already has premium - if so, disable buy buttons
-  const storage = await chrome.storage.sync.get([
-    "premium",
-    "premiumKey",
-    "premiumPlan",
-  ]);
+  const storage = await chrome.storage.sync.get(["premiumPlan"]);
   const buyButtons = document.querySelectorAll(".buy-button");
 
   buyButtons.forEach((button) => {
     const buttonPlan = button.getAttribute("data-plan");
 
     // If user has premium already
-    if (storage.premium && storage.premiumPlan) {
+    const hasPremium = storage.premiumPlan && storage.premiumPlan !== "free";
+    if (hasPremium) {
       // Disable buy buttons for plans at or below current plan
       if (storage.premiumPlan === "full") {
         // Full plan user - disable all buttons
@@ -438,23 +406,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Add activate button if user doesn't have premium yet
 async function addActivateButtonIfNeeded() {
-  const result = await chrome.storage.sync.get([
-    "premium",
-    "premiumKey",
-    "premiumPlan",
-    "premiumEmail",
-  ]);
+  const result = await chrome.storage.sync.get(["premiumPlan", "premiumEmail"]);
 
   console.log("Checking if activation form needed:", result);
 
   // Show activation form if:
   // - No premium at all, OR
-  // - Has premium flag but missing key/plan/email (incomplete activation)
-  const needsActivation =
-    !result.premium ||
-    !result.premiumKey ||
-    !result.premiumPlan ||
-    !result.premiumEmail;
+  // - Has premium plan but missing email (incomplete activation)
+  const hasPremium = result.premiumPlan && result.premiumPlan !== "free";
+  const needsActivation = !hasPremium || !result.premiumEmail;
 
   if (!needsActivation) {
     console.log("User fully activated, skipping activation form");
@@ -545,16 +505,14 @@ async function addActivateButtonIfNeeded() {
         );
         const data = await response.json();
 
-        if (data.success && data.premiumKey) {
+        if (data.success && data.tier) {
+          const tier = data.tier || "basic";
           await chrome.storage.sync.set({
-            premium: true,
-            premiumKey: data.premiumKey,
-            premiumPlan: data.plan,
+            premiumPlan: tier,
             premiumEmail: data.email,
             premiumUntil: data.expiresAt,
             subscriptionCanceled: data.subscriptionCanceled || false,
-            dailyLimit:
-              data.plan === "full" ? 999999 : data.plan === "basic" ? 15 : 5,
+            dailyLimit: tier === "full" ? 999999 : tier === "basic" ? 15 : 5,
           });
 
           message.textContent = `✅ Success! Your ${data.plan === "full" ? "Full" : "Basic"} plan has been activated!`;

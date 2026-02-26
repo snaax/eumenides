@@ -45,14 +45,11 @@ function applyTranslations() {
 
 // Update premium badge visibility
 function updatePremiumBadge() {
-  chrome.storage.sync.get(["premium"], (data) => {
+  chrome.storage.sync.get(["premiumPlan"], (data) => {
     const premiumBadge = document.querySelector(".premium-badge");
     if (premiumBadge) {
-      if (data.premium) {
-        premiumBadge.style.display = "inline-block";
-      } else {
-        premiumBadge.style.display = "none";
-      }
+      const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+      premiumBadge.style.display = hasPremium ? "inline-block" : "none";
     }
   });
 }
@@ -164,13 +161,13 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Sensitivity changed to:", this.value);
 
     // Check if user has access to this sensitivity level
-    chrome.storage.sync.get(["premium", "premiumPlan"], (data) => {
-      const isPremium = data.premium || false;
-      const tier = !isPremium
-        ? "free"
-        : data.premiumPlan === "full"
+    chrome.storage.sync.get(["premiumPlan"], (data) => {
+      const tier =
+        data.premiumPlan === "full"
           ? "premium"
-          : "basic";
+          : data.premiumPlan === "basic"
+            ? "basic"
+            : "free";
 
       // Validate access (using EumenidesDetector if available)
       if (
@@ -226,8 +223,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Check premium for delay mode
       if (mode === "delay") {
-        chrome.storage.sync.get(["premium"], (data) => {
-          if (!data.premium) {
+        chrome.storage.sync.get(["premiumPlan"], (data) => {
+          const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+          if (!hasPremium) {
             alert(chrome.i18n.getMessage("delayModeRequiresPremium"));
             return;
           }
@@ -244,12 +242,9 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Upgrade button:", upgradeBtn);
 
   // Hide upgrade button if user has premium
-  chrome.storage.sync.get(["premium"], (data) => {
-    if (data.premium) {
-      upgradeBtn.style.display = "none";
-    } else {
-      upgradeBtn.style.display = "block";
-    }
+  chrome.storage.sync.get(["premiumPlan"], (data) => {
+    const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+    upgradeBtn.style.display = hasPremium ? "none" : "block";
   });
 
   upgradeBtn.addEventListener("click", function () {
@@ -271,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "enabled",
       "mode",
       "postsToday",
-      "premium",
       "premiumPlan",
       "dailyLimit",
       "aggressionDetection",
@@ -283,7 +277,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const isEnabled = data.enabled !== false;
       const currentMode = data.mode || "instant";
       const postsToday = data.postsToday || 0;
-      const isPremium = data.premium || false;
+      const premiumPlan = data.premiumPlan || "free";
+      const isPremium = premiumPlan !== "free";
       const dailyLimit = data.dailyLimit || 5;
       const aggressionDetection = data.aggressionDetection !== false;
       const detectionSensitivity = data.detectionSensitivity || "medium";
@@ -313,11 +308,12 @@ document.addEventListener("DOMContentLoaded", function () {
       sensitivitySelectEl.value = detectionSensitivity;
 
       // Enable/disable options based on tier
-      const tier = !isPremium
-        ? "free"
-        : data.premiumPlan === "full"
+      const tier =
+        premiumPlan === "full"
           ? "premium"
-          : "basic";
+          : premiumPlan === "basic"
+            ? "basic"
+            : "free";
       const options = sensitivitySelectEl.querySelectorAll("option");
       options.forEach((option) => {
         const value = option.value;

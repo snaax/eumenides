@@ -22,36 +22,34 @@ async function syncPremiumStatus(currentData) {
     const data = await response.json();
 
     if (data.success && data.premium) {
-      console.log("Premium verified:", data.plan);
+      const tier = data.tier || data.plan || "basic";
+      console.log("Premium verified:", tier);
 
       // Update storage with latest premium status from backend
       await chrome.storage.sync.set({
-        premium: true,
-        premiumPlan: data.plan,
+        premiumPlan: tier,
         premiumEmail: data.email,
         premiumUntil: data.expiresAt,
         subscriptionCanceled: data.subscriptionCanceled || false,
-        dailyLimit:
-          data.plan === "full" ? 999999 : data.plan === "basic" ? 15 : 5,
+        dailyLimit: tier === "full" ? 999999 : tier === "basic" ? 15 : 5,
       });
 
-      userSettings.premium = true;
-      userSettings.premiumPlan = data.plan;
+      userSettings.premiumPlan = tier;
 
       console.log("Premium status synced successfully");
     } else {
       console.log("Premium key invalid or expired:", data.error);
 
       // Premium expired or invalid - clear premium status
-      if (currentData.premium) {
+      const hasPremium =
+        currentData.premiumPlan && currentData.premiumPlan !== "free";
+      if (hasPremium) {
         await chrome.storage.sync.set({
-          premium: false,
-          premiumPlan: null,
+          premiumPlan: "free",
           dailyLimit: 5,
         });
 
-        userSettings.premium = false;
-        userSettings.premiumPlan = null;
+        userSettings.premiumPlan = "free";
       }
     }
   } catch (error) {
@@ -91,7 +89,7 @@ function updateIcon(enabled) {
 let userSettings = {
   enabled: true,
   mode: "instant",
-  premium: false,
+  premiumPlan: "free",
   dailyLimit: 5,
   delayDuration: 6,
 };
@@ -101,7 +99,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.storage.sync.set({
       enabled: true,
       mode: "instant",
-      premium: false,
+      premiumPlan: "free",
       postsToday: 0,
       aggressionDetection: true,
       detectionSensitivity: "medium",
@@ -367,7 +365,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.action === "checkPremium") {
-    sendResponse({ premium: userSettings.premium });
+    const hasPremium =
+      userSettings.premiumPlan && userSettings.premiumPlan !== "free";
+    sendResponse({
+      premium: hasPremium,
+      premiumPlan: userSettings.premiumPlan,
+    });
     return false;
   }
 
@@ -551,7 +554,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     verifyPremiumPayment(request.userId, request.transactionId).then(
       (valid) => {
         if (valid) {
-          chrome.storage.sync.set({ premium: true, premiumSince: Date.now() });
+          chrome.storage.sync.set({
+            premiumPlan: "basic",
+            premiumSince: Date.now(),
+          });
           sendResponse({ success: true });
         } else {
           sendResponse({
@@ -566,8 +572,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.action === "submitStats") {
     // Handle stats submission from content script
-    chrome.storage.sync.get(["premium", "premiumEmail"], async (data) => {
-      if (!data.premium || !data.premiumEmail) {
+    chrome.storage.sync.get(["premiumPlan", "premiumEmail"], async (data) => {
+      const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+      if (!hasPremium || !data.premiumEmail) {
         sendResponse({ success: false, error: "Not premium or no email" });
         return;
       }
