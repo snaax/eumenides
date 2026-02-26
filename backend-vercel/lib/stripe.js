@@ -26,7 +26,10 @@ async function createCheckoutSession(email, extensionId, plan = "basic") {
 
   // Stripe doesn't properly support chrome-extension:// URLs
   // Use a web redirect page instead that will redirect to the extension
-  const baseUrl = (process.env.PUBLIC_URL || 'https://eumenides.vercel.app').trim();
+  if (!process.env.PUBLIC_URL) {
+    throw new Error("PUBLIC_URL environment variable is required");
+  }
+  const baseUrl = process.env.PUBLIC_URL.trim();
 
   // URL-encode the extension_id parameter
   const encodedExtensionId = encodeURIComponent(cleanExtensionId);

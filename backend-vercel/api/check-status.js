@@ -1,5 +1,5 @@
-const { pool } = require('../lib/database');
-const { validateEmail } = require('../lib/validators');
+const { pool } = require("../lib/database");
+const { validateEmail } = require("../lib/validators");
 
 /**
  * Check premium status by email
@@ -7,19 +7,21 @@ const { validateEmail } = require('../lib/validators');
  * Vercel serverless function
  */
 module.exports = async (req, res) => {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // CORS headers (wildcard set in vercel.json, this is for runtime override)
+  if (process.env.ALLOWED_ORIGINS) {
+    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGINS);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Handle preflight
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   // Only POST allowed
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -33,14 +35,14 @@ module.exports = async (req, res) => {
 
     // Query database
     const result = await pool.query(
-      'SELECT email, premium_until, subscription_tier, is_active, stripe_customer_id FROM users WHERE email = $1',
-      [email.toLowerCase().trim()]
+      "SELECT email, premium_until, subscription_tier, is_active, stripe_customer_id FROM users WHERE email = $1",
+      [email.toLowerCase().trim()],
     );
 
     if (result.rows.length === 0) {
       return res.status(200).json({
         premium: false,
-        reason: 'No subscription found'
+        reason: "No subscription found",
       });
     }
 
@@ -50,7 +52,9 @@ module.exports = async (req, res) => {
     if (!isValid) {
       return res.status(200).json({
         premium: false,
-        reason: user.is_active ? 'Subscription expired' : 'Subscription inactive'
+        reason: user.is_active
+          ? "Subscription expired"
+          : "Subscription inactive",
       });
     }
 
@@ -58,11 +62,11 @@ module.exports = async (req, res) => {
       premium: true,
       email: user.email,
       expiresAt: user.premium_until,
-      tier: user.subscription_tier || 'basic',
-      stripeCustomerId: user.stripe_customer_id
+      tier: user.subscription_tier || "basic",
+      stripeCustomerId: user.stripe_customer_id,
     });
   } catch (error) {
-    console.error('Check status error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Check status error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };

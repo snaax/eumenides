@@ -1,29 +1,31 @@
-const { createCheckoutSession } = require('../lib/stripe');
-const { validateEmail, validateExtensionId } = require('../lib/validators');
-const { pool } = require('../lib/database');
+const { createCheckoutSession } = require("../lib/stripe");
+const { validateEmail, validateExtensionId } = require("../lib/validators");
+const { pool } = require("../lib/database");
 
 /**
  * Create Stripe checkout session
  * Vercel serverless function (also works with Express when migrating to Railway)
  */
 module.exports = async (req, res) => {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // CORS headers (wildcard set in vercel.json, this is for runtime override)
+  if (process.env.ALLOWED_ORIGINS) {
+    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGINS);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Handle preflight
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   // Only POST allowed
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { email, extensionId, plan = 'basic' } = req.body;
+    const { email, extensionId, plan = "basic" } = req.body;
 
     // Validate inputs
     const emailValidation = validateEmail(email);
@@ -33,15 +35,22 @@ module.exports = async (req, res) => {
 
     // Additional email validation: block disposable email domains
     const disposableDomains = [
-      'tempmail.com', 'guerrillamail.com', '10minutemail.com', 'mailinator.com',
-      'throwaway.email', 'temp-mail.org', 'fakeinbox.com', 'trashmail.com'
+      "tempmail.com",
+      "guerrillamail.com",
+      "10minutemail.com",
+      "mailinator.com",
+      "throwaway.email",
+      "temp-mail.org",
+      "fakeinbox.com",
+      "trashmail.com",
     ];
 
-    const emailDomain = email.split('@')[1].toLowerCase();
+    const emailDomain = email.split("@")[1].toLowerCase();
     if (disposableDomains.includes(emailDomain)) {
-      console.warn('Blocked disposable email:', email);
+      console.warn("Blocked disposable email:", email);
       return res.status(400).json({
-        error: 'Disposable email addresses are not allowed. Please use a permanent email address.'
+        error:
+          "Disposable email addresses are not allowed. Please use a permanent email address.",
       });
     }
 
@@ -51,14 +60,16 @@ module.exports = async (req, res) => {
     }
 
     // Validate plan
-    if (!['basic', 'full'].includes(plan)) {
-      return res.status(400).json({ error: 'Invalid plan. Must be "basic" or "full"' });
+    if (!["basic", "full"].includes(plan)) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid plan. Must be "basic" or "full"' });
     }
 
     // Check if email already has an active subscription
     const existingUser = await pool.query(
-      'SELECT email, premium_until, subscription_tier, subscription_canceled, created_at FROM users WHERE email = $1',
-      [email.toLowerCase()]
+      "SELECT email, premium_until, subscription_tier, subscription_canceled, created_at FROM users WHERE email = $1",
+      [email.toLowerCase()],
     );
 
     if (existingUser.rows.length > 0) {
@@ -69,9 +80,9 @@ module.exports = async (req, res) => {
       // Check if subscription is still active (not expired and not canceled)
       if (premiumUntil > now && !user.subscription_canceled) {
         return res.status(400).json({
-          error: 'This email already has an active subscription',
+          error: "This email already has an active subscription",
           existingPlan: user.subscription_tier,
-          expiresAt: user.premium_until
+          expiresAt: user.premium_until,
         });
       }
 
@@ -85,13 +96,13 @@ module.exports = async (req, res) => {
       `SELECT COUNT(*) as count FROM users
        WHERE created_at > NOW() - INTERVAL '1 hour'
        AND email = $1`,
-      [email.toLowerCase()]
+      [email.toLowerCase()],
     );
 
     if (recentCheckouts.rows[0].count > 3) {
-      console.warn('Rate limit exceeded for email:', email);
+      console.warn("Rate limit exceeded for email:", email);
       return res.status(429).json({
-        error: 'Too many checkout attempts. Please try again later.'
+        error: "Too many checkout attempts. Please try again later.",
       });
     }
 
@@ -101,10 +112,10 @@ module.exports = async (req, res) => {
     res.status(200).json({
       url: session.url,
       sessionId: session.id,
-      plan: plan
+      plan: plan,
     });
   } catch (error) {
-    console.error('Checkout error:', error);
-    res.status(500).json({ error: 'Failed to create checkout session' });
+    console.error("Checkout error:", error);
+    res.status(500).json({ error: "Failed to create checkout session" });
   }
 };

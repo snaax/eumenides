@@ -1,24 +1,26 @@
-const { pool } = require('../lib/database');
-const { validateEmail } = require('../lib/validators');
+const { pool } = require("../lib/database");
+const { validateEmail } = require("../lib/validators");
 
 /**
  * Submit daily anonymized stats from extension
  * Privacy-friendly: NO post content, just aggregated numbers
  */
 module.exports = async (req, res) => {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // CORS headers (wildcard set in vercel.json, this is for runtime override)
+  if (process.env.ALLOWED_ORIGINS) {
+    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGINS);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // Handle preflight
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   // Only POST allowed
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -31,8 +33,8 @@ module.exports = async (req, res) => {
     }
 
     // Validate stats structure
-    if (!stats || typeof stats !== 'object') {
-      return res.status(400).json({ error: 'Stats object required' });
+    if (!stats || typeof stats !== "object") {
+      return res.status(400).json({ error: "Stats object required" });
     }
 
     const {
@@ -40,13 +42,14 @@ module.exports = async (req, res) => {
       timeSavedMinutes = 0,
       emotions = {},
       platforms = {},
-      hourlyPattern = {}
+      hourlyPattern = {},
     } = stats;
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
 
     // Upsert user stats (increment if exists, insert if not)
-    await pool.query(`
+    await pool.query(
+      `
       INSERT INTO user_stats (
         email, stat_date,
         posts_intercepted, time_saved_minutes,
@@ -77,26 +80,30 @@ module.exports = async (req, res) => {
         hour_12_17 = user_stats.hour_12_17 + EXCLUDED.hour_12_17,
         hour_18_23 = user_stats.hour_18_23 + EXCLUDED.hour_18_23,
         updated_at = NOW()
-    `, [
-      email, today,
-      postsIntercepted, timeSavedMinutes,
-      emotions.anger || 0,
-      emotions.frustration || 0,
-      emotions.irritation || 0,
-      emotions.neutral || 0,
-      platforms.twitter || 0,
-      platforms.reddit || 0,
-      platforms.facebook || 0,
-      platforms.linkedin || 0,
-      hourlyPattern['00-05'] || 0,
-      hourlyPattern['06-11'] || 0,
-      hourlyPattern['12-17'] || 0,
-      hourlyPattern['18-23'] || 0
-    ]);
+    `,
+      [
+        email,
+        today,
+        postsIntercepted,
+        timeSavedMinutes,
+        emotions.anger || 0,
+        emotions.frustration || 0,
+        emotions.irritation || 0,
+        emotions.neutral || 0,
+        platforms.twitter || 0,
+        platforms.reddit || 0,
+        platforms.facebook || 0,
+        platforms.linkedin || 0,
+        hourlyPattern["00-05"] || 0,
+        hourlyPattern["06-11"] || 0,
+        hourlyPattern["12-17"] || 0,
+        hourlyPattern["18-23"] || 0,
+      ],
+    );
 
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Submit stats error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Submit stats error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
