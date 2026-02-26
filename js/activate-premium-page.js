@@ -1,5 +1,4 @@
-const API_URL =
-  "https://eumenides-git-preview-snaxs-projects-47698530.vercel.app";
+const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Apply i18n translations
