@@ -76,8 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (data.url) {
-        // Redirect to Stripe checkout
-        window.location.href = data.url + `&email=${encodeURIComponent(email)}`;
+        // Redirect to Stripe checkout (email is already set in checkout session)
+        window.location.href = data.url;
       } else {
         throw new Error(data.error || "Failed to create checkout");
       }
