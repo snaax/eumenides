@@ -65,41 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    button.disabled = true;
-    statusText.textContent =
-      chrome.i18n.getMessage("creatingCheckout") ||
-      "Creating checkout session...";
-
-    try {
-      // Save email to storage so activate.js can use it for polling
-      await chrome.storage.sync.set({ lastCheckoutEmail: email });
-
-      // Create checkout session
-      const response = await fetch(`${API_URL}/api/create-checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          extensionId: extensionId,
-          plan: plan,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.url) {
-        // Redirect to Stripe checkout (email is already set in checkout session)
-        window.location.href = data.url;
-      } else {
-        throw new Error(data.error || "Failed to create checkout");
-      }
-    } catch (error) {
-      console.error("Checkout error:", error);
-      statusText.textContent =
-        chrome.i18n.getMessage("checkoutError") ||
-        "Error creating checkout. Please try again.";
-      button.disabled = false;
-    }
+    // Redirect to checkout page within extension
+    // This avoids the chrome-extension:// redirect issue
+    window.location.href = `/html/checkout.html?email=${encodeURIComponent(email)}&plan=${plan}`;
   });
 
   /**
