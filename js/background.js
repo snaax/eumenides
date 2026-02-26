@@ -1,6 +1,7 @@
 // Eumenides - Background Service Worker
 
-const API_BASE_URL = 'https://eumenides-git-preview-snaxs-projects-47698530.vercel.app';
+// Import environment-specific config
+importScripts("sw-config-generated.js");
 
 // Sync premium status with backend
 async function syncPremiumStatus(currentData) {
@@ -8,18 +9,20 @@ async function syncPremiumStatus(currentData) {
 
   // If no premium key, nothing to sync
   if (!premiumKey) {
-    console.log('No premium key found, skipping sync');
+    console.log("No premium key found, skipping sync");
     return;
   }
 
-  console.log('Syncing premium status from backend...');
+  console.log("Syncing premium status from backend...");
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(premiumKey)}`);
+    const response = await fetch(
+      `${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(premiumKey)}`,
+    );
     const data = await response.json();
 
     if (data.success && data.premium) {
-      console.log('Premium verified:', data.plan);
+      console.log("Premium verified:", data.plan);
 
       // Update storage with latest premium status from backend
       await chrome.storage.sync.set({
@@ -28,22 +31,23 @@ async function syncPremiumStatus(currentData) {
         premiumEmail: data.email,
         premiumUntil: data.expiresAt,
         subscriptionCanceled: data.subscriptionCanceled || false,
-        dailyLimit: data.plan === 'full' ? 999999 : (data.plan === 'basic' ? 15 : 5)
+        dailyLimit:
+          data.plan === "full" ? 999999 : data.plan === "basic" ? 15 : 5,
       });
 
       userSettings.premium = true;
       userSettings.premiumPlan = data.plan;
 
-      console.log('Premium status synced successfully');
+      console.log("Premium status synced successfully");
     } else {
-      console.log('Premium key invalid or expired:', data.error);
+      console.log("Premium key invalid or expired:", data.error);
 
       // Premium expired or invalid - clear premium status
       if (currentData.premium) {
         await chrome.storage.sync.set({
           premium: false,
           premiumPlan: null,
-          dailyLimit: 5
+          dailyLimit: 5,
         });
 
         userSettings.premium = false;
@@ -51,7 +55,7 @@ async function syncPremiumStatus(currentData) {
       }
     }
   } catch (error) {
-    console.error('Error syncing premium status:', error);
+    console.error("Error syncing premium status:", error);
     // Keep existing premium status if sync fails
   }
 }
@@ -560,31 +564,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.action === 'submitStats') {
+  if (request.action === "submitStats") {
     // Handle stats submission from content script
-    chrome.storage.sync.get(['premium', 'premiumEmail'], async (data) => {
+    chrome.storage.sync.get(["premium", "premiumEmail"], async (data) => {
       if (!data.premium || !data.premiumEmail) {
-        sendResponse({ success: false, error: 'Not premium or no email' });
+        sendResponse({ success: false, error: "Not premium or no email" });
         return;
       }
 
       try {
         const response = await fetch(`${API_BASE_URL}/api/submit-stats`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email: data.premiumEmail,
-            stats: request.stats
-          })
+            stats: request.stats,
+          }),
         });
 
         const result = await response.json();
-        console.log('Stats submitted successfully:', result);
+        console.log("Stats submitted successfully:", result);
         sendResponse({ success: true, result });
       } catch (error) {
-        console.error('Failed to submit stats:', error);
+        console.error("Failed to submit stats:", error);
         sendResponse({ success: false, error: error.message });
       }
     });

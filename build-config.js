@@ -12,17 +12,17 @@
  *   API_BASE_URL=https://my-api.com node build-config.js
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Get environment from command line or default to preview
-const env = process.argv[2] || 'preview';
+const env = process.argv[2] || "preview";
 
 // Default URLs for each environment
 const ENV_URLS = {
-  preview: 'https://eumenides-git-preview-snaxs-projects-47698530.vercel.app',
-  production: 'https://eumenides.vercel.app',
-  development: 'http://localhost:3000'
+  preview: "https://eumenides-git-preview-snaxs-projects-47698530.vercel.app",
+  production: "https://eumenides.vercel.app",
+  development: "http://localhost:3000",
 };
 
 // Get API URL from environment variable or use default for environment
@@ -45,12 +45,30 @@ window.EUMENIDES_CONFIG = {
 console.log('Eumenides Config loaded:', window.EUMENIDES_CONFIG);
 `;
 
-// Write to js/config-generated.js
-const outputPath = path.join(__dirname, 'js', 'config-generated.js');
-fs.writeFileSync(outputPath, configContent, 'utf8');
+// Write to js/config-generated.js (for HTML pages)
+const outputPath = path.join(__dirname, "js", "config-generated.js");
+fs.writeFileSync(outputPath, configContent, "utf8");
 
 console.log(`✓ Config written to: ${outputPath}`);
-console.log('✓ Build complete!');
-console.log('');
-console.log('Remember to include config-generated.js in your HTML files:');
-console.log('  <script src="../js/config-generated.js"></script>');
+
+// Also create a service worker config (for background.js)
+const swConfigContent = `// Auto-generated config for service worker
+// Generated at: ${new Date().toISOString()}
+// Environment: ${env}
+
+const API_BASE_URL = '${apiUrl}';
+const ENVIRONMENT = '${env}';
+const BUILD_TIME = '${new Date().toISOString()}';
+
+console.log('Eumenides Service Worker Config loaded:', { API_BASE_URL, ENVIRONMENT, BUILD_TIME });
+`;
+
+const swOutputPath = path.join(__dirname, "js", "sw-config-generated.js");
+fs.writeFileSync(swOutputPath, swConfigContent, "utf8");
+
+console.log(`✓ Service Worker config written to: ${swOutputPath}`);
+console.log("✓ Build complete!");
+console.log("");
+console.log("Remember to:");
+console.log("  1. Include config-generated.js in your HTML files");
+console.log("  2. Import sw-config-generated.js at the top of background.js");

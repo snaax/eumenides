@@ -1,7 +1,7 @@
 // Premium page functionality with multi-tier support and i18n
 
 // Get API URL from config
-const API_BASE_URL = window.EUMENIDES_CONFIG?.apiUrl || 'https://eumenides-git-preview-snaxs-projects-47698530.vercel.app';
+const API_BASE_URL = window.EUMENIDES_CONFIG?.apiUrl;
 
 // Get i18n message
 function getMessage(key) {
@@ -17,7 +17,7 @@ function isValidEmail(email) {
 // Get extension ID
 function getExtensionId() {
   const id = chrome.runtime.id;
-  console.log('Extension ID:', id);
+  console.log("Extension ID:", id);
   return id;
 }
 
@@ -25,31 +25,31 @@ function getExtensionId() {
 async function createCheckoutSession(email, plan) {
   try {
     const extensionId = getExtensionId();
-    console.log('Creating checkout with:', { email, extensionId, plan });
+    console.log("Creating checkout with:", { email, extensionId, plan });
 
     const response = await fetch(`${API_BASE_URL}/api/create-checkout`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
         extensionId: extensionId,
-        plan: plan
-      })
+        plan: plan,
+      }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
       // Return error details from server
-      throw new Error(data.error || 'Failed to create checkout session');
+      throw new Error(data.error || "Failed to create checkout session");
     }
 
-    console.log('Checkout session created:', data);
+    console.log("Checkout session created:", data);
     return data;
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    console.error("Error creating checkout session:", error);
     throw error;
   }
 }
@@ -86,12 +86,12 @@ function showEmailModal(plan) {
           -webkit-text-fill-color: transparent;
           margin-bottom: 20px;
           text-align: center;
-        ">${getMessage('enterEmail')}</h2>
+        ">${getMessage("enterEmail")}</h2>
 
         <input
           type="email"
           id="email-input"
-          placeholder="${getMessage('emailPlaceholder')}"
+          placeholder="${getMessage("emailPlaceholder")}"
           style="
             width: 100%;
             padding: 15px;
@@ -135,37 +135,37 @@ function showEmailModal(plan) {
             font-size: 16px;
             cursor: pointer;
             font-weight: 700;
-          ">${plan === 'basic' ? getMessage('buyBasicButton') : getMessage('buyFullButton')}</button>
+          ">${plan === "basic" ? getMessage("buyBasicButton") : getMessage("buyFullButton")}</button>
         </div>
       </div>
     </div>
   `;
 
   // Insert modal into page
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  const modal = document.getElementById('email-modal');
-  const input = document.getElementById('email-input');
-  const submitBtn = document.getElementById('email-submit');
-  const cancelBtn = document.getElementById('email-cancel');
-  const errorDiv = document.getElementById('email-error');
+  const modal = document.getElementById("email-modal");
+  const input = document.getElementById("email-input");
+  const submitBtn = document.getElementById("email-submit");
+  const cancelBtn = document.getElementById("email-cancel");
+  const errorDiv = document.getElementById("email-error");
 
   // Focus input
   input.focus();
 
   // Handle submit
-  submitBtn.addEventListener('click', async () => {
+  submitBtn.addEventListener("click", async () => {
     const email = input.value.trim();
 
     if (!isValidEmail(email)) {
-      errorDiv.textContent = getMessage('errorInvalidEmail');
-      errorDiv.style.display = 'block';
+      errorDiv.textContent = getMessage("errorInvalidEmail");
+      errorDiv.style.display = "block";
       return;
     }
 
     // Show loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = getMessage('processing');
+    submitBtn.textContent = getMessage("processing");
 
     try {
       const { url } = await createCheckoutSession(email, plan);
@@ -174,88 +174,97 @@ function showEmailModal(plan) {
       window.location.href = url;
     } catch (error) {
       // Show the specific error message from the server
-      errorDiv.textContent = error.message || getMessage('errorCheckoutFailed');
-      errorDiv.style.display = 'block';
+      errorDiv.textContent = error.message || getMessage("errorCheckoutFailed");
+      errorDiv.style.display = "block";
       submitBtn.disabled = false;
-      submitBtn.textContent = plan === 'basic' ? getMessage('buyBasicButton') : getMessage('buyFullButton');
+      submitBtn.textContent =
+        plan === "basic"
+          ? getMessage("buyBasicButton")
+          : getMessage("buyFullButton");
     }
   });
 
   // Handle cancel
-  cancelBtn.addEventListener('click', () => {
+  cancelBtn.addEventListener("click", () => {
     modal.remove();
   });
 
   // Handle Enter key
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
       submitBtn.click();
     }
   });
 
   // Handle Escape key
-  document.addEventListener('keydown', function escapeHandler(e) {
-    if (e.key === 'Escape') {
+  document.addEventListener("keydown", function escapeHandler(e) {
+    if (e.key === "Escape") {
       modal.remove();
-      document.removeEventListener('keydown', escapeHandler);
+      document.removeEventListener("keydown", escapeHandler);
     }
   });
 }
 
 // Cancel subscription
 async function cancelSubscription() {
-  const result = await chrome.storage.sync.get(['premiumKey']);
+  const result = await chrome.storage.sync.get(["premiumKey"]);
 
   if (!result.premiumKey) {
-    alert('No active subscription found');
+    alert("No active subscription found");
     return;
   }
 
   const confirmed = confirm(
-    'Are you sure you want to cancel your subscription?\n\n' +
-    'Your premium features will remain active until the end of your billing period.\n\n' +
-    'You can resubscribe at any time.'
+    "Are you sure you want to cancel your subscription?\n\n" +
+      "Your premium features will remain active until the end of your billing period.\n\n" +
+      "You can resubscribe at any time.",
   );
 
   if (!confirmed) {
     return;
   }
 
-  const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+  const cancelBtn = document.getElementById("cancelSubscriptionBtn");
   const originalText = cancelBtn.textContent;
   cancelBtn.disabled = true;
-  cancelBtn.textContent = 'Canceling...';
+  cancelBtn.textContent = "Canceling...";
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/cancel-subscription`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        premiumKey: result.premiumKey
-      })
+        premiumKey: result.premiumKey,
+      }),
     });
 
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      throw new Error(data.error || 'Failed to cancel subscription');
+      throw new Error(data.error || "Failed to cancel subscription");
     }
 
     // Update Chrome storage with canceled status
     await chrome.storage.sync.set({
-      subscriptionCanceled: true
+      subscriptionCanceled: true,
     });
 
     // Refresh the status display first (this will hide the button)
     await displayPremiumStatus();
 
-    alert('Subscription canceled successfully.\n\nYour premium features will remain active until ' +
-          (data.activeUntil ? new Date(data.activeUntil).toLocaleDateString() : 'the end of your billing period'));
+    alert(
+      "Subscription canceled successfully.\n\nYour premium features will remain active until " +
+        (data.activeUntil
+          ? new Date(data.activeUntil).toLocaleDateString()
+          : "the end of your billing period"),
+    );
   } catch (error) {
-    console.error('Error canceling subscription:', error);
-    alert('Failed to cancel subscription. Please try again or contact support.');
+    console.error("Error canceling subscription:", error);
+    alert(
+      "Failed to cancel subscription. Please try again or contact support.",
+    );
     cancelBtn.disabled = false;
     cancelBtn.textContent = originalText;
   }
@@ -265,21 +274,32 @@ async function cancelSubscription() {
 async function displayPremiumStatus() {
   try {
     // First check chrome storage
-    const result = await chrome.storage.sync.get(['premium', 'premiumPlan', 'premiumEmail', 'premiumUntil', 'premiumKey', 'subscriptionCanceled']);
+    const result = await chrome.storage.sync.get([
+      "premium",
+      "premiumPlan",
+      "premiumEmail",
+      "premiumUntil",
+      "premiumKey",
+      "subscriptionCanceled",
+    ]);
 
-    console.log('Premium status from storage:', result);
+    console.log("Premium status from storage:", result);
 
-    const statusBanner = document.getElementById('premiumStatus');
-    const statusTitle = document.getElementById('statusTitle');
-    const statusPlan = document.getElementById('statusPlan');
-    const statusDetails = document.getElementById('statusDetails');
-    const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+    const statusBanner = document.getElementById("premiumStatus");
+    const statusTitle = document.getElementById("statusTitle");
+    const statusPlan = document.getElementById("statusPlan");
+    const statusDetails = document.getElementById("statusDetails");
+    const cancelBtn = document.getElementById("cancelSubscriptionBtn");
 
     // If user has premium key but no premium flag, try to verify from backend
     if (result.premiumKey && !result.premium) {
-      console.log('Found premium key but no premium flag, verifying from backend...');
+      console.log(
+        "Found premium key but no premium flag, verifying from backend...",
+      );
       try {
-        const response = await fetch(`${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(result.premiumKey)}`);
+        const response = await fetch(
+          `${API_BASE_URL}/api/verify-premium-key?key=${encodeURIComponent(result.premiumKey)}`,
+        );
         const data = await response.json();
 
         if (data.success && data.premium) {
@@ -289,107 +309,115 @@ async function displayPremiumStatus() {
             premiumPlan: data.plan,
             premiumEmail: data.email,
             premiumUntil: data.expiresAt,
-            subscriptionCanceled: data.subscriptionCanceled || false
+            subscriptionCanceled: data.subscriptionCanceled || false,
           });
 
           // Reload with new data
           return displayPremiumStatus();
         }
       } catch (error) {
-        console.error('Error verifying premium key:', error);
+        console.error("Error verifying premium key:", error);
       }
     }
 
     if (result.premium && result.premiumPlan) {
       // User has premium - show status
-      statusBanner.style.display = 'block';
-      statusBanner.classList.remove('free');
-      statusTitle.classList.remove('free');
+      statusBanner.style.display = "block";
+      statusBanner.classList.remove("free");
+      statusTitle.classList.remove("free");
 
-      const planName = result.premiumPlan === 'full' ? 'Full Plan' : 'Basic Plan';
+      const planName =
+        result.premiumPlan === "full" ? "Full Plan" : "Basic Plan";
 
-      statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
-      statusPlan.innerHTML = `<span style="font-size: 32px;">${result.premiumPlan === 'full' ? '⭐' : '✨'}</span> ${planName}`;
+      statusTitle.textContent =
+        getMessage("currentPlan") || "Your Current Plan";
+      statusPlan.innerHTML = `<span style="font-size: 32px;">${result.premiumPlan === "full" ? "⭐" : "✨"}</span> ${planName}`;
 
       if (result.premiumUntil) {
         const expiryDate = new Date(result.premiumUntil);
         const formattedDate = expiryDate.toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         });
 
         if (result.subscriptionCanceled) {
-          statusDetails.innerHTML = `Subscription canceled - Access until <strong>${formattedDate}</strong> • ${result.premiumEmail || ''}`;
-          cancelBtn.style.display = 'none';
+          statusDetails.innerHTML = `Subscription canceled - Access until <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
+          cancelBtn.style.display = "none";
         } else {
-          statusDetails.innerHTML = `Active until <strong>${formattedDate}</strong> • ${result.premiumEmail || ''}`;
-          cancelBtn.style.display = 'inline-block';
+          statusDetails.innerHTML = `Active until <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
+          cancelBtn.style.display = "inline-block";
         }
       } else {
-        statusDetails.textContent = result.premiumEmail || 'Premium Active';
-        cancelBtn.style.display = 'inline-block';
+        statusDetails.textContent = result.premiumEmail || "Premium Active";
+        cancelBtn.style.display = "inline-block";
       }
     } else {
       // User is on free plan
-      statusBanner.style.display = 'block';
-      statusBanner.classList.add('free');
-      statusTitle.classList.add('free');
+      statusBanner.style.display = "block";
+      statusBanner.classList.add("free");
+      statusTitle.classList.add("free");
 
-      statusTitle.textContent = getMessage('currentPlan') || 'Your Current Plan';
-      statusPlan.innerHTML = '<span style="font-size: 32px;">🆓</span> Free Plan';
-      statusDetails.textContent = 'Upgrade to unlock all features';
-      cancelBtn.style.display = 'none';
+      statusTitle.textContent =
+        getMessage("currentPlan") || "Your Current Plan";
+      statusPlan.innerHTML =
+        '<span style="font-size: 32px;">🆓</span> Free Plan';
+      statusDetails.textContent = "Upgrade to unlock all features";
+      cancelBtn.style.display = "none";
     }
   } catch (error) {
-    console.error('Error displaying premium status:', error);
+    console.error("Error displaying premium status:", error);
   }
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener("DOMContentLoaded", async function () {
   // Display premium status
   await displayPremiumStatus();
 
   // Check if user already has premium - if so, disable buy buttons
-  const storage = await chrome.storage.sync.get(['premium', 'premiumKey', 'premiumPlan']);
-  const buyButtons = document.querySelectorAll('.buy-button');
+  const storage = await chrome.storage.sync.get([
+    "premium",
+    "premiumKey",
+    "premiumPlan",
+  ]);
+  const buyButtons = document.querySelectorAll(".buy-button");
 
-  buyButtons.forEach(button => {
-    const buttonPlan = button.getAttribute('data-plan');
+  buyButtons.forEach((button) => {
+    const buttonPlan = button.getAttribute("data-plan");
 
     // If user has premium already
     if (storage.premium && storage.premiumPlan) {
       // Disable buy buttons for plans at or below current plan
-      if (storage.premiumPlan === 'full') {
+      if (storage.premiumPlan === "full") {
         // Full plan user - disable all buttons
         button.disabled = true;
-        button.style.opacity = '0.5';
-        button.style.cursor = 'not-allowed';
-        if (buttonPlan === 'full') {
-          button.textContent = '✓ Current Plan';
+        button.style.opacity = "0.5";
+        button.style.cursor = "not-allowed";
+        if (buttonPlan === "full") {
+          button.textContent = "✓ Current Plan";
         } else {
-          button.textContent = 'Not Available';
+          button.textContent = "Not Available";
         }
-      } else if (storage.premiumPlan === 'basic' && buttonPlan === 'basic') {
+      } else if (storage.premiumPlan === "basic" && buttonPlan === "basic") {
         // Basic plan user - disable basic button
         button.disabled = true;
-        button.style.opacity = '0.5';
-        button.style.cursor = 'not-allowed';
-        button.textContent = '✓ Current Plan';
-      } else if (storage.premiumPlan === 'basic' && buttonPlan === 'full') {
+        button.style.opacity = "0.5";
+        button.style.cursor = "not-allowed";
+        button.textContent = "✓ Current Plan";
+      } else if (storage.premiumPlan === "basic" && buttonPlan === "full") {
         // Basic plan user can upgrade to full
-        button.addEventListener('click', function() {
+        button.addEventListener("click", function () {
           showEmailModal(buttonPlan);
         });
       }
     } else {
       // No premium - allow checkout for all plans
-      button.addEventListener('click', function() {
-        const plan = this.getAttribute('data-plan');
+      button.addEventListener("click", function () {
+        const plan = this.getAttribute("data-plan");
 
         if (!plan) {
-          console.error('No plan specified on button');
+          console.error("No plan specified on button");
           return;
         }
 
@@ -399,9 +427,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
   // Cancel subscription button
-  const cancelBtn = document.getElementById('cancelSubscriptionBtn');
+  const cancelBtn = document.getElementById("cancelSubscriptionBtn");
   if (cancelBtn) {
-    cancelBtn.addEventListener('click', cancelSubscription);
+    cancelBtn.addEventListener("click", cancelSubscription);
   }
 
   // Add activate button for users who completed checkout but haven't activated
@@ -410,31 +438,40 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Add activate button if user doesn't have premium yet
 async function addActivateButtonIfNeeded() {
-  const result = await chrome.storage.sync.get(['premium', 'premiumKey', 'premiumPlan', 'premiumEmail']);
+  const result = await chrome.storage.sync.get([
+    "premium",
+    "premiumKey",
+    "premiumPlan",
+    "premiumEmail",
+  ]);
 
-  console.log('Checking if activation form needed:', result);
+  console.log("Checking if activation form needed:", result);
 
   // Show activation form if:
   // - No premium at all, OR
   // - Has premium flag but missing key/plan/email (incomplete activation)
-  const needsActivation = !result.premium || !result.premiumKey || !result.premiumPlan || !result.premiumEmail;
+  const needsActivation =
+    !result.premium ||
+    !result.premiumKey ||
+    !result.premiumPlan ||
+    !result.premiumEmail;
 
   if (!needsActivation) {
-    console.log('User fully activated, skipping activation form');
+    console.log("User fully activated, skipping activation form");
     return;
   }
 
-  console.log('User needs activation - showing form (incomplete data)');
+  console.log("User needs activation - showing form (incomplete data)");
 
   // Add activate section ABOVE pricing cards (before premium status banner)
-  const header = document.querySelector('.header');
+  const header = document.querySelector(".header");
 
   if (!header) {
-    console.error('Header element not found!');
+    console.error("Header element not found!");
     return;
   }
 
-  console.log('Adding activation form to page');
+  console.log("Adding activation form to page");
 
   const activateHTML = `
     <div id="activateSection" style="
@@ -483,60 +520,66 @@ async function addActivateButtonIfNeeded() {
   `;
 
   // Insert after header, before everything else
-  header.insertAdjacentHTML('afterend', activateHTML);
+  header.insertAdjacentHTML("afterend", activateHTML);
 
-  document.getElementById('quickActivateBtn').addEventListener('click', async () => {
-    const email = document.getElementById('activateEmailInput').value.trim();
-    const btn = document.getElementById('quickActivateBtn');
-    const message = document.getElementById('activateMessage');
+  document
+    .getElementById("quickActivateBtn")
+    .addEventListener("click", async () => {
+      const email = document.getElementById("activateEmailInput").value.trim();
+      const btn = document.getElementById("quickActivateBtn");
+      const message = document.getElementById("activateMessage");
 
-    if (!email || !email.includes('@')) {
-      message.textContent = '❌ Please enter a valid email address';
-      message.style.display = 'block';
-      message.style.color = '#ff6b6b';
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Activating...';
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/activate-by-email?email=${encodeURIComponent(email)}`);
-      const data = await response.json();
-
-      if (data.success && data.premiumKey) {
-        await chrome.storage.sync.set({
-          premium: true,
-          premiumKey: data.premiumKey,
-          premiumPlan: data.plan,
-          premiumEmail: data.email,
-          premiumUntil: data.expiresAt,
-          subscriptionCanceled: data.subscriptionCanceled || false,
-          dailyLimit: data.plan === 'full' ? 999999 : (data.plan === 'basic' ? 15 : 5)
-        });
-
-        message.textContent = `✅ Success! Your ${data.plan === 'full' ? 'Full' : 'Basic'} plan has been activated!`;
-        message.style.display = 'block';
-        message.style.color = '#4ade80';
-
-        // Reload the page after 1 second
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
-      } else {
-        message.textContent = '❌ ' + (data.error || 'No subscription found for this email');
-        message.style.display = 'block';
-        message.style.color = '#ff6b6b';
-        btn.disabled = false;
-        btn.textContent = 'Activate Premium';
+      if (!email || !email.includes("@")) {
+        message.textContent = "❌ Please enter a valid email address";
+        message.style.display = "block";
+        message.style.color = "#ff6b6b";
+        return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-      message.textContent = '❌ Failed to activate. Please try again.';
-      message.style.display = 'block';
-      message.style.color = '#ff6b6b';
-      btn.disabled = false;
-      btn.textContent = 'Activate Premium';
-    }
-  });
+
+      btn.disabled = true;
+      btn.textContent = "Activating...";
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/api/activate-by-email?email=${encodeURIComponent(email)}`,
+        );
+        const data = await response.json();
+
+        if (data.success && data.premiumKey) {
+          await chrome.storage.sync.set({
+            premium: true,
+            premiumKey: data.premiumKey,
+            premiumPlan: data.plan,
+            premiumEmail: data.email,
+            premiumUntil: data.expiresAt,
+            subscriptionCanceled: data.subscriptionCanceled || false,
+            dailyLimit:
+              data.plan === "full" ? 999999 : data.plan === "basic" ? 15 : 5,
+          });
+
+          message.textContent = `✅ Success! Your ${data.plan === "full" ? "Full" : "Basic"} plan has been activated!`;
+          message.style.display = "block";
+          message.style.color = "#4ade80";
+
+          // Reload the page after 1 second
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        } else {
+          message.textContent =
+            "❌ " + (data.error || "No subscription found for this email");
+          message.style.display = "block";
+          message.style.color = "#ff6b6b";
+          btn.disabled = false;
+          btn.textContent = "Activate Premium";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        message.textContent = "❌ Failed to activate. Please try again.";
+        message.style.display = "block";
+        message.style.color = "#ff6b6b";
+        btn.disabled = false;
+        btn.textContent = "Activate Premium";
+      }
+    });
 }

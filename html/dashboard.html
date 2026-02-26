@@ -1,431 +1,534 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eumenides Dashboard</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0f0f23;
-      color: #e0e0e0;
-      padding: 20px;
-    }
-    
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .logo {
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .period-selector {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .period-btn {
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #e0e0e0;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    
-    .period-btn:hover, .period-btn.active {
-      background: rgba(102, 126, 234, 0.3);
-      border-color: #667eea;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    
-    .stat-card {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 24px;
-      transition: 0.3s;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    }
-    
-    .stat-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-    
-    .stat-value {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .stat-label {
-      font-size: 14px;
-      opacity: 0.7;
-      margin-bottom: 12px;
-    }
-    
-    .stat-change {
-      font-size: 12px;
-      color: #4ade80;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Eumenides Dashboard</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    .stat-help {
-      font-size: 11px;
-      opacity: 0.5;
-      margin-top: 8px;
-      font-style: italic;
-      line-height: 1.4;
-    }
-    
-    .chart-section {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-    }
-    
-    .chart-section h2 {
-      font-size: 20px;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-    
-    .chart-placeholder {
-      height: 300px;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255, 255, 255, 0.3);
-    }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: #0f0f23;
+                color: #e0e0e0;
+                padding: 20px;
+            }
 
-    #emotionalActivityChart {
-      width: 100%;
-      height: 300px;
-      border-radius: 12px;
-    }
-    
-    .posts-section {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 30px;
-    }
-    
-    .posts-section h2 {
-      font-size: 20px;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-    
-    .post-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 15px;
-      transition: 0.2s;
-    }
-    
-    .post-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    
-    .post-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    
-    .post-platform {
-      display: inline-block;
-      padding: 4px 10px;
-      background: rgba(102, 126, 234, 0.3);
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .post-time {
-      font-size: 12px;
-      opacity: 0.5;
-    }
-    
-    .post-content {
-      margin-bottom: 12px;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-    
-    .post-emotion {
-      display: inline-block;
-      padding: 4px 8px;
-      background: rgba(255, 107, 107, 0.2);
-      border-radius: 6px;
-      font-size: 11px;
-      color: #ff6b6b;
-    }
-    
-    .insights-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-    
-    .insight-card {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
-      border: 1px solid rgba(74, 222, 128, 0.3);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    
-    .insight-card h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #4ade80;
-    }
-    
-    .insight-card p {
-      font-size: 14px;
-      line-height: 1.6;
-      opacity: 0.9;
-    }
-    
-    .badge-section {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    
-    .badge {
-      background: rgba(255, 215, 0, 0.1);
-      border: 2px solid rgba(255, 215, 0, 0.3);
-      border-radius: 12px;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .badge-icon {
-      font-size: 32px;
-    }
-    
-    .badge-info h4 {
-      font-size: 14px;
-      margin-bottom: 4px;
-      color: #ffd700;
-    }
-    
-    .badge-info p {
-      font-size: 12px;
-      opacity: 0.7;
-    }
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
 
-    .filter-indicator {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-      border: 1px solid rgba(102, 126, 234, 0.4);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin: 15px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            }
 
-    .filter-indicator span {
-      font-size: 14px;
-    }
+            .logo {
+                font-size: 32px;
+                font-weight: 700;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
 
-    .filter-indicator strong {
-      color: #667eea;
-    }
+            .period-selector {
+                display: flex;
+                gap: 10px;
+            }
 
-    .clear-filter-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      padding: 6px 12px;
-      color: #e0e0e0;
-      cursor: pointer;
-      font-size: 12px;
-      transition: 0.2s;
-    }
+            .period-btn {
+                padding: 8px 16px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                color: #e0e0e0;
+                cursor: pointer;
+                transition: 0.2s;
+            }
 
-    .clear-filter-btn:hover {
-      background: rgba(255, 107, 107, 0.3);
-      border-color: #ff6b6b;
-      color: #ff6b6b;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div class="logo" data-i18n="dashboardTitle">⚡ Eumenides Dashboard</div>
-      <div class="period-selector">
-        <button class="period-btn" data-i18n="periodToday">Aujourd'hui</button>
-        <button class="period-btn active" data-i18n="periodWeek">Cette semaine</button>
-        <button class="period-btn" data-i18n="periodMonth">Ce mois</button>
-        <button class="period-btn" data-i18n="periodAll">Tout</button>
-      </div>
-    </header>
-    
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">🛡️</div>
-        <div class="stat-value" id="postsIntercepted">0</div>
-        <div class="stat-label" data-i18n="statPostsIntercepted">Posts interceptés</div>
-        <div class="stat-change" id="weeklyTrendChange">↑ 0% <span data-i18n="statChangeVsLastWeek">vs semaine dernière</span></div>
-      </div>
+            .period-btn:hover,
+            .period-btn.active {
+                background: rgba(102, 126, 234, 0.3);
+                border-color: #667eea;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">⏰</div>
-        <div class="stat-value" id="timeSaved">0h</div>
-        <div class="stat-label" data-i18n="statTimeSaved">Temps économisé</div>
-        <div class="stat-change" id="avgTimePerPost">~0 min par post</div>
-      </div>
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 40px;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">😌</div>
-        <div class="stat-value" id="regretsAvoided">0%</div>
-        <div class="stat-label" data-i18n="statRegretsAvoided">Regrets évités</div>
-        <div class="stat-change" id="calmDaysInfo">0 jours calmes</div>
-        <div class="stat-help" data-i18n="regretsAvoidedExplanation">100% si tu as intercepté des posts, 0% sinon</div>
-      </div>
+            .stat-card {
+                background: linear-gradient(
+                    135deg,
+                    rgba(102, 126, 234, 0.1) 0%,
+                    rgba(118, 75, 162, 0.1) 100%
+                );
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 24px;
+                transition: 0.3s;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">🔥</div>
-        <div class="stat-value" id="currentStreak">0</div>
-        <div class="stat-label" data-i18n="statCurrentStreak">Streak actuel</div>
-        <div class="stat-change" id="longestStreak">Record: 0 jours</div>
-      </div>
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">⏰</div>
-        <div class="stat-value" id="peakHour">--</div>
-        <div class="stat-label" data-i18n="peakHour">Heure de pointe</div>
-        <div class="stat-change" id="peakHourPercent">0% de tes posts</div>
-      </div>
+            .stat-icon {
+                font-size: 32px;
+                margin-bottom: 12px;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">🏆</div>
-        <div class="stat-value" id="bestDayCount">0</div>
-        <div class="stat-label" data-i18n="bestDay">Meilleur jour</div>
-        <div class="stat-change" id="bestDayDate">--</div>
-      </div>
+            .stat-value {
+                font-size: 36px;
+                font-weight: 700;
+                margin-bottom: 8px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">🌡️</div>
-        <div class="stat-value" id="angerScore">0.0</div>
-        <div class="stat-label" data-i18n="rageScore">Score de rage</div>
-        <div class="stat-change" data-i18n="outOf3">sur 3.0</div>
-        <div class="stat-help" data-i18n="rageScoreExplanation">Intensité émotionnelle moyenne (colère=3, frustration=2, irritation=1)</div>
-      </div>
+            .stat-label {
+                font-size: 14px;
+                opacity: 0.7;
+                margin-bottom: 12px;
+            }
 
-      <div class="stat-card">
-        <div class="stat-icon">📅</div>
-        <div class="stat-value" id="weekdayPercent">0%</div>
-        <div class="stat-label" data-i18n="weekdayPosts">Posts en semaine</div>
-        <div class="stat-change" id="weekendPercent">0% le weekend</div>
-      </div>
-    </div>
-    
-    <div class="chart-section">
-      <h2 data-i18n="chartEmotionalActivity">📊 Activité émotionnelle</h2>
-      <canvas id="emotionalActivityChart"></canvas>
-    </div>
+            .stat-change {
+                font-size: 12px;
+                color: #4ade80;
+            }
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 30px;">
-      <div class="chart-section" style="margin-bottom: 0;">
-        <h2 data-i18n="platformBreakdown">📱 Répartition par plateforme</h2>
-        <canvas id="platformChart" style="max-height: 300px;"></canvas>
-      </div>
+            .stat-help {
+                font-size: 11px;
+                opacity: 0.5;
+                margin-top: 8px;
+                font-style: italic;
+                line-height: 1.4;
+            }
 
-      <div class="chart-section" style="margin-bottom: 0;">
-        <h2 data-i18n="emotionalComposition">😡 Composition émotionnelle</h2>
-        <canvas id="emotionChart" style="max-height: 300px;"></canvas>
-      </div>
-    </div>
+            .chart-section {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 30px;
+                margin-bottom: 30px;
+            }
 
-    <div class="chart-section">
-      <h2 data-i18n="hourlyPattern">⏰ Pattern horaire (24h)</h2>
-      <canvas id="hourlyPatternChart"></canvas>
-    </div>
+            .chart-section h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
 
-    <div class="chart-section">
-      <h2 data-i18n="monthlyTrend">📈 Tendance mensuelle</h2>
-      <canvas id="monthlyTrendChart"></canvas>
-    </div>
+            .chart-placeholder {
+                height: 300px;
+                background: linear-gradient(
+                    135deg,
+                    rgba(102, 126, 234, 0.05) 0%,
+                    rgba(118, 75, 162, 0.05) 100%
+                );
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, 0.3);
+            }
 
-    <div class="posts-section">
-      <h2 data-i18n="recentPostsTitle">📝 Derniers posts non-envoyés</h2>
-      <div id="recentPostsList"></div>
-    </div>
+            #emotionalActivityChart {
+                width: 100%;
+                height: 300px;
+                border-radius: 12px;
+            }
 
-    <div class="chart-section">
-      <h2 data-i18n="personalizedInsights">💡 Insights personnalisés</h2>
-      <div class="insights-section" id="insightsList">
-        <div class="insight-card">
-          <h3 data-i18n="insightPatternTitle">💡 Pattern détecté</h3>
-          <p data-i18n="insightPatternEmpty">Commence à utiliser Eumenides pour voir tes patterns de rage posting.</p>
+            .posts-section {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 30px;
+            }
+
+            .posts-section h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+
+            .post-item {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 15px;
+                transition: 0.2s;
+            }
+
+            .post-item:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .post-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            .post-platform {
+                display: inline-block;
+                padding: 4px 10px;
+                background: rgba(102, 126, 234, 0.3);
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .post-time {
+                font-size: 12px;
+                opacity: 0.5;
+            }
+
+            .post-content {
+                margin-bottom: 12px;
+                line-height: 1.6;
+                font-size: 14px;
+            }
+
+            .post-emotion {
+                display: inline-block;
+                padding: 4px 8px;
+                background: rgba(255, 107, 107, 0.2);
+                border-radius: 6px;
+                font-size: 11px;
+                color: #ff6b6b;
+            }
+
+            .insights-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+                margin-top: 30px;
+            }
+
+            .insight-card {
+                background: linear-gradient(
+                    135deg,
+                    rgba(74, 222, 128, 0.1) 0%,
+                    rgba(34, 197, 94, 0.1) 100%
+                );
+                border: 1px solid rgba(74, 222, 128, 0.3);
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            .insight-card h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                color: #4ade80;
+            }
+
+            .insight-card p {
+                font-size: 14px;
+                line-height: 1.6;
+                opacity: 0.9;
+            }
+
+            .badge-section {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+                margin-top: 30px;
+            }
+
+            .badge {
+                background: rgba(255, 215, 0, 0.1);
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                border-radius: 12px;
+                padding: 15px 20px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .badge-icon {
+                font-size: 32px;
+            }
+
+            .badge-info h4 {
+                font-size: 14px;
+                margin-bottom: 4px;
+                color: #ffd700;
+            }
+
+            .badge-info p {
+                font-size: 12px;
+                opacity: 0.7;
+            }
+
+            .filter-indicator {
+                background: linear-gradient(
+                    135deg,
+                    rgba(102, 126, 234, 0.2) 0%,
+                    rgba(118, 75, 162, 0.2) 100%
+                );
+                border: 1px solid rgba(102, 126, 234, 0.4);
+                border-radius: 8px;
+                padding: 12px 16px;
+                margin: 15px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .filter-indicator span {
+                font-size: 14px;
+            }
+
+            .filter-indicator strong {
+                color: #667eea;
+            }
+
+            .clear-filter-btn {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 6px;
+                padding: 6px 12px;
+                color: #e0e0e0;
+                cursor: pointer;
+                font-size: 12px;
+                transition: 0.2s;
+            }
+
+            .clear-filter-btn:hover {
+                background: rgba(255, 107, 107, 0.3);
+                border-color: #ff6b6b;
+                color: #ff6b6b;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <div class="logo" data-i18n="dashboardTitle">
+                    ⚡ Eumenides Dashboard
+                </div>
+                <div class="period-selector">
+                    <button class="period-btn" data-i18n="periodToday">
+                        Aujourd'hui
+                    </button>
+                    <button class="period-btn active" data-i18n="periodWeek">
+                        Cette semaine
+                    </button>
+                    <button class="period-btn" data-i18n="periodMonth">
+                        Ce mois
+                    </button>
+                    <button class="period-btn" data-i18n="periodAll">
+                        Tout
+                    </button>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🛡️</div>
+                    <div class="stat-value" id="postsIntercepted">0</div>
+                    <div class="stat-label" data-i18n="statPostsIntercepted">
+                        Posts interceptés
+                    </div>
+                    <div class="stat-change" id="weeklyTrendChange">
+                        ↑ 0%
+                        <span data-i18n="statChangeVsLastWeek"
+                            >vs semaine dernière</span
+                        >
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-value" id="timeSaved">0h</div>
+                    <div class="stat-label" data-i18n="statTimeSaved">
+                        Temps économisé
+                    </div>
+                    <div class="stat-change" id="avgTimePerPost">
+                        ~0 min par post
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">😌</div>
+                    <div class="stat-value" id="regretsAvoided">0%</div>
+                    <div class="stat-label" data-i18n="statRegretsAvoided">
+                        Regrets évités
+                    </div>
+                    <div class="stat-change" id="calmDaysInfo">
+                        0 jours calmes
+                    </div>
+                    <div
+                        class="stat-help"
+                        data-i18n="regretsAvoidedExplanation"
+                    >
+                        100% si tu as intercepté des posts, 0% sinon
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="currentStreak">0</div>
+                    <div class="stat-label" data-i18n="statCurrentStreak">
+                        Streak actuel
+                    </div>
+                    <div class="stat-change" id="longestStreak">
+                        Record: 0 jours
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-value" id="peakHour">--</div>
+                    <div class="stat-label" data-i18n="peakHour">
+                        Heure de pointe
+                    </div>
+                    <div class="stat-change" id="peakHourPercent">
+                        0% de tes posts
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value" id="bestDayCount">0</div>
+                    <div class="stat-label" data-i18n="bestDay">
+                        Meilleur jour
+                    </div>
+                    <div class="stat-change" id="bestDayDate">--</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🌡️</div>
+                    <div class="stat-value" id="angerScore">0.0</div>
+                    <div class="stat-label" data-i18n="rageScore">
+                        Score de rage
+                    </div>
+                    <div class="stat-change" data-i18n="outOf3">sur 3.0</div>
+                    <div class="stat-help" data-i18n="rageScoreExplanation">
+                        Intensité émotionnelle moyenne (colère=3, frustration=2,
+                        irritation=1)
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="weekdayPercent">0%</div>
+                    <div class="stat-label" data-i18n="weekdayPosts">
+                        Posts en semaine
+                    </div>
+                    <div class="stat-change" id="weekendPercent">
+                        0% le weekend
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h2 data-i18n="chartEmotionalActivity">
+                    📊 Activité émotionnelle
+                </h2>
+                <canvas id="emotionalActivityChart"></canvas>
+            </div>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-bottom: 30px;
+                "
+            >
+                <div class="chart-section" style="margin-bottom: 0">
+                    <h2 data-i18n="platformBreakdown">
+                        📱 Répartition par plateforme
+                    </h2>
+                    <canvas
+                        id="platformChart"
+                        style="max-height: 300px"
+                    ></canvas>
+                </div>
+
+                <div class="chart-section" style="margin-bottom: 0">
+                    <h2 data-i18n="emotionalComposition">
+                        😡 Composition émotionnelle
+                    </h2>
+                    <canvas
+                        id="emotionChart"
+                        style="max-height: 300px"
+                    ></canvas>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h2 data-i18n="hourlyPattern">⏰ Pattern horaire (24h)</h2>
+                <canvas id="hourlyPatternChart"></canvas>
+            </div>
+
+            <div class="chart-section">
+                <h2 data-i18n="monthlyTrend">📈 Tendance mensuelle</h2>
+                <canvas id="monthlyTrendChart"></canvas>
+            </div>
+
+            <div class="posts-section">
+                <h2 data-i18n="recentPostsTitle">
+                    📝 Derniers posts non-envoyés
+                </h2>
+                <div id="recentPostsList"></div>
+            </div>
+
+            <div class="chart-section">
+                <h2 data-i18n="personalizedInsights">
+                    💡 Insights personnalisés
+                </h2>
+                <div class="insights-section" id="insightsList">
+                    <div class="insight-card">
+                        <h3 data-i18n="insightPatternTitle">
+                            💡 Pattern détecté
+                        </h3>
+                        <p data-i18n="insightPatternEmpty">
+                            Commence à utiliser Eumenides pour voir tes patterns
+                            de rage posting.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section" style="margin-top: 30px">
+                <h2 data-i18n="chartWordCloud">
+                    ☁️ Nuage de mots - Cette semaine
+                </h2>
+                <div
+                    class="chart-placeholder"
+                    style="height: 250px"
+                    data-i18n="noWordsDetected"
+                >
+                    Aucun mot détecté pour le moment
+                </div>
+            </div>
+
+            <div class="posts-section" style="margin-top: 30px">
+                <h2 data-i18n="badgesTitle">🏆 Badges débloqués</h2>
+                <div class="badge-section"></div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <div class="chart-section" style="margin-top: 30px;">
-      <h2 data-i18n="chartWordCloud">☁️ Nuage de mots - Cette semaine</h2>
-      <div class="chart-placeholder" style="height: 250px;" data-i18n="noWordsDetected">
-        Aucun mot détecté pour le moment
-      </div>
-    </div>
-
-    <div class="posts-section" style="margin-top: 30px;">
-      <h2 data-i18n="badgesTitle">🏆 Badges débloqués</h2>
-      <div class="badge-section"></div>
-    </div>
-  </div>
-  <script src="../js/dashboard.js"></script>
-</body>
+        <script src="../js/config-generated.js"></script>
+        <script src="../js/dashboard.js"></script>
+    </body>
 </html>
