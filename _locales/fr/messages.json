@@ -264,6 +264,12 @@
   "planFull": {
     "message": "Complète - 4,99€/mois (Tous les 7 niveaux + posts illimités)"
   },
+  "planBasicName": {
+    "message": "Plan Basique"
+  },
+  "planFullName": {
+    "message": "Plan Complète"
+  },
   "manageSubscription": {
     "message": "⚙️ Gérer l'Abonnement"
   },
@@ -428,9 +434,6 @@
   },
   "vsLastWeek": {
     "message": "vs semaine dernière"
-  },
-  "recentPostsTitle": {
-    "message": "📝 Derniers posts non-envoyés"
   },
   "badgeCenturion": {
     "message": "Centurion"

@@ -298,7 +298,9 @@ async function displayPremiumStatus() {
       statusTitle.classList.remove("free");
 
       const planName =
-        result.premiumPlan === "full" ? "Full Plan" : "Basic Plan";
+        result.premiumPlan === "full"
+          ? getMessage("planFullName") || "Full Plan"
+          : getMessage("planBasicName") || "Basic Plan";
 
       statusTitle.textContent =
         getMessage("currentPlan") || "Your Current Plan";

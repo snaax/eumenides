@@ -259,10 +259,16 @@
     "message": "Choose Your Plan"
   },
   "planBasic": {
-    "message": "Basic - $1.99/month (3 sensitivity levels)"
+    "message": "Basic - $2.99/month (3 sensitivity levels)"
   },
   "planFull": {
     "message": "Full - $4.99/month (All 7 levels + unlimited posts)"
+  },
+  "planBasicName": {
+    "message": "Basic Plan"
+  },
+  "planFullName": {
+    "message": "Full Plan"
   },
   "manageSubscription": {
     "message": "⚙️ Manage Subscription"
