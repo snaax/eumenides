@@ -71,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "Creating checkout session...";
 
     try {
+      // Save email to storage so activate.js can use it for polling
+      await chrome.storage.sync.set({ lastCheckoutEmail: email });
+
       // Create checkout session
       const response = await fetch(`${API_URL}/api/create-checkout`, {
         method: "POST",
