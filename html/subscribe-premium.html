@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Get Premium - Eumenides</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #fff;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .container {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 500px;
+                width: 100%;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+                opacity: 0.9;
+                margin-bottom: 30px;
+            }
+
+            .step {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 30px;
+                border-radius: 12px;
+                margin: 20px 0;
+            }
+
+            .step h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+                text-align: left;
+            }
+
+            .input-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .input-group input,
+            .input-group select {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 8px;
+                background: rgba(255, 255, 255, 0.2);
+                color: #fff;
+                font-size: 16px;
+                backdrop-filter: blur(5px);
+            }
+
+            .input-group input::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .input-group input:focus,
+            .input-group select:focus {
+                outline: none;
+                border-color: #ffd700;
+                background: rgba(255, 255, 255, 0.25);
+            }
+
+            .input-group select option {
+                background: #764ba2;
+                color: #fff;
+            }
+
+            .code-input {
+                font-size: 24px !important;
+                text-align: center;
+                letter-spacing: 8px;
+                font-weight: bold;
+            }
+
+            button {
+                background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+                color: #000;
+                padding: 15px 30px;
+                border: none;
+                border-radius: 50px;
+                font-size: 18px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: 0.3s;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            button:hover:not(:disabled) {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            }
+
+            button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .secondary-btn {
+                background: rgba(255, 255, 255, 0.2);
+                color: #fff;
+            }
+
+            .secondary-btn:hover:not(:disabled) {
+                background: rgba(255, 255, 255, 0.3);
+                box-shadow: none;
+            }
+
+            .status-message {
+                padding: 15px;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 14px;
+            }
+
+            .status-message.success {
+                background: rgba(74, 222, 128, 0.3);
+                border: 2px solid #4ade80;
+            }
+
+            .status-message.error {
+                background: rgba(239, 68, 68, 0.3);
+                border: 2px solid #ef4444;
+            }
+
+            .status-message.info {
+                background: rgba(59, 130, 246, 0.3);
+                border: 2px solid #3b82f6;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+
+            .back-link {
+                margin-top: 20px;
+                opacity: 0.8;
+            }
+
+            .back-link a {
+                color: #ffd700;
+                text-decoration: none;
+            }
+
+            .back-link a:hover {
+                text-decoration: underline;
+            }
+
+            .features {
+                text-align: left;
+                margin-top: 30px;
+                padding: 20px;
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 12px;
+            }
+
+            .features h3 {
+                margin-bottom: 15px;
+                font-size: 18px;
+            }
+
+            .features ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .features li {
+                padding: 8px 0;
+                padding-left: 25px;
+                position: relative;
+            }
+
+            .features li:before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: #4ade80;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>✨ Get Premium</h1>
+            <p class="subtitle">
+                Unlock unlimited posts and advanced sensitivity levels
+            </p>
+
+            <!-- Step 1: Choose Plan & Enter Email -->
+            <div id="step1" class="step">
+                <h2>Step 1: Choose Your Plan</h2>
+                <div class="input-group">
+                    <label for="planSelect">Plan</label>
+                    <select id="planSelect">
+                        <option value="basic">
+                            Basic - $2.99/month (3 sensitivity levels)
+                        </option>
+                        <option value="full">
+                            Full - $4.99/month (All 7 levels + unlimited posts)
+                        </option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="emailInput">Email Address</label>
+                    <input
+                        type="email"
+                        id="emailInput"
+                        placeholder="your@email.com"
+                        autocomplete="email"
+                    />
+                </div>
+                <button id="sendCodeBtn">📧 Send Verification Code</button>
+                <div id="step1Status" class="status-message hidden"></div>
+            </div>
+
+            <!-- Step 2: Verify Email -->
+            <div id="step2" class="step hidden">
+                <h2>Step 2: Verify Your Email</h2>
+                <p style="font-size: 14px; margin-bottom: 15px">
+                    Check your email for a 6-digit code<br />
+                    <span id="emailDisplay" style="color: #ffd700"></span>
+                </p>
+                <div class="input-group">
+                    <label for="codeInput">Verification Code</label>
+                    <input
+                        type="text"
+                        id="codeInput"
+                        class="code-input"
+                        placeholder="000000"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        autocomplete="off"
+                    />
+                </div>
+                <button id="verifyCodeBtn">✅ Verify Email</button>
+                <button id="resendCodeBtn" class="secondary-btn">
+                    🔄 Resend Code
+                </button>
+                <div id="step2Status" class="status-message hidden"></div>
+            </div>
+
+            <!-- Step 3: Proceed to Checkout -->
+            <div id="step3" class="step hidden">
+                <div style="font-size: 64px; margin: 20px 0">✅</div>
+                <h2>Email Verified!</h2>
+                <p style="margin: 20px 0; font-size: 14px">
+                    Ready to subscribe with <span id="verifiedEmail" style="color: #ffd700"></span>
+                </p>
+                <button id="checkoutBtn">🚀 Proceed to Stripe Checkout</button>
+                <div id="step3Status" class="status-message hidden"></div>
+            </div>
+
+            <div class="features">
+                <h3>Premium Features:</h3>
+                <ul>
+                    <li>Unlimited daily posts (no 5/5 limit)</li>
+                    <li>All 7 sensitivity levels unlocked</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority support</li>
+                </ul>
+            </div>
+
+            <div class="back-link">
+                <a href="reactivate-premium.html">← Connect existing account</a>
+            </div>
+        </div>
+
+        <script src="../js/config-generated.js"></script>
+        <script src="../js/subscribe-premium.js"></script>
+    </body>
+</html>

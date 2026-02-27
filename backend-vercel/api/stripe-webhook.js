@@ -1,5 +1,6 @@
 const { constructWebhookEvent } = require("../lib/stripe");
 const { pool } = require("../lib/database");
+const { sendWelcomeEmail } = require("../lib/email");
 
 /**
  * Handle Stripe webhooks
@@ -106,8 +107,17 @@ async function handleCheckoutCompleted(session) {
       subscriptionTier,
     );
 
-    // TODO: Send welcome email to user (optional)
-    // You can use SendGrid, AWS SES, or other email service
+    // Send welcome email with premium information
+    try {
+      await sendWelcomeEmail(
+        session.customer_email.toLowerCase().trim(),
+        subscriptionTier
+      );
+      console.log("Welcome email sent to:", session.customer_email);
+    } catch (emailError) {
+      // Don't fail the webhook if email fails
+      console.error("Failed to send welcome email:", emailError);
+    }
   } catch (error) {
     console.error("Database error:", error);
     throw error;

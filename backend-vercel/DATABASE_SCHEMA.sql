@@ -1,6 +1,6 @@
 -- Eumenides Premium Backend - Database Schema
 -- Run this in Supabase SQL Editor
--- Updated: 2026-02-25 - Removed premium key system, added email-based validation
+-- Updated: 2026-02-27 - Added activation codes table for email verification
 
 -- Users table with subscription tiers
 CREATE TABLE IF NOT EXISTS users (
@@ -67,6 +67,47 @@ CREATE TABLE IF NOT EXISTS user_stats (
 
 CREATE INDEX idx_user_stats_email ON user_stats(email);
 CREATE INDEX idx_user_stats_date ON user_stats(stat_date);
+
+-- Activation codes table for email verification
+-- Used for re-activating premium on new devices/browsers
+CREATE TABLE IF NOT EXISTS activation_codes (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  code VARCHAR(6) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  expires_at TIMESTAMP NOT NULL,
+  used BOOLEAN DEFAULT false,
+  used_at TIMESTAMP,
+  ip_address VARCHAR(45), -- Optional: for security logging (supports IPv6)
+
+  -- Ensure unique email+code combination
+  CONSTRAINT activation_codes_unique UNIQUE (email, code)
+);
+
+-- Indexes for activation codes
+CREATE INDEX idx_activation_codes_email ON activation_codes(email);
+CREATE INDEX idx_activation_codes_code ON activation_codes(code);
+CREATE INDEX idx_activation_codes_expires ON activation_codes(expires_at);
+CREATE INDEX idx_activation_codes_used ON activation_codes(used);
+
+-- Composite index for verification query (most common operation)
+CREATE INDEX idx_activation_codes_verify ON activation_codes(email, code, expires_at, used);
+
+-- Cleanup function: Remove expired codes older than 24 hours
+-- Run this periodically via cron job or manually
+CREATE OR REPLACE FUNCTION cleanup_expired_activation_codes()
+RETURNS void AS $$
+BEGIN
+  DELETE FROM activation_codes
+  WHERE expires_at < NOW() - INTERVAL '24 hours';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Comments for documentation
+COMMENT ON TABLE activation_codes IS 'Stores one-time verification codes for premium activation on new devices';
+COMMENT ON COLUMN activation_codes.code IS '6-digit numeric code sent via email';
+COMMENT ON COLUMN activation_codes.expires_at IS 'Code expires 10 minutes after creation';
+COMMENT ON COLUMN activation_codes.used IS 'Prevents code reuse';
 
 -- ============================================================================
 -- MIGRATION NOTES
