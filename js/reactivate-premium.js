@@ -1,6 +1,12 @@
 // Reactivate Premium - Allow existing subscribers to activate on new devices
 const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
 
+if (!API_URL) {
+  console.error("CRITICAL: API_URL not configured! Please run: npm run build:config");
+  alert("Configuration error. Please contact support.");
+  throw new Error("API_URL not configured");
+}
+
 let currentEmail = "";
 
 document.addEventListener("DOMContentLoaded", function () {

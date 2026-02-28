@@ -1,6 +1,12 @@
 // Checkout page - handles Stripe payment flow
 const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
 
+if (!API_URL) {
+  console.error("CRITICAL: API_URL not configured! Please run: npm run build:config");
+  alert("Configuration error. Please contact support.");
+  throw new Error("API_URL not configured");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const email = urlParams.get("email");

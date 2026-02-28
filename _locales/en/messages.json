@@ -50,7 +50,7 @@
     "message": "⚠️ Daily limit reached (5/5)"
   },
   "upgradePremium": {
-    "message": "✨ Upgrade to Premium - $4.99/month"
+    "message": "✨ Upgrade to Premium"
   },
   "openDashboard": {
     "message": "📊 Open Dashboard"
@@ -259,10 +259,10 @@
     "message": "Choose Your Plan"
   },
   "planBasic": {
-    "message": "Basic - $2.99/month (3 sensitivity levels)"
+    "message": "Basic - 1,99€/month (3 sensitivity levels)"
   },
   "planFull": {
-    "message": "Full - $4.99/month (All 7 levels + unlimited posts)"
+    "message": "Full - 4,99€/month (All 7 levels + unlimited posts)"
   },
   "planBasicName": {
     "message": "Basic Plan"

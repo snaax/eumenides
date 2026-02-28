@@ -50,7 +50,7 @@
     "message": "⚠️ Limite quotidienne atteinte (5/5)"
   },
   "upgradePremium": {
-    "message": "✨ Passer à Premium - 4,99€/mois"
+    "message": "✨ Passer à Premium"
   },
   "openDashboard": {
     "message": "📊 Ouvrir le Dashboard"
@@ -259,7 +259,7 @@
     "message": "Choisis Ton Plan"
   },
   "planBasic": {
-    "message": "Basique - 2,99€/mois (3 niveaux de sensibilité)"
+    "message": "Basique - 1,99€/mois (3 niveaux de sensibilité)"
   },
   "planFull": {
     "message": "Complet - 4,99€/mois (Tous les 7 niveaux + posts illimités)"

@@ -26,10 +26,18 @@ A browser extension that prevents you from posting angry or impulsive content on
 ### For Development (Chrome/Edge)
 
 1. Clone or download this repository
-2. Open Chrome/Edge and navigate to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in top right)
-4. Click "Load unpacked"
-5. Select the `eumenides` directory
+2. **IMPORTANT**: Generate configuration file:
+   ```bash
+   npm run build:config preview
+   # Or for local development:
+   npm run build:config development
+   ```
+3. Open Chrome/Edge and navigate to `chrome://extensions/`
+4. Enable "Developer mode" (toggle in top right)
+5. Click "Load unpacked"
+6. Select the `eumenides` directory
+
+**⚠️ Configuration is mandatory! The extension will not work without running `npm run build:config` first.**
 
 ### For Production
 

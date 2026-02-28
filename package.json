@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Eumenides - Transform your rage into wisdom. Post without regret.",
   "scripts": {
+    "build:config": "node build-config.js",
     "build:preview": "node build-config.js preview",
     "build:prod": "node build-config.js production",
     "build:dev": "node build-config.js development",

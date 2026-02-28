@@ -1,5 +1,12 @@
 console.log("Popup script loaded");
 
+// API URL configuration - MUST be set via config-generated.js
+const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
+
+if (!API_URL) {
+  console.error("CRITICAL: API_URL not configured! Please set apiUrl in config.json");
+}
+
 // Update extension icon based on enabled state
 function updateIcon(enabled) {
   console.log("updateIcon called with enabled:", enabled);
@@ -247,9 +254,46 @@ document.addEventListener("DOMContentLoaded", function () {
     upgradeBtn.style.display = hasPremium ? "none" : "block";
   });
 
-  upgradeBtn.addEventListener("click", function () {
+  upgradeBtn.addEventListener("click", async function () {
     console.log("Upgrade button clicked!");
-    chrome.tabs.create({ url: "html/activate-premium.html" });
+
+    // Get stored email if available
+    chrome.storage.sync.get(["premiumEmail"], async (data) => {
+      const storedEmail = data.premiumEmail;
+
+      if (storedEmail) {
+        // Check if user has active subscription in database
+        try {
+          const response = await fetch(`${API_URL}/api/check-status`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: storedEmail }),
+          });
+
+          const result = await response.json();
+
+          if (result.premium) {
+            // User has active subscription - redirect to reactivate page
+            console.log("Existing subscription found, redirecting to reactivate page");
+            chrome.tabs.create({
+              url: `html/reactivate-premium.html?email=${encodeURIComponent(storedEmail)}`
+            });
+          } else {
+            // Subscription expired or doesn't exist - redirect to get-premium
+            console.log("No active subscription, redirecting to get-premium");
+            chrome.tabs.create({ url: "html/get-premium.html" });
+          }
+        } catch (error) {
+          console.error("Error checking status:", error);
+          // On error, redirect to get-premium (safe default)
+          chrome.tabs.create({ url: "html/get-premium.html" });
+        }
+      } else {
+        // No stored email - new user, redirect to get-premium
+        console.log("No stored email, redirecting to get-premium");
+        chrome.tabs.create({ url: "html/get-premium.html" });
+      }
+    });
   });
 
   // Dashboard

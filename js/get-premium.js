@@ -1,6 +1,12 @@
 // Get Premium - Smart router that detects existing users
 const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
 
+if (!API_URL) {
+  console.error("CRITICAL: API_URL not configured! Please run: npm run build:config");
+  alert("Configuration error. Please contact support.");
+  throw new Error("API_URL not configured");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const emailInput = document.getElementById("emailInput");
   const continueBtn = document.getElementById("continueBtn");
