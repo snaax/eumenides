@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 // Create connection pool (works on Vercel serverless and Railway)
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL?.trim(),
   ssl: {
     rejectUnauthorized: false // Required for Supabase and most cloud providers
   },
