@@ -53,11 +53,10 @@ function applyTranslations() {
 // Update premium badge visibility
 function updatePremiumBadge() {
   chrome.storage.sync.get(["premiumPlan"], (data) => {
-    const premiumBadge = document.querySelector(".premium-badge");
-    if (premiumBadge) {
-      const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
-      premiumBadge.style.display = hasPremium ? "inline-block" : "none";
-    }
+    const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+    document.querySelectorAll(".premium-badge").forEach((badge) => {
+      badge.style.display = hasPremium ? "none" : "inline-block";
+    });
   });
 }
 
@@ -351,26 +350,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const sensitivitySelectEl = document.getElementById("sensitivitySelect");
       sensitivitySelectEl.value = detectionSensitivity;
 
-      // Enable/disable options based on tier
-      const tier =
-        premiumPlan === "full"
-          ? "premium"
-          : premiumPlan === "basic"
-            ? "basic"
-            : "free";
-      const options = sensitivitySelectEl.querySelectorAll("option");
-      options.forEach((option) => {
-        const value = option.value;
-        if (
-          window.EumenidesDetector &&
-          window.EumenidesDetector.isSensitivityAvailable
-        ) {
-          const isAvailable = window.EumenidesDetector.isSensitivityAvailable(
-            value,
-            tier,
-          );
-          option.disabled = !isAvailable;
-        }
+      // Enable/disable sensitivity options based on tier
+      const SENSITIVITY_TIERS = {
+        minimal: "full",
+        low: "full",
+        "medium-low": "basic",
+        medium: "free",
+        "medium-high": "basic",
+        high: "full",
+        maximum: "full",
+      };
+      const tierRank = { free: 0, basic: 1, full: 2 };
+      const userTierRank = tierRank[premiumPlan] ?? 0;
+      sensitivitySelectEl.querySelectorAll("option").forEach((option) => {
+        const required = SENSITIVITY_TIERS[option.value] || "free";
+        option.disabled = tierRank[required] > userTierRank;
       });
 
       // Update mode selection

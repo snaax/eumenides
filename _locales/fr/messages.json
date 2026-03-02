@@ -53,7 +53,7 @@
     "message": "✨ Passer à Premium"
   },
   "openDashboard": {
-    "message": "📊 Ouvrir le Dashboard"
+    "message": "📊 Ouvrir le tableau de bord"
   },
   "postSending": {
     "message": "Envoi..."
@@ -163,7 +163,7 @@
     "message": "Le mode Délai nécessite un abonnement Premium"
   },
   "dashboardTitle": {
-    "message": "⚡ Eumenides Dashboard"
+    "message": "⚡ Tableau de bord Eumenides"
   },
   "periodToday": {
     "message": "Aujourd'hui"
@@ -187,7 +187,7 @@
     "message": "Regrets évités"
   },
   "statCurrentStreak": {
-    "message": "Streak actuel"
+    "message": "Série actuelle"
   },
   "statChangeVsLastWeek": {
     "message": "vs semaine dernière"
@@ -223,10 +223,10 @@
     "message": "Aucun mot détecté pour le moment"
   },
   "insightPatternTitle": {
-    "message": "💡 Pattern détecté"
+    "message": "💡 Tendance détectée"
   },
   "insightPatternEmpty": {
-    "message": "Commence à utiliser Eumenides pour voir tes patterns de rage posting."
+    "message": "Commence à utiliser Eumenides pour voir tes tendances de posts impulsifs."
   },
   "insightProgressTitle": {
     "message": "🎯 Progression"
@@ -376,10 +376,10 @@
     "message": "Recevez vos posts 6h plus tard quand l'émotion est retombée"
   },
   "featureAnalyticsTitle": {
-    "message": "Analytics détaillés"
+    "message": "Analyses détaillées"
   },
   "featureAnalyticsDesc": {
-    "message": "Comprenez vos patterns émotionnels et progressez"
+    "message": "Comprenez vos tendances émotionnelles et progressez"
   },
   "welcomeStep1Title": {
     "message": "Activez l'extension"
