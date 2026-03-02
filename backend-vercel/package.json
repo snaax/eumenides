@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
+    "node-mailjet": "^6.0.5",
     "pg": "^8.11.3",
     "stripe": "^14.0.0",
     "uuid": "^9.0.1"
