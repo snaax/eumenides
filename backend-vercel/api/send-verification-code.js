@@ -1,6 +1,7 @@
 const { pool } = require("../lib/database");
 const { validateEmail } = require("../lib/validators");
 const { sendActivationCode } = require("../lib/email");
+const { handleCors } = require("../lib/cors");
 
 /**
  * Send verification code for NEW users BEFORE checkout
@@ -9,17 +10,7 @@ const { sendActivationCode } = require("../lib/email");
  * Vercel serverless function
  */
 module.exports = async (req, res) => {
-  // CORS headers
-  if (process.env.ALLOWED_ORIGINS) {
-    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGINS);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // Handle preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+  if (handleCors(req, res)) return;
 
   // Only POST allowed
   if (req.method !== "POST") {

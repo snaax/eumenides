@@ -1,22 +1,13 @@
 const { pool } = require("../lib/database");
 const { validateEmail } = require("../lib/validators");
+const { handleCors } = require("../lib/cors");
 
 /**
  * Submit daily anonymized stats from extension
  * Privacy-friendly: NO post content, just aggregated numbers
  */
 module.exports = async (req, res) => {
-  // CORS headers (wildcard set in vercel.json, this is for runtime override)
-  if (process.env.ALLOWED_ORIGINS) {
-    res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGINS);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // Handle preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+  if (handleCors(req, res)) return;
 
   // Only POST allowed
   if (req.method !== "POST") {

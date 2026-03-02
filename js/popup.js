@@ -279,19 +279,19 @@ document.addEventListener("DOMContentLoaded", function () {
               url: `html/reactivate-premium.html?email=${encodeURIComponent(storedEmail)}`
             });
           } else {
-            // Subscription expired or doesn't exist - redirect to get-premium
-            console.log("No active subscription, redirecting to get-premium");
-            chrome.tabs.create({ url: "html/get-premium.html" });
+            // Subscription expired or doesn't exist - redirect to subscribe page
+            console.log("No active subscription, redirecting to subscribe page");
+            chrome.tabs.create({ url: "html/subscribe-premium.html" });
           }
         } catch (error) {
           console.error("Error checking status:", error);
-          // On error, redirect to get-premium (safe default)
-          chrome.tabs.create({ url: "html/get-premium.html" });
+          // On error, redirect to subscribe page (safe default)
+          chrome.tabs.create({ url: "html/subscribe-premium.html" });
         }
       } else {
-        // No stored email - new user, redirect to get-premium
-        console.log("No stored email, redirecting to get-premium");
-        chrome.tabs.create({ url: "html/get-premium.html" });
+        // No stored email - new user, redirect to subscribe page
+        console.log("No stored email, redirecting to subscribe page");
+        chrome.tabs.create({ url: "html/subscribe-premium.html" });
       }
     });
   });

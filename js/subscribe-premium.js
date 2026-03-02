@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const checkoutBtn = document.getElementById("checkoutBtn");
   const step3Status = document.getElementById("step3Status");
 
-  // Step 1: Send verification code
+  // Step 1: Send verification code (with smart routing for existing users)
   sendCodeBtn.addEventListener("click", async function () {
     const email = emailInput.value.trim();
     const plan = planSelect.value;
@@ -59,6 +59,26 @@ document.addEventListener("DOMContentLoaded", function () {
     currentPlan = plan;
 
     sendCodeBtn.disabled = true;
+    sendCodeBtn.textContent = "Checking account...";
+
+    // Check if user already has an active subscription
+    try {
+      const statusResponse = await fetch(`${API_URL}/api/check-status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const statusData = await statusResponse.json();
+      if (statusData.premium) {
+        // Existing active subscriber — redirect to activation flow
+        window.location.href = `reactivate-premium.html?email=${encodeURIComponent(email)}`;
+        return;
+      }
+    } catch (error) {
+      // On check-status error, continue with new-user flow
+      console.warn("Could not check account status, proceeding as new user:", error);
+    }
+
     sendCodeBtn.textContent = "Sending code...";
 
     try {
