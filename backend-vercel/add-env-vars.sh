@@ -53,9 +53,9 @@ while IFS= read -r line || [ -n "$line" ]; do
         # Use npx if vercel is not installed globally
         # Pass empty string for branch (applies to all preview branches)
         if [ -n "$FORCE_FLAG" ]; then
-            echo "$VALUE" | npx vercel env add "$KEY" "$ENVIRONMENT" "" --force
+            echo -n "$VALUE" | npx vercel env add "$KEY" "$ENVIRONMENT" "" --force
         else
-            echo "$VALUE" | npx vercel env add "$KEY" "$ENVIRONMENT" ""
+            echo -n "$VALUE" | npx vercel env add "$KEY" "$ENVIRONMENT" ""
         fi
 
         if [ $? -eq 0 ]; then
