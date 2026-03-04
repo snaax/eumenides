@@ -507,10 +507,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const isLocked = tierRank[required] > userTierRank;
         option.disabled = isLocked;
         if (!isLocked) {
-          // Strip lock icon and tier label (e.g. "🔒 Minimale (Complet)" → "Minimale")
+          // Strip leading emoji token and trailing tier label "(Basic)"/"(Complet)" etc.
+          // e.g. "🔒 Minimale (Complet)" → "Minimale"
           option.textContent = option.textContent
-            .replace(/^[🔒🔓]\s*/, "")
-            .replace(/\s*\([^)]+\)\s*$/, "")
+            .replace(/^\S+\s*/, "")
+            .replace(/\s*\([^)]+\)$/, "")
             .trim();
         }
       });
