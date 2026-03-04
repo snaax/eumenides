@@ -229,7 +229,14 @@ async function cancelSubscription() {
     const data = await response.json();
 
     if (data.url) {
-      window.open(data.url, "_blank");
+      const portalTab = window.open(data.url, "_blank");
+      // Refresh status display when user returns from portal
+      const onFocus = async () => {
+        window.removeEventListener("focus", onFocus);
+        if (portalTab && !portalTab.closed) portalTab.close();
+        await displayPremiumStatus();
+      };
+      window.addEventListener("focus", onFocus);
     } else {
       throw new Error(data.error || "Failed to create portal session");
     }

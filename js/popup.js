@@ -7,6 +7,61 @@ if (!API_URL) {
   console.error("CRITICAL: API_URL not configured! Please set apiUrl in config.json");
 }
 
+// Sync premium status from API and refresh popup subscription UI
+async function syncAndRefreshPremiumStatus(email) {
+  try {
+    const response = await fetch(`${API_URL}/api/check-status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await response.json();
+
+    if (data.premium) {
+      const tier = data.tier || "basic";
+      await chrome.storage.sync.set({
+        premiumPlan: tier,
+        premiumEmail: email,
+        premiumUntil: data.expiresAt,
+        dailyLimit: tier === "full" ? 999999 : 15,
+      });
+    } else {
+      await chrome.storage.sync.set({
+        premiumPlan: "free",
+        premiumUntil: null,
+        dailyLimit: 5,
+      });
+    }
+
+    // Refresh the subscription info card
+    const subscriptionInfo = document.getElementById("subscriptionInfo");
+    const subscriptionPlan = document.getElementById("subscriptionPlan");
+    const subscriptionExpiry = document.getElementById("subscriptionExpiry");
+    const upgradeBtn = document.querySelector(".upgrade-btn");
+
+    if (data.premium) {
+      const tier = data.tier || "basic";
+      const planLabel = tier === "full"
+        ? (chrome.i18n.getMessage("planFullName") || "Full Plan")
+        : (chrome.i18n.getMessage("planBasicName") || "Basic Plan");
+      subscriptionPlan.textContent = (tier === "full" ? "⭐ " : "✨ ") + planLabel;
+      if (data.expiresAt) {
+        const expiry = new Date(data.expiresAt);
+        const formatted = expiry.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+        const template = chrome.i18n.getMessage("subscriptionActiveUntil") || "Active until {date}";
+        subscriptionExpiry.textContent = template.replace("{date}", formatted);
+      }
+      subscriptionInfo.style.display = "block";
+      upgradeBtn.style.display = "none";
+    } else {
+      subscriptionInfo.style.display = "none";
+      upgradeBtn.style.display = "block";
+    }
+  } catch (error) {
+    console.error("Error syncing premium status:", error);
+  }
+}
+
 // Update extension icon based on enabled state
 function updateIcon(enabled) {
   console.log("updateIcon called with enabled:", enabled);
@@ -243,6 +298,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Silently sync status from API on popup open
+  chrome.storage.sync.get(["premiumEmail"], (stored) => {
+    if (stored.premiumEmail) {
+      syncAndRefreshPremiumStatus(stored.premiumEmail);
+    }
+  });
+
   // Subscription info for premium users
   chrome.storage.sync.get(["premiumPlan", "premiumEmail", "premiumUntil", "subscriptionCanceled"], (data) => {
     const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
@@ -284,7 +346,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         const result = await response.json();
         if (result.url) {
-          chrome.tabs.create({ url: result.url });
+          const tab = await chrome.tabs.create({ url: result.url });
+          // When portal tab closes, sync status from API and refresh UI
+          chrome.tabs.onRemoved.addListener(function onPortalClosed(closedTabId) {
+            if (closedTabId !== tab.id) return;
+            chrome.tabs.onRemoved.removeListener(onPortalClosed);
+            syncAndRefreshPremiumStatus(data.premiumEmail);
+          });
         } else {
           throw new Error(result.error || "Failed");
         }
