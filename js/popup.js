@@ -504,7 +504,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const userTierRank = tierRank[premiumPlan] ?? 0;
       sensitivitySelectEl.querySelectorAll("option").forEach((option) => {
         const required = SENSITIVITY_TIERS[option.value] || "free";
-        option.disabled = tierRank[required] > userTierRank;
+        const isLocked = tierRank[required] > userTierRank;
+        option.disabled = isLocked;
+        if (!isLocked) {
+          // Strip lock icon and tier label (e.g. "🔒 Minimale (Complet)" → "Minimale")
+          option.textContent = option.textContent
+            .replace(/^[🔒🔓]\s*/, "")
+            .replace(/\s*\([^)]+\)\s*$/, "")
+            .trim();
+        }
       });
 
       // Update mode selection
