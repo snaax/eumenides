@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Fetch stats from API
-      const response = await fetch(`${API_BASE_URL}/api/get-stats`, {
+      const response = await fetch(`${API_BASE_URL}/api/stats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

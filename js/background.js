@@ -580,7 +580,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/submit-stats`, {
+        const response = await fetch(`${API_BASE_URL}/api/stats`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
