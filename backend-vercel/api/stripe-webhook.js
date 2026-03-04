@@ -135,10 +135,17 @@ async function handleSubscriptionUpdated(subscription) {
   console.log("Subscription updated:", subscription.id, "cancel_at_period_end:", subscription.cancel_at_period_end);
 
   try {
+    // Detect plan change via price ID
+    const priceId = subscription.items?.data?.[0]?.price?.id;
+    const tier = priceId === process.env.STRIPE_PRICE_ID_FULL ? "full" : "basic";
+
     await pool.query(
-      `UPDATE users SET subscription_canceled = $1, updated_at = NOW()
-       WHERE stripe_subscription_id = $2`,
-      [subscription.cancel_at_period_end === true, subscription.id],
+      `UPDATE users
+       SET subscription_canceled = $1,
+           subscription_tier = $2,
+           updated_at = NOW()
+       WHERE stripe_subscription_id = $3`,
+      [subscription.cancel_at_period_end === true, tier, subscription.id],
     );
   } catch (error) {
     console.error("Database error:", error);

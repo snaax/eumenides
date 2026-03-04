@@ -300,6 +300,21 @@
   "upgradeToUnlock": {
     "message": "Upgrade to unlock all features"
   },
+  "upgradeToFull": {
+    "message": "⬆️ Upgrade to Full"
+  },
+  "upgradeSuccess": {
+    "message": "✅ Subscription updated to Full!"
+  },
+  "upgradeError": {
+    "message": "Upgrade failed. Please try again."
+  },
+  "currentPlanButton": {
+    "message": "✓ Current Plan"
+  },
+  "notAvailable": {
+    "message": "Not Available"
+  },
   "planBasicBadge": {
     "message": "BASIC"
   },

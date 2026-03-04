@@ -249,6 +249,48 @@ async function cancelSubscription() {
   }
 }
 
+// Upgrade existing subscription to a different plan (handles proration via Stripe)
+async function handleUpgrade(button, newPlan) {
+  const result = await chrome.storage.sync.get(["premiumEmail"]);
+
+  if (!result.premiumEmail) {
+    alert(getMessage("noEmailError") || "No email found. Please contact support.");
+    return;
+  }
+
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = getMessage("loadingPortal") || "Loading...";
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/upgrade-subscription`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: result.premiumEmail, newPlan }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Upgrade failed");
+    }
+
+    // Update storage with new plan
+    await chrome.storage.sync.set({
+      premiumPlan: newPlan,
+      dailyLimit: newPlan === "full" ? 999999 : 15,
+    });
+
+    alert(getMessage("upgradeSuccess") || `✅ Abonnement mis à jour vers ${newPlan === "full" ? "Full" : "Basic"} !`);
+    await displayPremiumStatus();
+  } catch (error) {
+    console.error("Upgrade error:", error);
+    alert(getMessage("upgradeError") || "Échec de la mise à jour. Veuillez réessayer.");
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
 // Reactivate subscription — opens Stripe Customer Portal
 async function reactivateSubscription() {
   const result = await chrome.storage.sync.get(["premiumEmail"]);
@@ -392,20 +434,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         button.style.opacity = "0.5";
         button.style.cursor = "not-allowed";
         if (buttonPlan === "full") {
-          button.textContent = "✓ Current Plan";
+          button.textContent = getMessage("currentPlanButton") || "✓ Plan actuel";
         } else {
-          button.textContent = "Not Available";
+          button.textContent = getMessage("notAvailable") || "Non disponible";
         }
       } else if (storage.premiumPlan === "basic" && buttonPlan === "basic") {
         // Basic plan user - disable basic button
         button.disabled = true;
         button.style.opacity = "0.5";
         button.style.cursor = "not-allowed";
-        button.textContent = "✓ Current Plan";
+        button.textContent = getMessage("currentPlanButton") || "✓ Plan actuel";
       } else if (storage.premiumPlan === "basic" && buttonPlan === "full") {
         // Basic plan user can upgrade to full
-        button.addEventListener("click", function () {
-          showEmailModal(buttonPlan);
+        button.textContent = getMessage("upgradeToFull") || "⬆️ Passer à Full";
+        button.addEventListener("click", async function () {
+          await handleUpgrade(button, "full");
         });
       }
     } else {
