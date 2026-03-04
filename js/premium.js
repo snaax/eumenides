@@ -415,6 +415,20 @@ async function displayPremiumStatus() {
 
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", async function () {
+  // Fetch prices from Stripe and update price elements
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/get-prices`);
+    if (res.ok) {
+      const prices = await res.json();
+      const fmt = (amount, currency) =>
+        new Intl.NumberFormat(undefined, { style: "currency", currency: currency.toUpperCase() }).format(amount / 100);
+      if (prices.basic) document.getElementById("planBasicPrice").textContent = fmt(prices.basic.amount, prices.basic.currency);
+      if (prices.full)  document.getElementById("planFullPrice").textContent  = fmt(prices.full.amount,  prices.full.currency);
+    }
+  } catch (e) {
+    console.warn("Could not fetch prices from Stripe:", e);
+  }
+
   // Display premium status
   await displayPremiumStatus();
 
