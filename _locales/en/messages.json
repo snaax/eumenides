@@ -703,4 +703,3 @@
   "processing": { "message": "Processing..." },
   "errorCheckoutFailed": { "message": "Payment failed. Please try again." }
 }
-}

@@ -703,4 +703,3 @@
   "processing": { "message": "Traitement en cours..." },
   "errorCheckoutFailed": { "message": "Échec du paiement. Veuillez réessayer." }
 }
-}
