@@ -283,10 +283,10 @@
     "message": "Your Subscription"
   },
   "subscriptionActiveUntil": {
-    "message": "Active until {date}"
+    "message": "Active until"
   },
   "subscriptionCanceledUntil": {
-    "message": "Canceled – active until {date}"
+    "message": "Canceled – active until"
   },
   "planBasicBadge": {
     "message": "BASIC"

@@ -51,8 +51,8 @@ async function syncAndRefreshPremiumStatus(email) {
         const expiry = new Date(data.expiresAt);
         const formatted = expiry.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
         const key = data.subscriptionCanceled ? "subscriptionCanceledUntil" : "subscriptionActiveUntil";
-        const template = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until {date}" : "Active until {date}");
-        subscriptionExpiry.textContent = template.replace("{date}", formatted);
+        const prefix = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until" : "Active until");
+        subscriptionExpiry.textContent = `${prefix} ${formatted}`;
       }
       subscriptionInfo.style.display = "block";
       upgradeBtn.style.display = "none";
@@ -327,8 +327,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const expiry = new Date(data.premiumUntil);
         const formatted = expiry.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
         const key = data.subscriptionCanceled ? "subscriptionCanceledUntil" : "subscriptionActiveUntil";
-        const template = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until {date}" : "Active until {date}");
-        subscriptionExpiry.textContent = template.replace("{date}", formatted);
+        const prefix = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until" : "Active until");
+        subscriptionExpiry.textContent = `${prefix} ${formatted}`;
       }
     }
   });

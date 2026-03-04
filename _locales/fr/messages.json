@@ -283,13 +283,13 @@
     "message": "Votre Abonnement"
   },
   "subscriptionActiveUntil": {
-    "message": "Actif jusqu'au {date}"
+    "message": "Actif jusqu'au"
   },
   "subscriptionCanceledUntil": {
-    "message": "Annulé – actif jusqu'au {date}"
+    "message": "Annulé – actif jusqu'au"
   },
   "planBasicBadge": {
-    "message": "BASIC"
+    "message": "BASIQUE"
   },
   "planFullBadge": {
     "message": "COMPLET – RECOMMANDÉ"
