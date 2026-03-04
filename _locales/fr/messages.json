@@ -279,6 +279,9 @@
   "cancelSubscription": {
     "message": "Annuler l'Abonnement"
   },
+  "reactivateSubscription": {
+    "message": "🔄 Réactiver l'Abonnement"
+  },
   "yourSubscription": {
     "message": "Votre Abonnement"
   },

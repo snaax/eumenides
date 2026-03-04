@@ -415,6 +415,29 @@
       cursor: not-allowed;
     }
 
+    .reactivate-subscription-btn {
+      background: transparent;
+      border: 2px solid rgba(74, 222, 128, 0.5);
+      color: #4ade80;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .reactivate-subscription-btn:hover {
+      background: rgba(74, 222, 128, 0.1);
+      border-color: #4ade80;
+    }
+
+    .reactivate-subscription-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 768px) {
       .comparison-table {
         grid-template-columns: 1fr;
@@ -452,6 +475,9 @@
       <div class="status-details" id="statusDetails"></div>
       <button class="cancel-subscription-btn" id="cancelSubscriptionBtn" style="display: none;" data-i18n="cancelSubscription">
         Cancel Subscription
+      </button>
+      <button class="reactivate-subscription-btn" id="reactivateSubscriptionBtn" style="display: none;" data-i18n="reactivateSubscription">
+        Reactivate Subscription
       </button>
     </div>
 

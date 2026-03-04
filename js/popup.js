@@ -54,6 +54,12 @@ async function syncAndRefreshPremiumStatus(email) {
         const prefix = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until" : "Active until");
         subscriptionExpiry.textContent = `${prefix} ${formatted}`;
       }
+      const manageBtn = document.getElementById("manageSubscriptionBtn");
+      if (data.subscriptionCanceled) {
+        manageBtn.textContent = chrome.i18n.getMessage("reactivateSubscription") || "🔄 Réactiver l'abonnement";
+      } else {
+        manageBtn.textContent = chrome.i18n.getMessage("manageSubscription") || "⚙️ Gérer l'abonnement";
+      }
       subscriptionInfo.style.display = "block";
       upgradeBtn.style.display = "none";
     } else {
@@ -329,6 +335,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const key = data.subscriptionCanceled ? "subscriptionCanceledUntil" : "subscriptionActiveUntil";
         const prefix = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until" : "Active until");
         subscriptionExpiry.textContent = `${prefix} ${formatted}`;
+      }
+
+      const manageBtn = document.getElementById("manageSubscriptionBtn");
+      if (data.subscriptionCanceled) {
+        manageBtn.textContent = chrome.i18n.getMessage("reactivateSubscription") || "🔄 Réactiver l'abonnement";
+      } else {
+        manageBtn.textContent = chrome.i18n.getMessage("manageSubscription") || "⚙️ Gérer l'abonnement";
       }
     }
   });

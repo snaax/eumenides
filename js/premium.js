@@ -249,6 +249,49 @@ async function cancelSubscription() {
   }
 }
 
+// Reactivate subscription — opens Stripe Customer Portal
+async function reactivateSubscription() {
+  const result = await chrome.storage.sync.get(["premiumEmail"]);
+
+  if (!result.premiumEmail) {
+    alert(getMessage("noEmailError") || "No email found. Please contact support.");
+    return;
+  }
+
+  const reactivateBtn = document.getElementById("reactivateSubscriptionBtn");
+  const originalText = reactivateBtn.textContent;
+  reactivateBtn.disabled = true;
+  reactivateBtn.textContent = getMessage("loadingPortal") || "Loading...";
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/create-portal-session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: result.premiumEmail }),
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      const portalTab = window.open(data.url, "_blank");
+      const onFocus = async () => {
+        window.removeEventListener("focus", onFocus);
+        if (portalTab && !portalTab.closed) portalTab.close();
+        await displayPremiumStatus();
+      };
+      window.addEventListener("focus", onFocus);
+    } else {
+      throw new Error(data.error || "Failed to create portal session");
+    }
+  } catch (error) {
+    console.error("Error opening portal:", error);
+    alert(getMessage("portalError") || "Error opening billing portal. Please try again.");
+  } finally {
+    reactivateBtn.disabled = false;
+    reactivateBtn.textContent = originalText;
+  }
+}
+
 // Display premium status
 async function displayPremiumStatus() {
   try {
@@ -267,6 +310,7 @@ async function displayPremiumStatus() {
     const statusPlan = document.getElementById("statusPlan");
     const statusDetails = document.getElementById("statusDetails");
     const cancelBtn = document.getElementById("cancelSubscriptionBtn");
+    const reactivateBtn = document.getElementById("reactivateSubscriptionBtn");
 
     const hasPremium = result.premiumPlan && result.premiumPlan !== "free";
 
@@ -297,10 +341,12 @@ async function displayPremiumStatus() {
           const prefix = getMessage("subscriptionCanceledUntil") || "Annulé – actif jusqu'au";
           statusDetails.innerHTML = `${prefix} <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
           cancelBtn.style.display = "none";
+          reactivateBtn.style.display = "inline-block";
         } else {
           const prefix = getMessage("subscriptionActiveUntil") || "Actif jusqu'au";
           statusDetails.innerHTML = `${prefix} <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
           cancelBtn.style.display = "inline-block";
+          reactivateBtn.style.display = "none";
         }
       } else {
         statusDetails.textContent = result.premiumEmail || getMessage("premiumActive") || "Premium actif";
@@ -381,6 +427,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   const cancelBtn = document.getElementById("cancelSubscriptionBtn");
   if (cancelBtn) {
     cancelBtn.addEventListener("click", cancelSubscription);
+  }
+
+  // Reactivate subscription button (shown when subscription is canceled but still active)
+  const reactivateBtn = document.getElementById("reactivateSubscriptionBtn");
+  if (reactivateBtn) {
+    reactivateBtn.addEventListener("click", reactivateSubscription);
   }
 
   // Add activate button for users who completed checkout but haven't activated
