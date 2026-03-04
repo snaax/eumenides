@@ -647,5 +647,60 @@
         "content": "$1"
       }
     }
-  }
+  },
+
+  "premiumPageTitle": { "message": "⚡ Eumenides Premium" },
+  "premiumPageSubtitle": { "message": "Unlock the full potential of digital wisdom" },
+
+  "planFreePrice": { "message": "0€" },
+  "planPriceSub": { "message": "per month, no commitment" },
+  "planFreeFeature1": { "message": "📝 5 posts per day" },
+  "planFreeFeature2": { "message": "🌐 X and Reddit" },
+  "planFreeFeature3": { "message": "❌ No reflection delay" },
+  "planFreeFeature4": { "message": "❌ No dashboard" },
+
+  "planBasicPrice": { "message": "1.99€" },
+  "planBasicFeature1": { "message": "📝 15 posts per day" },
+  "planBasicFeature2": { "message": "🌐 X, Reddit, Facebook" },
+  "planBasicFeature3": { "message": "⏰ Reflection delay mode" },
+  "planBasicFeature4": { "message": "📊 Basic dashboard" },
+  "buyBasicButton": { "message": "Get Basic" },
+
+  "planFullPrice": { "message": "4.99€" },
+  "planFullFeature1": { "message": "♾️ Unlimited posts" },
+  "planFullFeature2": { "message": "🌐 All platforms" },
+  "planFullFeature3": { "message": "⏰ Customizable delay mode" },
+  "planFullFeature4": { "message": "📊 Full dashboard" },
+  "planFullFeature5": { "message": "📈 Advanced statistics" },
+  "planFullFeature6": { "message": "☁️ Cloud sync" },
+  "planFullFeature7": { "message": "🏆 Exclusive badges" },
+  "buyFullButton": { "message": "Get Full" },
+  "buyNowButton": { "message": "Get started now" },
+
+  "comparisonTitle": { "message": "Plan comparison" },
+  "comparisonFeature": { "message": "Feature" },
+  "comparisonFree": { "message": "Free" },
+  "comparisonBasic": { "message": "Basic" },
+  "comparisonFull": { "message": "Full" },
+  "comparisonPostsPerDay": { "message": "Posts per day" },
+  "comparisonPlatforms": { "message": "Platforms" },
+  "comparisonPlatformsFree": { "message": "X, Reddit" },
+  "comparisonPlatformsBasic": { "message": "X, Reddit, Facebook" },
+  "comparisonPlatformsFull": { "message": "All" },
+  "comparisonModeCatharsis": { "message": "Catharsis mode" },
+  "comparisonModePreview": { "message": "Preview mode" },
+  "comparisonModeDelay": { "message": "Delay mode" },
+  "comparisonDashboard": { "message": "Dashboard" },
+  "comparisonDashboardBasic": { "message": "Basic" },
+  "comparisonDashboardFull": { "message": "Full" },
+  "comparisonStats": { "message": "Statistics" },
+  "comparisonCloudSync": { "message": "Cloud sync" },
+  "comparisonBadges": { "message": "Exclusive badges" },
+
+  "enterEmail": { "message": "Enter your email" },
+  "emailPlaceholder": { "message": "your@email.com" },
+  "errorInvalidEmail": { "message": "Invalid email address" },
+  "processing": { "message": "Processing..." },
+  "errorCheckoutFailed": { "message": "Payment failed. Please try again." }
+}
 }
