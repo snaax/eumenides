@@ -47,6 +47,10 @@ module.exports = async (req, res) => {
         await handleCheckoutCompleted(event.data.object);
         break;
 
+      case "customer.subscription.updated":
+        await handleSubscriptionUpdated(event.data.object);
+        break;
+
       case "customer.subscription.deleted":
         await handleSubscriptionCanceled(event.data.object);
         break;
@@ -125,7 +129,25 @@ async function handleCheckoutCompleted(session) {
 }
 
 /**
- * Handle subscription update (e.g., when cancel_at_period_end is set)
+ * Handle subscription update — fired when cancel_at_period_end changes
+ */
+async function handleSubscriptionUpdated(subscription) {
+  console.log("Subscription updated:", subscription.id, "cancel_at_period_end:", subscription.cancel_at_period_end);
+
+  try {
+    await pool.query(
+      `UPDATE users SET subscription_canceled = $1, updated_at = NOW()
+       WHERE stripe_subscription_id = $2`,
+      [subscription.cancel_at_period_end === true, subscription.id],
+    );
+  } catch (error) {
+    console.error("Database error:", error);
+    throw error;
+  }
+}
+
+/**
+ * Handle subscription deleted — fired when subscription fully ends
  */
 async function handleSubscriptionCanceled(subscription) {
   console.log("Subscription canceled:", subscription.id);

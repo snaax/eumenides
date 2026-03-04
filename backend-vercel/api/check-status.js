@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
     // Query database
     const result = await pool.query(
-      "SELECT email, premium_until, subscription_tier, is_active, stripe_customer_id FROM users WHERE email = $1",
+      "SELECT email, premium_until, subscription_tier, is_active, stripe_customer_id, subscription_canceled FROM users WHERE email = $1",
       [email.toLowerCase().trim()],
     );
 
@@ -55,6 +55,7 @@ module.exports = async (req, res) => {
       expiresAt: user.premium_until,
       tier: user.subscription_tier || "basic",
       stripeCustomerId: user.stripe_customer_id,
+      subscriptionCanceled: user.subscription_canceled === true,
     });
   } catch (error) {
     console.error("Check status error:", error);

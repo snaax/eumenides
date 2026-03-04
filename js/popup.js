@@ -23,12 +23,14 @@ async function syncAndRefreshPremiumStatus(email) {
         premiumPlan: tier,
         premiumEmail: email,
         premiumUntil: data.expiresAt,
+        subscriptionCanceled: data.subscriptionCanceled || false,
         dailyLimit: tier === "full" ? 999999 : 15,
       });
     } else {
       await chrome.storage.sync.set({
         premiumPlan: "free",
         premiumUntil: null,
+        subscriptionCanceled: false,
         dailyLimit: 5,
       });
     }
@@ -48,7 +50,8 @@ async function syncAndRefreshPremiumStatus(email) {
       if (data.expiresAt) {
         const expiry = new Date(data.expiresAt);
         const formatted = expiry.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-        const template = chrome.i18n.getMessage("subscriptionActiveUntil") || "Active until {date}";
+        const key = data.subscriptionCanceled ? "subscriptionCanceledUntil" : "subscriptionActiveUntil";
+        const template = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until {date}" : "Active until {date}");
         subscriptionExpiry.textContent = template.replace("{date}", formatted);
       }
       subscriptionInfo.style.display = "block";
