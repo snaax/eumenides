@@ -205,66 +205,38 @@ function showEmailModal(plan) {
   });
 }
 
-// Cancel subscription
+// Cancel subscription — opens Stripe Customer Portal
 async function cancelSubscription() {
-  const result = await chrome.storage.sync.get(["premiumKey"]);
+  const result = await chrome.storage.sync.get(["premiumEmail"]);
 
-  if (!result.premiumKey) {
-    alert("No active subscription found");
-    return;
-  }
-
-  const confirmed = confirm(
-    "Are you sure you want to cancel your subscription?\n\n" +
-      "Your premium features will remain active until the end of your billing period.\n\n" +
-      "You can resubscribe at any time.",
-  );
-
-  if (!confirmed) {
+  if (!result.premiumEmail) {
+    alert(getMessage("noEmailError") || "No email found. Please contact support.");
     return;
   }
 
   const cancelBtn = document.getElementById("cancelSubscriptionBtn");
   const originalText = cancelBtn.textContent;
   cancelBtn.disabled = true;
-  cancelBtn.textContent = "Canceling...";
+  cancelBtn.textContent = getMessage("loadingPortal") || "Loading...";
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cancel-subscription`, {
+    const response = await fetch(`${API_BASE_URL}/api/create-portal-session`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        premiumKey: result.premiumKey,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: result.premiumEmail }),
     });
 
     const data = await response.json();
 
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || "Failed to cancel subscription");
+    if (data.url) {
+      window.open(data.url, "_blank");
+    } else {
+      throw new Error(data.error || "Failed to create portal session");
     }
-
-    // Update Chrome storage with canceled status
-    await chrome.storage.sync.set({
-      subscriptionCanceled: true,
-    });
-
-    // Refresh the status display first (this will hide the button)
-    await displayPremiumStatus();
-
-    alert(
-      "Subscription canceled successfully.\n\nYour premium features will remain active until " +
-        (data.activeUntil
-          ? new Date(data.activeUntil).toLocaleDateString()
-          : "the end of your billing period"),
-    );
   } catch (error) {
-    console.error("Error canceling subscription:", error);
-    alert(
-      "Failed to cancel subscription. Please try again or contact support.",
-    );
+    console.error("Error opening portal:", error);
+    alert(getMessage("portalError") || "Error opening billing portal. Please try again.");
+  } finally {
     cancelBtn.disabled = false;
     cancelBtn.textContent = originalText;
   }

@@ -264,6 +264,9 @@
   "planFull": {
     "message": "Full - 4,99€/month (All 7 levels + unlimited posts)"
   },
+  "currentPlan": {
+    "message": "Your Current Plan"
+  },
   "planBasicName": {
     "message": "Basic Plan"
   },
@@ -272,6 +275,27 @@
   },
   "manageSubscription": {
     "message": "⚙️ Manage Subscription"
+  },
+  "cancelSubscription": {
+    "message": "Cancel Subscription"
+  },
+  "yourSubscription": {
+    "message": "Your Subscription"
+  },
+  "subscriptionActiveUntil": {
+    "message": "Active until {date}"
+  },
+  "subscriptionCanceledUntil": {
+    "message": "Canceled – active until {date}"
+  },
+  "planBasicBadge": {
+    "message": "BASIC"
+  },
+  "planFullBadge": {
+    "message": "FULL – RECOMMENDED"
+  },
+  "planFreeBadge": {
+    "message": "FREE"
   },
   "premiumFeaturesTitle": {
     "message": "Premium Features:"

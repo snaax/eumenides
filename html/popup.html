@@ -200,6 +200,58 @@
                 background: rgba(255, 255, 255, 0.3);
             }
 
+            .subscription-info {
+                background: rgba(255, 215, 0, 0.15);
+                border: 1px solid rgba(255, 215, 0, 0.4);
+                border-radius: 12px;
+                padding: 12px 15px;
+                margin-bottom: 15px;
+            }
+
+            .subscription-info h3 {
+                font-size: 12px;
+                font-weight: 600;
+                opacity: 0.8;
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .subscription-plan {
+                font-size: 16px;
+                font-weight: 700;
+                color: #ffd700;
+                margin-bottom: 4px;
+            }
+
+            .subscription-expiry {
+                font-size: 11px;
+                opacity: 0.75;
+                margin-bottom: 10px;
+            }
+
+            .manage-btn {
+                width: 100%;
+                padding: 8px;
+                background: rgba(255, 215, 0, 0.2);
+                color: #ffd700;
+                border: 1px solid rgba(255, 215, 0, 0.4);
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 12px;
+                transition: 0.2s;
+            }
+
+            .manage-btn:hover {
+                background: rgba(255, 215, 0, 0.3);
+            }
+
+            .manage-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
             .limit-warning {
                 background: rgba(255, 107, 107, 0.3);
                 padding: 10px;
@@ -392,6 +444,14 @@
                 data-i18n="limitWarning"
             >
                 ⚠️ Daily limit reached (5/5)
+            </div>
+
+            <!-- Subscription info (premium users only) -->
+            <div class="subscription-info" id="subscriptionInfo" style="display: none;">
+                <h3 data-i18n="yourSubscription">Your Subscription</h3>
+                <div class="subscription-plan" id="subscriptionPlan"></div>
+                <div class="subscription-expiry" id="subscriptionExpiry"></div>
+                <button class="manage-btn" id="manageSubscriptionBtn" data-i18n="manageSubscription">⚙️ Manage Subscription</button>
             </div>
 
             <button class="upgrade-btn" id="upgradePremiumBtn" data-i18n="upgradePremium">

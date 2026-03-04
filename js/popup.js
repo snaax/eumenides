@@ -243,6 +243,62 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Subscription info for premium users
+  chrome.storage.sync.get(["premiumPlan", "premiumEmail", "premiumUntil", "subscriptionCanceled"], (data) => {
+    const hasPremium = data.premiumPlan && data.premiumPlan !== "free";
+    const subscriptionInfo = document.getElementById("subscriptionInfo");
+    const subscriptionPlan = document.getElementById("subscriptionPlan");
+    const subscriptionExpiry = document.getElementById("subscriptionExpiry");
+
+    if (hasPremium) {
+      subscriptionInfo.style.display = "block";
+
+      const planLabel = data.premiumPlan === "full"
+        ? (chrome.i18n.getMessage("planFullName") || "Full Plan")
+        : (chrome.i18n.getMessage("planBasicName") || "Basic Plan");
+      subscriptionPlan.textContent = (data.premiumPlan === "full" ? "⭐ " : "✨ ") + planLabel;
+
+      if (data.premiumUntil) {
+        const expiry = new Date(data.premiumUntil);
+        const formatted = expiry.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+        const key = data.subscriptionCanceled ? "subscriptionCanceledUntil" : "subscriptionActiveUntil";
+        const template = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until {date}" : "Active until {date}");
+        subscriptionExpiry.textContent = template.replace("{date}", formatted);
+      }
+    }
+  });
+
+  const manageSubscriptionBtn = document.getElementById("manageSubscriptionBtn");
+  manageSubscriptionBtn.addEventListener("click", async function () {
+    chrome.storage.sync.get(["premiumEmail"], async (data) => {
+      if (!data.premiumEmail) return;
+
+      manageSubscriptionBtn.disabled = true;
+      manageSubscriptionBtn.textContent = chrome.i18n.getMessage("loadingPortal") || "Loading...";
+
+      try {
+        const response = await fetch(`${API_URL}/api/create-portal-session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: data.premiumEmail }),
+        });
+        const result = await response.json();
+        if (result.url) {
+          chrome.tabs.create({ url: result.url });
+        } else {
+          throw new Error(result.error || "Failed");
+        }
+      } catch (error) {
+        console.error("Portal error:", error);
+        alert(chrome.i18n.getMessage("portalError") || "Error opening billing portal. Please try again.");
+      } finally {
+        manageSubscriptionBtn.disabled = false;
+        const msg = chrome.i18n.getMessage("manageSubscription");
+        manageSubscriptionBtn.textContent = msg || "⚙️ Manage Subscription";
+      }
+    });
+  });
+
   // Premium upgrade
   const upgradeBtn = document.querySelector(".upgrade-btn");
   console.log("Upgrade button:", upgradeBtn);
