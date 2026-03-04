@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const verifiedEmail = document.getElementById("verifiedEmail");
   const checkoutBtn = document.getElementById("checkoutBtn");
   const step3Status = document.getElementById("step3Status");
+  const step4 = document.getElementById("step4");
 
   // Step 1: Send verification code (with smart routing for existing users)
   sendCodeBtn.addEventListener("click", async function () {
@@ -255,8 +256,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (data.url) {
-        // Redirect to checkout.html which will open Stripe and poll for completion
-        window.location.href = `/html/checkout.html?email=${encodeURIComponent(currentEmail)}&plan=${currentPlan}`;
+        const stripeTab = window.open(data.url, "_blank");
+        step3.classList.add("hidden");
+        step4.classList.remove("hidden");
+        startPolling(currentEmail, currentPlan, stripeTab);
       } else {
         throw new Error(data.error || "Failed to create checkout");
       }
@@ -271,6 +274,66 @@ document.addEventListener("DOMContentLoaded", function () {
       checkoutBtn.textContent = "🚀 Proceed to Stripe Checkout";
     }
   });
+
+  async function startPolling(email, plan, stripeTab) {
+    const pollingText = document.getElementById("pollingText");
+    const pollingArea = document.getElementById("pollingArea");
+    const successArea = document.getElementById("successArea");
+    const step4Status = document.getElementById("step4Status");
+
+    let attempts = 0;
+    const maxAttempts = 60;
+
+    const poll = async () => {
+      attempts++;
+      pollingText.textContent = `Checking for payment... (${attempts}/${maxAttempts})`;
+
+      try {
+        const response = await fetch(`${API_URL}/api/check-status`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+
+        if (data.premium) {
+          if (stripeTab && !stripeTab.closed) {
+            stripeTab.close();
+          }
+
+          pollingArea.style.display = "none";
+          successArea.classList.remove("hidden");
+
+          const tier = data.tier || plan || "basic";
+          await chrome.storage.sync.set({
+            premiumPlan: tier,
+            premiumEmail: email,
+            premiumUntil: data.expiresAt,
+            subscriptionCanceled: data.subscriptionCanceled || false,
+            dailyLimit: tier === "full" ? 999999 : 15,
+          });
+
+          setTimeout(() => {
+            window.location.href = "/html/premium_page.html";
+          }, 2000);
+        } else if (attempts < maxAttempts) {
+          setTimeout(poll, 1000);
+        } else {
+          showStatus(step4Status, "⚠️ Timeout - Please contact support if payment was completed", "error");
+        }
+      } catch (error) {
+        console.error("Polling error:", error);
+        if (attempts < maxAttempts) {
+          setTimeout(poll, 1000);
+        } else {
+          showStatus(step4Status, "❌ Error checking status", "error");
+        }
+      }
+    };
+
+    poll();
+  }
 
   // Helper functions
   function showStatus(element, message, type) {

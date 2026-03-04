@@ -71,9 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Redirect to checkout page within extension
-    // This avoids the chrome-extension:// redirect issue
-    window.location.href = `/html/checkout.html?email=${encodeURIComponent(email)}&plan=${plan}`;
+    window.location.href = `/html/subscribe-premium.html?email=${encodeURIComponent(email)}`;
   });
 
   /**
