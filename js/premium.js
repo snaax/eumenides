@@ -294,14 +294,16 @@ async function displayPremiumStatus() {
         });
 
         if (result.subscriptionCanceled) {
-          statusDetails.innerHTML = `Subscription canceled - Access until <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
+          const prefix = getMessage("subscriptionCanceledUntil") || "Annulé – actif jusqu'au";
+          statusDetails.innerHTML = `${prefix} <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
           cancelBtn.style.display = "none";
         } else {
-          statusDetails.innerHTML = `Active until <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
+          const prefix = getMessage("subscriptionActiveUntil") || "Actif jusqu'au";
+          statusDetails.innerHTML = `${prefix} <strong>${formattedDate}</strong> • ${result.premiumEmail || ""}`;
           cancelBtn.style.display = "inline-block";
         }
       } else {
-        statusDetails.textContent = result.premiumEmail || "Premium Active";
+        statusDetails.textContent = result.premiumEmail || getMessage("premiumActive") || "Premium actif";
         cancelBtn.style.display = "inline-block";
       }
     } else {
@@ -313,8 +315,8 @@ async function displayPremiumStatus() {
       statusTitle.textContent =
         getMessage("currentPlan") || "Your Current Plan";
       statusPlan.innerHTML =
-        '<span style="font-size: 32px;">🆓</span> Free Plan';
-      statusDetails.textContent = "Upgrade to unlock all features";
+        `<span style="font-size: 32px;">🆓</span> ${getMessage("planFreeName") || "Plan Gratuit"}`;
+      statusDetails.textContent = getMessage("upgradeToUnlock") || "Passez à Premium pour débloquer toutes les fonctionnalités";
       cancelBtn.style.display = "none";
     }
   } catch (error) {

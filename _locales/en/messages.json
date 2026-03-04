@@ -288,6 +288,15 @@
   "subscriptionCanceledUntil": {
     "message": "Canceled – active until"
   },
+  "premiumActive": {
+    "message": "Premium active"
+  },
+  "planFreeName": {
+    "message": "Free Plan"
+  },
+  "upgradeToUnlock": {
+    "message": "Upgrade to unlock all features"
+  },
   "planBasicBadge": {
     "message": "BASIC"
   },
