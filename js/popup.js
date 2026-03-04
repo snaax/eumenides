@@ -506,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const required = SENSITIVITY_TIERS[option.value] || "free";
         const isLocked = tierRank[required] > userTierRank;
         option.disabled = isLocked;
-        if (!isLocked) {
+        if (!isLocked && option.textContent.includes("(")) {
           // Strip leading emoji token and trailing tier label "(Basic)"/"(Complet)" etc.
           // e.g. "🔒 Minimale (Complet)" → "Minimale"
           option.textContent = option.textContent
