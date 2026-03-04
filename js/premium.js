@@ -281,7 +281,8 @@ async function handleUpgrade(button, newPlan) {
       dailyLimit: newPlan === "full" ? 999999 : 15,
     });
 
-    alert(getMessage("upgradeSuccess") || `✅ Abonnement mis à jour vers ${newPlan === "full" ? "Full" : "Basic"} !`);
+    const successKey = newPlan === "full" ? "upgradeSuccess" : "downgradeSuccess";
+    alert(getMessage(successKey) || `✅ Abonnement mis à jour vers ${newPlan === "full" ? "Full" : "Basic"} !`);
     await displayPremiumStatus();
   } catch (error) {
     console.error("Upgrade error:", error);
@@ -429,13 +430,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (hasPremium) {
       // Disable buy buttons for plans at or below current plan
       if (storage.premiumPlan === "full") {
-        // Full plan user - disable all buttons
-        button.disabled = true;
-        button.style.opacity = "0.5";
-        button.style.cursor = "not-allowed";
         if (buttonPlan === "full") {
+          // Current plan
+          button.disabled = true;
+          button.style.opacity = "0.5";
+          button.style.cursor = "not-allowed";
           button.textContent = getMessage("currentPlanButton") || "✓ Plan actuel";
+        } else if (buttonPlan === "basic") {
+          // Downgrade option
+          button.textContent = getMessage("downgradeToBasic") || "⬇️ Passer à Basic";
+          button.addEventListener("click", async function () {
+            await handleUpgrade(button, "basic");
+          });
         } else {
+          // Free plan — can't downgrade to free via button
+          button.disabled = true;
+          button.style.opacity = "0.5";
+          button.style.cursor = "not-allowed";
           button.textContent = getMessage("notAvailable") || "Non disponible";
         }
       } else if (storage.premiumPlan === "basic" && buttonPlan === "basic") {

@@ -54,12 +54,6 @@ async function syncAndRefreshPremiumStatus(email) {
         const prefix = chrome.i18n.getMessage(key) || (data.subscriptionCanceled ? "Canceled – active until" : "Active until");
         subscriptionExpiry.textContent = `${prefix} ${formatted}`;
       }
-      const manageBtn = document.getElementById("manageSubscriptionBtn");
-      if (data.subscriptionCanceled) {
-        manageBtn.textContent = chrome.i18n.getMessage("reactivateSubscription") || "🔄 Réactiver l'abonnement";
-      } else {
-        manageBtn.textContent = chrome.i18n.getMessage("manageSubscription") || "⚙️ Gérer l'abonnement";
-      }
       subscriptionInfo.style.display = "block";
       upgradeBtn.style.display = "none";
     } else {
@@ -337,50 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
         subscriptionExpiry.textContent = `${prefix} ${formatted}`;
       }
 
-      const manageBtn = document.getElementById("manageSubscriptionBtn");
-      if (data.subscriptionCanceled) {
-        manageBtn.textContent = chrome.i18n.getMessage("reactivateSubscription") || "🔄 Réactiver l'abonnement";
-      } else {
-        manageBtn.textContent = chrome.i18n.getMessage("manageSubscription") || "⚙️ Gérer l'abonnement";
-      }
     }
-  });
-
-  const manageSubscriptionBtn = document.getElementById("manageSubscriptionBtn");
-  manageSubscriptionBtn.addEventListener("click", async function () {
-    chrome.storage.sync.get(["premiumEmail"], async (data) => {
-      if (!data.premiumEmail) return;
-
-      manageSubscriptionBtn.disabled = true;
-      manageSubscriptionBtn.textContent = chrome.i18n.getMessage("loadingPortal") || "Loading...";
-
-      try {
-        const response = await fetch(`${API_URL}/api/create-portal-session`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: data.premiumEmail }),
-        });
-        const result = await response.json();
-        if (result.url) {
-          const tab = await chrome.tabs.create({ url: result.url });
-          // When portal tab closes, sync status from API and refresh UI
-          chrome.tabs.onRemoved.addListener(function onPortalClosed(closedTabId) {
-            if (closedTabId !== tab.id) return;
-            chrome.tabs.onRemoved.removeListener(onPortalClosed);
-            syncAndRefreshPremiumStatus(data.premiumEmail);
-          });
-        } else {
-          throw new Error(result.error || "Failed");
-        }
-      } catch (error) {
-        console.error("Portal error:", error);
-        alert(chrome.i18n.getMessage("portalError") || "Error opening billing portal. Please try again.");
-      } finally {
-        manageSubscriptionBtn.disabled = false;
-        const msg = chrome.i18n.getMessage("manageSubscription");
-        manageSubscriptionBtn.textContent = msg || "⚙️ Manage Subscription";
-      }
-    });
   });
 
   // Premium upgrade
@@ -393,46 +344,14 @@ document.addEventListener("DOMContentLoaded", function () {
     upgradeBtn.style.display = hasPremium ? "none" : "block";
   });
 
-  upgradeBtn.addEventListener("click", async function () {
-    console.log("Upgrade button clicked!");
+  upgradeBtn.addEventListener("click", function () {
+    chrome.tabs.create({ url: "html/premium_page.html" });
+  });
 
-    // Get stored email if available
-    chrome.storage.sync.get(["premiumEmail"], async (data) => {
-      const storedEmail = data.premiumEmail;
-
-      if (storedEmail) {
-        // Check if user has active subscription in database
-        try {
-          const response = await fetch(`${API_URL}/api/check-status`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: storedEmail }),
-          });
-
-          const result = await response.json();
-
-          if (result.premium) {
-            // User has active subscription - redirect to reactivate page
-            console.log("Existing subscription found, redirecting to reactivate page");
-            chrome.tabs.create({
-              url: `html/reactivate-premium.html?email=${encodeURIComponent(storedEmail)}`
-            });
-          } else {
-            // Subscription expired or doesn't exist - redirect to subscribe page
-            console.log("No active subscription, redirecting to subscribe page");
-            chrome.tabs.create({ url: "html/subscribe-premium.html" });
-          }
-        } catch (error) {
-          console.error("Error checking status:", error);
-          // On error, redirect to subscribe page (safe default)
-          chrome.tabs.create({ url: "html/subscribe-premium.html" });
-        }
-      } else {
-        // No stored email - new user, redirect to subscribe page
-        console.log("No stored email, redirecting to subscribe page");
-        chrome.tabs.create({ url: "html/subscribe-premium.html" });
-      }
-    });
+  // View plans (premium users)
+  const viewPlansBtn = document.getElementById("viewPlansBtn");
+  viewPlansBtn.addEventListener("click", function () {
+    chrome.tabs.create({ url: "html/premium_page.html" });
   });
 
   // Dashboard

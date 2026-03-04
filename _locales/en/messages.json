@@ -300,11 +300,20 @@
   "upgradeToUnlock": {
     "message": "Upgrade to unlock all features"
   },
+  "viewPlans": {
+    "message": "📋 View Plans"
+  },
   "upgradeToFull": {
     "message": "⬆️ Upgrade to Full"
   },
   "upgradeSuccess": {
     "message": "✅ Subscription updated to Full!"
+  },
+  "downgradeToBasic": {
+    "message": "⬇️ Downgrade to Basic"
+  },
+  "downgradeSuccess": {
+    "message": "✅ Subscription updated to Basic!"
   },
   "upgradeError": {
     "message": "Upgrade failed. Please try again."

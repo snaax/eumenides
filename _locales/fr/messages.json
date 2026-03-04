@@ -300,11 +300,20 @@
   "upgradeToUnlock": {
     "message": "Passez à Premium pour débloquer toutes les fonctionnalités"
   },
+  "viewPlans": {
+    "message": "📋 Voir les formules"
+  },
   "upgradeToFull": {
     "message": "⬆️ Passer à Full"
   },
   "upgradeSuccess": {
     "message": "✅ Abonnement mis à jour vers Full !"
+  },
+  "downgradeToBasic": {
+    "message": "⬇️ Passer à Basic"
+  },
+  "downgradeSuccess": {
+    "message": "✅ Abonnement mis à jour vers Basic !"
   },
   "upgradeError": {
     "message": "Échec de la mise à jour. Veuillez réessayer."
