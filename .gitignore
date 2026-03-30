@@ -31,9 +31,9 @@ node_modules/
 
 # Environment variables (keep .example files, ignore actual .env files)
 .env.local
-backend-vercel/.env
-backend-vercel/.env.*
-!backend-vercel/.env.example
+.env
+.env.*
+!.env.example
 
 # Markdown files (except README.md)
 *.md
