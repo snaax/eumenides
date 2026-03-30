@@ -2,6 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+
+const CHROME_STORE_URL = import.meta.env.PUBLIC_CHROME_STORE_URL ?? '#';
+const FIREFOX_STORE_URL = import.meta.env.PUBLIC_FIREFOX_STORE_URL ?? '#';
 ---
 
 <Layout title="Postez sans regrets" description="Eumenides intercepte vos posts impulsifs sur les réseaux sociaux avant qu'il ne soit trop tard. Transformez votre rage en sagesse." darkBg={true}>
@@ -15,7 +18,7 @@ import Footer from '../components/Footer.astro';
       <h1>Postez sans <span class="gradient-text">regrets</span></h1>
       <p class="hero-sub">Eumenides intercepte vos posts impulsifs avant qu'il ne soit trop tard.<br />Transformez votre rage en sagesse.</p>
       <div class="hero-cta">
-        <a href="#" id="install-btn" class="btn-primary">✨ Commencer gratuitement</a>
+        <a href="#" class="btn-primary install-btn">✨ Commencer gratuitement</a>
         <a href="#how-it-works" class="btn-secondary">Voir comment ça marche</a>
       </div>
       <div class="hero-stats">
@@ -209,22 +212,19 @@ import Footer from '../components/Footer.astro';
     <div class="container" style="text-align:center;">
       <h2>Prêt à poster sans regrets ?</h2>
       <p>Rejoignez des milliers d'utilisateurs qui protègent leur réputation en ligne.</p>
-      <a href="#" id="install-btn-cta" class="btn-primary install-btn" style="font-size:18px;padding:18px 48px;">✨ Commencer gratuitement</a>
+      <a href="#" class="btn-primary install-btn" style="font-size:18px;padding:18px 48px;">✨ Commencer gratuitement</a>
     </div>
   </section>
 
   <Footer />
 </Layout>
 
-<script>
-  const CHROME_STORE_URL = 'https://chrome.google.com/webstore/detail/eumenides/TODO_CHROME_ID';
-  const FIREFOX_STORE_URL = 'https://addons.mozilla.org/fr/firefox/addon/eumenides/';
-
+<script define:vars={{ CHROME_STORE_URL, FIREFOX_STORE_URL }}>
   const isFirefox = navigator.userAgent.includes('Firefox');
   const storeUrl = isFirefox ? FIREFOX_STORE_URL : CHROME_STORE_URL;
 
   document.querySelectorAll('.install-btn').forEach(btn => {
-    (btn as HTMLAnchorElement).href = storeUrl;
+    btn.href = storeUrl;
   });
 </script>
 
