@@ -26,21 +26,12 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: emailValidation.error });
     }
 
-    // Validate extension ID
-    if (
+    // extensionId is optional — null/absent means purchase from website
+    const isWebPurchase =
       !extensionId ||
       extensionId === "undefined" ||
       extensionId === "null" ||
-      typeof extensionId !== "string"
-    ) {
-      console.error("Invalid extension ID received:", extensionId);
-      return res
-        .status(400)
-        .json({
-          error:
-            "Invalid extension ID. Please reload the extension and try again.",
-        });
-    }
+      typeof extensionId !== "string";
 
     // Additional email validation: block disposable email domains
     const disposableDomains = [
@@ -63,9 +54,11 @@ module.exports = async (req, res) => {
       });
     }
 
-    const extValidation = validateExtensionId(extensionId);
-    if (!extValidation.valid) {
-      return res.status(400).json({ error: extValidation.error });
+    if (!isWebPurchase) {
+      const extValidation = validateExtensionId(extensionId);
+      if (!extValidation.valid) {
+        return res.status(400).json({ error: extValidation.error });
+      }
     }
 
     // Validate plan
@@ -116,7 +109,11 @@ module.exports = async (req, res) => {
     }
 
     // Create checkout session with selected plan
-    const session = await createCheckoutSession(email, extensionId, plan);
+    const session = await createCheckoutSession(
+      email,
+      isWebPurchase ? null : extensionId,
+      plan,
+    );
 
     res.status(200).json({
       url: session.url,

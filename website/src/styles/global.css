@@ -1,0 +1,181 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --purple-start: #667eea;
+  --purple-end: #764ba2;
+  --gold: #ffd700;
+  --gold-end: #ffed4e;
+  --green: #4ade80;
+  --red: #ef4444;
+  --dark-bg: #0f0f23;
+  --text: #e0e0e0;
+  --text-muted: rgba(255,255,255,0.6);
+  --glass: rgba(255,255,255,0.1);
+  --glass-border: rgba(255,255,255,0.15);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--dark-bg);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font);
+  cursor: pointer;
+}
+
+/* ---- Shared utility classes ---- */
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-end) 100%);
+  color: #000;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+  box-shadow: 0 6px 24px rgba(255,215,0,0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(255,215,0,0.5);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-2px);
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+
+.status-message {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 12px 0;
+}
+
+.status-message.success {
+  background: rgba(74,222,128,0.2);
+  border: 1.5px solid var(--green);
+}
+
+.status-message.error {
+  background: rgba(239,68,68,0.2);
+  border: 1.5px solid var(--red);
+}
+
+.status-message.info {
+  background: rgba(102,126,234,0.2);
+  border: 1.5px solid var(--purple-start);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---- Input styles ---- */
+
+.input-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 16px;
+  font-family: var(--font);
+  transition: 0.2s;
+}
+
+.input-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(255,255,255,0.15);
+}
+
+.input-group select option {
+  background: #1a1040;
+  color: #fff;
+}
+
+/* ---- Page hero gradient backgrounds ---- */
+
+.page-gradient {
+  background: linear-gradient(135deg, var(--purple-start) 0%, var(--purple-end) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}

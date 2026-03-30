@@ -25,11 +25,20 @@ const ENV_URLS = {
   development: "http://localhost:3000",
 };
 
+// Website URLs for each environment
+const WEBSITE_URLS = {
+  preview: "http://localhost:4321",
+  production: "https://eumenides.eu",
+  development: "http://localhost:4321",
+};
+
 // Get API URL from environment variable or use default for environment
 const apiUrl = process.env.API_BASE_URL || ENV_URLS[env] || ENV_URLS.preview;
+const websiteUrl = process.env.WEBSITE_BASE_URL || WEBSITE_URLS[env] || WEBSITE_URLS.preview;
 
 console.log(`Building config for environment: ${env}`);
 console.log(`API URL: ${apiUrl}`);
+console.log(`Website URL: ${websiteUrl}`);
 
 // Create config file
 const configContent = `// Auto-generated config file
@@ -38,6 +47,7 @@ const configContent = `// Auto-generated config file
 
 window.EUMENIDES_CONFIG = {
   apiUrl: '${apiUrl}',
+  websiteUrl: '${websiteUrl}',
   environment: '${env}',
   buildTime: '${new Date().toISOString()}'
 };

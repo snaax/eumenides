@@ -1,0 +1,399 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const API_URL = import.meta.env.PUBLIC_API_URL;
+---
+
+<Layout title="S'abonner" description="Choisissez votre plan Eumenides et activez Premium en quelques minutes.">
+  <div class="page-gradient">
+    <div class="form-container">
+      <a href="/" class="back-home">← Accueil</a>
+      <h1>✨ Passer à Premium</h1>
+      <p class="subtitle">Débloquez les posts illimités et les niveaux de sensibilité avancés</p>
+
+      <!-- Step 1: Choose plan + email -->
+      <div id="step1" class="step-card">
+        <h2>Étape 1 — Choisissez votre plan</h2>
+        <div class="input-group">
+          <label for="planSelect">Plan</label>
+          <select id="planSelect">
+            <option value="basic">Basic — 1,99€/mois (15 posts/jour)</option>
+            <option value="full">Full — 4,99€/mois (illimité + tous les niveaux)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="emailInput">Adresse email</label>
+          <input type="email" id="emailInput" placeholder="votre@email.com" autocomplete="email" />
+        </div>
+        <button id="sendCodeBtn" class="btn-primary" style="width:100%;">📧 Envoyer le code de vérification</button>
+        <div id="step1Status" class="status-message hidden"></div>
+      </div>
+
+      <!-- Step 2: Verify code -->
+      <div id="step2" class="step-card hidden">
+        <h2>Étape 2 — Vérifiez votre email</h2>
+        <p class="step-hint">Code envoyé à <span id="emailDisplay" class="gold-text"></span></p>
+        <div class="input-group">
+          <label for="codeInput">Code de vérification (6 chiffres)</label>
+          <input type="text" id="codeInput" class="code-input" placeholder="000000" maxlength="6" pattern="[0-9]{6}" autocomplete="off" inputmode="numeric" />
+        </div>
+        <button id="verifyCodeBtn" class="btn-primary" style="width:100%;">✅ Vérifier l'email</button>
+        <button id="resendCodeBtn" class="btn-secondary" style="width:100%;margin-top:10px;">🔄 Renvoyer le code</button>
+        <div id="step2Status" class="status-message hidden"></div>
+      </div>
+
+      <!-- Step 3: Confirmed, go to Stripe -->
+      <div id="step3" class="step-card hidden" style="text-align:center;">
+        <div class="big-icon">✅</div>
+        <h2>Email vérifié !</h2>
+        <p class="step-hint">Prêt à s'abonner avec <span id="verifiedEmail" class="gold-text"></span></p>
+        <button id="checkoutBtn" class="btn-primary" style="width:100%;font-size:18px;padding:18px;">🚀 Procéder au paiement Stripe</button>
+        <div id="step3Status" class="status-message hidden"></div>
+      </div>
+
+      <!-- Features list -->
+      <div class="features-list">
+        <h3>Ce que vous débloquez :</h3>
+        <ul>
+          <li>Posts illimités (plus de limite quotidienne)</li>
+          <li>7 niveaux de sensibilité</li>
+          <li>Mode Délai de réflexion</li>
+          <li>Dashboard analytique complet</li>
+          <li>Support prioritaire</li>
+        </ul>
+      </div>
+
+      <div class="back-link">
+        <a href="/activate">← Déjà abonné ? Activez sur cet appareil</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .form-container {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 44px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .back-home {
+    display: block;
+    text-align: left;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-bottom: 24px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-home:hover { color: #fff; }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 32px;
+  }
+
+  .step-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .step-card h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .step-hint {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 16px;
+  }
+
+  .gold-text { color: #ffd700; font-weight: 600; }
+
+  .code-input {
+    font-size: 28px !important;
+    text-align: center;
+    letter-spacing: 10px;
+    font-weight: 700;
+  }
+
+  .big-icon {
+    font-size: 64px;
+    margin: 16px 0;
+  }
+
+  .features-list {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .features-list h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  .features-list ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .features-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .features-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4ade80;
+    font-weight: 700;
+  }
+
+  .back-link {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .back-link a {
+    color: #ffd700;
+    text-decoration: none;
+  }
+
+  .back-link a:hover { text-decoration: underline; }
+</style>
+
+<script define:vars={{ API_URL }}>
+  let currentEmail = '';
+  let currentPlan = 'basic';
+  let emailVerified = false;
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function showStatus(el, msg, type) {
+    el.textContent = msg;
+    el.className = `status-message ${type}`;
+    el.classList.remove('hidden');
+  }
+
+  // Pre-fill plan from URL param
+  const urlParams = new URLSearchParams(window.location.search);
+  const planParam = urlParams.get('plan');
+  const emailParam = urlParams.get('email');
+  if (planParam === 'full' || planParam === 'basic') {
+    document.getElementById('planSelect').value = planParam;
+    currentPlan = planParam;
+  }
+  if (emailParam) {
+    document.getElementById('emailInput').value = emailParam;
+    currentEmail = emailParam;
+  }
+
+  // Step 1: Send code
+  document.getElementById('sendCodeBtn').addEventListener('click', async function () {
+    const email = document.getElementById('emailInput').value.trim();
+    const plan = document.getElementById('planSelect').value;
+    const status = document.getElementById('step1Status');
+
+    if (!email) { showStatus(status, 'Veuillez entrer votre adresse email', 'error'); return; }
+    if (!validateEmail(email)) { showStatus(status, 'Adresse email invalide', 'error'); return; }
+
+    currentEmail = email;
+    currentPlan = plan;
+
+    this.disabled = true;
+    this.textContent = 'Vérification du compte...';
+
+    // Check if already subscribed → redirect to activate
+    try {
+      const r = await fetch(`${API_URL}/api/check-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const d = await r.json();
+      if (d.premium) {
+        window.location.href = `/activate?email=${encodeURIComponent(email)}`;
+        return;
+      }
+    } catch (e) { /* continue as new user */ }
+
+    this.textContent = 'Envoi du code...';
+
+    try {
+      const response = await fetch(`${API_URL}/api/send-verification-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        showStatus(status, '✅ Code envoyé ! Vérifiez votre email.', 'success');
+        setTimeout(() => {
+          document.getElementById('step1').classList.add('hidden');
+          document.getElementById('step2').classList.remove('hidden');
+          document.getElementById('emailDisplay').textContent = email;
+          document.getElementById('codeInput').focus();
+        }, 1200);
+      } else {
+        showStatus(status, data.error || 'Erreur lors de l\'envoi du code', 'error');
+        this.disabled = false;
+        this.textContent = '📧 Envoyer le code de vérification';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Vérifiez votre connexion.', 'error');
+      this.disabled = false;
+      this.textContent = '📧 Envoyer le code de vérification';
+    }
+  });
+
+  // Code input: numbers only
+  document.getElementById('codeInput').addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+
+  document.getElementById('codeInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') verifyCode();
+  });
+
+  // Step 2: Verify code
+  document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
+
+  async function verifyCode() {
+    const code = document.getElementById('codeInput').value.trim();
+    const status = document.getElementById('step2Status');
+    const btn = document.getElementById('verifyCodeBtn');
+
+    if (!code || code.length !== 6) {
+      showStatus(status, 'Veuillez entrer le code à 6 chiffres', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Vérification...';
+
+    try {
+      const response = await fetch(`${API_URL}/api/verify-email-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail, code }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success && data.verified) {
+        emailVerified = true;
+        showStatus(status, '✅ Email vérifié ! Passage au paiement...', 'success');
+        setTimeout(() => {
+          document.getElementById('step2').classList.add('hidden');
+          document.getElementById('step3').classList.remove('hidden');
+          document.getElementById('verifiedEmail').textContent = currentEmail;
+        }, 1200);
+      } else {
+        showStatus(status, data.error || 'Code invalide', 'error');
+        btn.disabled = false;
+        btn.textContent = '✅ Vérifier l\'email';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Réessayez.', 'error');
+      btn.disabled = false;
+      btn.textContent = '✅ Vérifier l\'email';
+    }
+  }
+
+  // Resend code
+  document.getElementById('resendCodeBtn').addEventListener('click', async function () {
+    this.disabled = true;
+    this.textContent = 'Envoi...';
+    const status = document.getElementById('step2Status');
+
+    try {
+      const response = await fetch(`${API_URL}/api/send-verification-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showStatus(status, '✅ Nouveau code envoyé !', 'success');
+        document.getElementById('codeInput').value = '';
+        document.getElementById('codeInput').focus();
+      } else {
+        showStatus(status, data.error || 'Erreur lors du renvoi', 'error');
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau', 'error');
+    } finally {
+      this.disabled = false;
+      this.textContent = '🔄 Renvoyer le code';
+    }
+  });
+
+  // Step 3: Proceed to Stripe
+  document.getElementById('checkoutBtn').addEventListener('click', async function () {
+    if (!emailVerified) return;
+    const status = document.getElementById('step3Status');
+    this.disabled = true;
+    this.textContent = 'Création de la session de paiement...';
+
+    try {
+      const response = await fetch(`${API_URL}/api/create-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail, plan: currentPlan }),
+      });
+      const data = await response.json();
+
+      if (data.url) {
+        // Store email in localStorage before leaving
+        localStorage.setItem('eumenides_email', currentEmail);
+        localStorage.setItem('eumenides_plan', currentPlan);
+        // Redirect directly to Stripe (no new tab — we're in a real browser)
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Impossible de créer la session de paiement');
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur : ' + e.message, 'error');
+      this.disabled = false;
+      this.textContent = '🚀 Procéder au paiement Stripe';
+    }
+  });
+</script>

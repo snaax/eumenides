@@ -1,0 +1,422 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Tarifs" description="Choisissez le plan Eumenides qui vous convient. Gratuit, Basic ou Full Premium." darkBg={true}>
+  <Nav dark={true} />
+
+  <div class="page-wrapper">
+    <div class="container">
+      <div class="page-header">
+        <h1>⚡ Plans & Tarifs</h1>
+        <p>Débloquez tout le potentiel de la sagesse numérique</p>
+      </div>
+
+      <!-- Pricing cards -->
+      <div class="pricing-cards">
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="card-badge">🆓 GRATUIT</div>
+          <div class="price">0€</div>
+          <div class="price-sub">par mois, sans engagement</div>
+          <div class="plan-features">
+            <div class="plan-feature">📝 5 posts par jour</div>
+            <div class="plan-feature">🌐 X et Reddit</div>
+            <div class="plan-feature">⚡ Mode Catharsis</div>
+            <div class="plan-feature">👁️ Mode Aperçu</div>
+            <div class="plan-feature muted">❌ Pas de délai de réflexion</div>
+            <div class="plan-feature muted">❌ Pas de dashboard</div>
+          </div>
+          <div class="card-cta">
+            <button class="btn-secondary" disabled style="width:100%;text-align:center;opacity:0.5;cursor:default;">Plan de base</button>
+          </div>
+        </div>
+
+        <!-- Basic -->
+        <div class="pricing-card">
+          <div class="card-badge badge-basic">✨ BASIC</div>
+          <div class="price" id="priceBasic">1,99€</div>
+          <div class="price-sub">par mois, sans engagement</div>
+          <div class="plan-features">
+            <div class="plan-feature">📝 15 posts par jour</div>
+            <div class="plan-feature">🌐 X, Reddit, Facebook</div>
+            <div class="plan-feature">⚡ Mode Catharsis</div>
+            <div class="plan-feature">👁️ Mode Aperçu</div>
+            <div class="plan-feature">⏰ Mode Délai</div>
+            <div class="plan-feature">📊 Dashboard basique</div>
+          </div>
+          <div class="card-cta">
+            <a href="/subscribe?plan=basic" class="btn-primary" style="display:block;text-align:center;">Passer à Basic</a>
+          </div>
+        </div>
+
+        <!-- Full -->
+        <div class="pricing-card card-featured">
+          <div class="card-badge badge-full">⭐ FULL — RECOMMANDÉ</div>
+          <div class="price" id="priceFull">4,99€</div>
+          <div class="price-sub">par mois, sans engagement</div>
+          <div class="plan-features">
+            <div class="plan-feature">♾️ Posts illimités</div>
+            <div class="plan-feature">🌐 Toutes les plateformes</div>
+            <div class="plan-feature">⚡ Mode Catharsis</div>
+            <div class="plan-feature">👁️ Mode Aperçu</div>
+            <div class="plan-feature">⏰ Mode Délai personnalisable</div>
+            <div class="plan-feature">📊 Dashboard complet</div>
+            <div class="plan-feature">📈 Statistiques avancées</div>
+            <div class="plan-feature">☁️ Synchronisation cloud</div>
+            <div class="plan-feature">🏆 Badges exclusifs</div>
+          </div>
+          <div class="card-cta">
+            <a href="/subscribe?plan=full" class="btn-primary" style="display:block;text-align:center;">Passer à Full</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison table -->
+      <div class="comparison">
+        <h2>Comparaison détaillée</h2>
+        <div class="comparison-table">
+          <div class="ct-header">Fonctionnalité</div>
+          <div class="ct-header">Gratuit</div>
+          <div class="ct-header">Basic</div>
+          <div class="ct-header gold">Full</div>
+
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Posts par jour</div>
+            <div class="ct-cell">5</div>
+            <div class="ct-cell">15</div>
+            <div class="ct-cell">∞</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Plateformes</div>
+            <div class="ct-cell small">X, Reddit</div>
+            <div class="ct-cell small">X, Reddit, Facebook</div>
+            <div class="ct-cell">Toutes</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Mode Catharsis</div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Mode Aperçu</div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Mode Délai</div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Dashboard</div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell small">Basique</div>
+            <div class="ct-cell small">Complet</div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Statistiques avancées</div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Synchronisation cloud</div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Badges exclusifs</div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="cross">✗</span></div>
+            <div class="ct-cell"><span class="check">✓</span></div>
+          </div>
+          <div class="ct-row">
+            <div class="ct-cell ct-label">Support</div>
+            <div class="ct-cell small">Communauté</div>
+            <div class="ct-cell small">Basic</div>
+            <div class="ct-cell small">Prioritaire</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+          <div class="faq-q">💳 Comment fonctionne le paiement ?</div>
+          <div class="faq-a">Paiement sécurisé par carte bancaire via Stripe. L'abonnement se renouvelle automatiquement chaque mois mais vous pouvez annuler à tout moment.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">🔄 Puis-je annuler à tout moment ?</div>
+          <div class="faq-a">Oui, absolument. Pas d'engagement, pas de frais cachés. Annulez en un clic depuis votre espace compte.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">🔀 Puis-je changer de plan ?</div>
+          <div class="faq-a">Oui, vous pouvez passer de Basic à Full (ou inversement) à tout moment. La différence est calculée au prorata.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">💾 Que deviennent mes données si j'annule ?</div>
+          <div class="faq-a">Vos données locales restent accessibles. Seule la synchronisation cloud et les fonctionnalités premium deviennent indisponibles.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">🖥️ Puis-je utiliser l'extension sur plusieurs appareils ?</div>
+          <div class="faq-a">Oui, avec un abonnement Premium. Utilisez votre email pour activer sur autant d'appareils que vous voulez via la page <a href="/activate" style="color:#ffd700;">Activer</a>.</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:60px;padding-bottom:40px;">
+        <p style="color:rgba(255,255,255,0.5);margin-bottom:20px;">Déjà abonné ?</p>
+        <a href="/activate" class="btn-secondary">Activer sur cet appareil</a>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page-wrapper {
+    padding: 60px 0 40px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .page-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+
+  .page-header p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-bottom: 60px;
+  }
+
+  .pricing-card {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,215,0,0.2);
+    border-radius: 24px;
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    position: relative;
+    transition: 0.3s;
+  }
+
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+    border-radius: 24px 24px 0 0;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(255,215,0,0.15);
+    border-color: rgba(255,215,0,0.5);
+  }
+
+  .card-featured {
+    border-color: rgba(255,215,0,0.5);
+    background: rgba(255,215,0,0.03);
+  }
+
+  .card-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .badge-basic {
+    background: rgba(102,126,234,0.2);
+    color: #a5b4fc;
+  }
+
+  .badge-full {
+    background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,237,78,0.25));
+    color: #ffd700;
+  }
+
+  .price {
+    font-size: 64px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .price-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 28px;
+  }
+
+  .plan-features {
+    flex-grow: 1;
+    margin-bottom: 24px;
+  }
+
+  .plan-feature {
+    padding: 10px 0;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.9);
+  }
+
+  .plan-feature.muted {
+    color: rgba(255,255,255,0.4);
+  }
+
+  .plan-feature:last-child {
+    border-bottom: none;
+  }
+
+  .card-cta {
+    margin-top: auto;
+  }
+
+  /* Comparison */
+  .comparison {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 60px;
+  }
+
+  .comparison h2 {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  .comparison-table {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 0;
+  }
+
+  .ct-header {
+    font-weight: 700;
+    padding: 12px 16px;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    margin: 2px;
+  }
+
+  .ct-header.gold {
+    background: rgba(255,215,0,0.1);
+    color: #ffd700;
+  }
+
+  .ct-row {
+    display: contents;
+  }
+
+  .ct-cell {
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+  }
+
+  .ct-cell.ct-label {
+    justify-content: flex-start;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .ct-cell.small {
+    font-size: 13px;
+  }
+
+  .check { color: #4ade80; font-size: 16px; font-weight: 700; }
+  .cross { color: #ef4444; font-size: 16px; }
+
+  /* FAQ */
+  .faq {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 40px;
+  }
+
+  .faq h2 {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  .faq-item {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-q {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 10px;
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 900px) {
+    .pricing-cards { grid-template-columns: 1fr; }
+    .comparison-table {
+      grid-template-columns: 1fr;
+    }
+    .ct-header, .ct-cell {
+      text-align: left;
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -2,6 +2,7 @@ console.log("Popup script loaded");
 
 // API URL configuration - MUST be set via config-generated.js
 const API_URL = window.EUMENIDES_CONFIG?.apiUrl;
+const WEBSITE_URL = window.EUMENIDES_CONFIG?.websiteUrl;
 
 if (!API_URL) {
   console.error("CRITICAL: API_URL not configured! Please set apiUrl in config.json");
@@ -345,13 +346,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   upgradeBtn.addEventListener("click", function () {
-    chrome.tabs.create({ url: "html/premium_page.html" });
+    const url = WEBSITE_URL ? `${WEBSITE_URL}/pricing` : "html/premium_page.html";
+    chrome.tabs.create({ url });
   });
 
   // View plans (premium users)
   const viewPlansBtn = document.getElementById("viewPlansBtn");
   viewPlansBtn.addEventListener("click", function () {
-    chrome.tabs.create({ url: "html/premium_page.html" });
+    const url = WEBSITE_URL ? `${WEBSITE_URL}/account` : "html/premium_page.html";
+    chrome.tabs.create({ url });
   });
 
   // Dashboard
@@ -359,7 +362,8 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Dashboard button:", dashboardBtn);
   dashboardBtn.addEventListener("click", function () {
     console.log("Dashboard button clicked!");
-    chrome.tabs.create({ url: "html/dashboard.html" });
+    const url = WEBSITE_URL ? `${WEBSITE_URL}/dashboard` : "html/dashboard.html";
+    chrome.tabs.create({ url });
   });
 
   // Load current settings and update UI

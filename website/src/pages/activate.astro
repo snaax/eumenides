@@ -1,0 +1,301 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const API_URL = import.meta.env.PUBLIC_API_URL;
+---
+
+<Layout title="Activer Premium" description="Activez votre abonnement Eumenides Premium sur cet appareil.">
+  <div class="page-gradient">
+    <div class="form-container">
+      <a href="/" class="back-home">← Accueil</a>
+      <h1>🔑 Activer Premium</h1>
+      <p class="subtitle">Vous avez déjà un abonnement ? Activez-le sur cet appareil.</p>
+
+      <!-- Step 1: Enter email -->
+      <div id="step1" class="step-card">
+        <h2>Étape 1 — Entrez votre email</h2>
+        <div class="input-group">
+          <label for="emailInput">Adresse email de votre abonnement</label>
+          <input type="email" id="emailInput" placeholder="votre@email.com" autocomplete="email" />
+        </div>
+        <button id="requestCodeBtn" class="btn-primary" style="width:100%;">📧 Envoyer le code d'activation</button>
+        <div id="step1Status" class="status-message hidden"></div>
+      </div>
+
+      <!-- Step 2: Enter code -->
+      <div id="step2" class="step-card hidden">
+        <h2>Étape 2 — Entrez votre code</h2>
+        <p class="step-hint">Code envoyé à <span id="emailDisplay" class="gold-text"></span></p>
+        <div class="input-group">
+          <label for="codeInput">Code d'activation (6 chiffres)</label>
+          <input type="text" id="codeInput" class="code-input" placeholder="000000" maxlength="6" pattern="[0-9]{6}" autocomplete="off" inputmode="numeric" />
+        </div>
+        <button id="verifyCodeBtn" class="btn-primary" style="width:100%;">✅ Activer Premium</button>
+        <button id="resendCodeBtn" class="btn-secondary" style="width:100%;margin-top:10px;">🔄 Renvoyer le code</button>
+        <div id="step2Status" class="status-message hidden"></div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div id="step3" class="step-card hidden" style="text-align:center;">
+        <div class="big-icon">🎉</div>
+        <h2>Premium activé !</h2>
+        <p class="step-hint" id="successDetails"></p>
+        <a id="dashboardBtn" href="/dashboard" class="btn-primary" style="display:block;text-align:center;margin-top:20px;">📊 Voir mon dashboard</a>
+        <p class="extension-hint">
+          <strong>Rappel :</strong> Pour activer Premium dans l'extension Chrome, ouvrez le popup et cliquez sur "Activer Premium".
+        </p>
+      </div>
+
+      <div class="back-link">
+        <a href="/subscribe">← Pas encore abonné ? Créer un compte</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .form-container {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 44px 40px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .back-home {
+    display: block;
+    text-align: left;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-bottom: 24px;
+    text-decoration: none;
+  }
+
+  .back-home:hover { color: #fff; }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 32px;
+  }
+
+  .step-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .step-card h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .step-hint {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 16px;
+  }
+
+  .gold-text { color: #ffd700; font-weight: 600; }
+
+  .code-input {
+    font-size: 28px !important;
+    text-align: center;
+    letter-spacing: 10px;
+    font-weight: 700;
+  }
+
+  .big-icon { font-size: 64px; margin: 16px 0; }
+
+  .extension-hint {
+    margin-top: 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  .back-link {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+  }
+
+  .back-link a { color: #ffd700; text-decoration: none; }
+  .back-link a:hover { text-decoration: underline; }
+</style>
+
+<script define:vars={{ API_URL }}>
+  let currentEmail = '';
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function showStatus(el, msg, type) {
+    el.textContent = msg;
+    el.className = `status-message ${type}`;
+    el.classList.remove('hidden');
+  }
+
+  // Pre-fill from URL or localStorage
+  const urlParams = new URLSearchParams(window.location.search);
+  const emailParam = urlParams.get('email') || localStorage.getItem('eumenides_email');
+  if (emailParam) {
+    document.getElementById('emailInput').value = emailParam;
+    currentEmail = emailParam;
+  }
+
+  // Step 1: Request activation code
+  document.getElementById('requestCodeBtn').addEventListener('click', async function () {
+    const email = document.getElementById('emailInput').value.trim();
+    const status = document.getElementById('step1Status');
+
+    if (!email) { showStatus(status, 'Veuillez entrer votre adresse email', 'error'); return; }
+    if (!validateEmail(email)) { showStatus(status, 'Adresse email invalide', 'error'); return; }
+
+    currentEmail = email;
+    this.disabled = true;
+    this.textContent = 'Envoi...';
+
+    try {
+      const response = await fetch(`${API_URL}/api/request-activation-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        showStatus(status, '✅ Code envoyé ! Vérifiez votre email.', 'success');
+        setTimeout(() => {
+          document.getElementById('step1').classList.add('hidden');
+          document.getElementById('step2').classList.remove('hidden');
+          document.getElementById('emailDisplay').textContent = email;
+          document.getElementById('codeInput').focus();
+        }, 1200);
+      } else {
+        showStatus(status, data.error || 'Erreur lors de l\'envoi du code', 'error');
+        this.disabled = false;
+        this.textContent = '📧 Envoyer le code d\'activation';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Vérifiez votre connexion.', 'error');
+      this.disabled = false;
+      this.textContent = '📧 Envoyer le code d\'activation';
+    }
+  });
+
+  // Code input: numbers only + Enter to submit
+  document.getElementById('codeInput').addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+  document.getElementById('codeInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') verifyCode();
+  });
+
+  document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
+
+  async function verifyCode() {
+    const code = document.getElementById('codeInput').value.trim();
+    const status = document.getElementById('step2Status');
+    const btn = document.getElementById('verifyCodeBtn');
+
+    if (!code || code.length !== 6) {
+      showStatus(status, 'Veuillez entrer le code à 6 chiffres', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Activation...';
+
+    try {
+      const response = await fetch(`${API_URL}/api/verify-activation-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail, code }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success && data.premium) {
+        // Store in localStorage for dashboard access
+        localStorage.setItem('eumenides_email', currentEmail);
+        localStorage.setItem('eumenides_plan', data.tier || 'basic');
+        if (data.expiresAt) {
+          localStorage.setItem('eumenides_expires', data.expiresAt);
+        }
+
+        const planLabel = data.tier === 'full' ? '⭐ Full Plan' : '✨ Basic Plan';
+        document.getElementById('successDetails').textContent =
+          `${planLabel} activé pour ${currentEmail}`;
+
+        showStatus(status, '✅ Code vérifié !', 'success');
+        setTimeout(() => {
+          document.getElementById('step2').classList.add('hidden');
+          document.getElementById('step3').classList.remove('hidden');
+        }, 1000);
+      } else {
+        showStatus(status, data.error || 'Code invalide', 'error');
+        btn.disabled = false;
+        btn.textContent = '✅ Activer Premium';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Réessayez.', 'error');
+      btn.disabled = false;
+      btn.textContent = '✅ Activer Premium';
+    }
+  }
+
+  // Resend code
+  document.getElementById('resendCodeBtn').addEventListener('click', async function () {
+    this.disabled = true;
+    this.textContent = 'Envoi...';
+    const status = document.getElementById('step2Status');
+
+    try {
+      const response = await fetch(`${API_URL}/api/request-activation-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showStatus(status, '✅ Nouveau code envoyé !', 'success');
+        document.getElementById('codeInput').value = '';
+        document.getElementById('codeInput').focus();
+      } else {
+        showStatus(status, data.error || 'Erreur lors du renvoi', 'error');
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau', 'error');
+    } finally {
+      this.disabled = false;
+      this.textContent = '🔄 Renvoyer le code';
+    }
+  });
+</script>

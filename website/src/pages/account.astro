@@ -1,0 +1,441 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const API_URL = import.meta.env.PUBLIC_API_URL;
+---
+
+<Layout title="Mon compte" description="Gérez votre abonnement Eumenides Premium." darkBg={true}>
+  <Nav dark={true} />
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Mon compte</h1>
+      <p>Gérez votre abonnement Eumenides</p>
+    </div>
+
+    <!-- Email gate -->
+    <div id="emailGate" class="gate-section hidden">
+      <div class="gate-card">
+        <h2>🔑 Identifiez-vous</h2>
+        <p>Entrez l'email de votre abonnement pour accéder à votre compte.</p>
+        <div class="input-group" style="margin-top:20px;max-width:400px;">
+          <input type="email" id="gateEmail" placeholder="votre@email.com" autocomplete="email" />
+        </div>
+        <button id="gateSubmit" class="btn-primary" style="margin-top:10px;">Accéder à mon compte</button>
+        <div id="gateStatus" class="status-message hidden"></div>
+        <p class="gate-link">Pas encore abonné ? <a href="/subscribe">Créer un compte →</a></p>
+      </div>
+    </div>
+
+    <!-- Account content -->
+    <div id="accountContent" class="hidden">
+      <!-- Current plan banner -->
+      <div id="planBanner" class="plan-banner">
+        <div class="plan-info">
+          <div class="plan-name" id="planName">Chargement...</div>
+          <div class="plan-details" id="planDetails"></div>
+        </div>
+        <div class="plan-actions">
+          <button id="manageSubBtn" class="btn-primary">⚙️ Gérer l'abonnement</button>
+        </div>
+      </div>
+
+      <div id="accountStatus" class="status-message hidden"></div>
+
+      <!-- Plan comparison for upgrade -->
+      <div id="upgradeSection" class="upgrade-section hidden">
+        <h2>Changer de plan</h2>
+        <div class="upgrade-cards">
+          <div class="upgrade-card" id="upgradeBasicCard">
+            <div class="uc-badge">✨ Basic</div>
+            <div class="uc-price">1,99€<span>/mois</span></div>
+            <ul>
+              <li>15 posts par jour</li>
+              <li>X, Reddit, Facebook</li>
+              <li>Mode Délai</li>
+              <li>Dashboard basique</li>
+            </ul>
+            <button class="btn-secondary upgrade-plan-btn" data-plan="basic" style="width:100%;margin-top:16px;">Passer à Basic</button>
+          </div>
+          <div class="upgrade-card uc-featured" id="upgradeFullCard">
+            <div class="uc-badge uc-badge-full">⭐ Full</div>
+            <div class="uc-price">4,99€<span>/mois</span></div>
+            <ul>
+              <li>Posts illimités</li>
+              <li>Toutes les plateformes</li>
+              <li>Mode Délai personnalisable</li>
+              <li>Dashboard complet + Stats</li>
+            </ul>
+            <button class="btn-primary upgrade-plan-btn" data-plan="full" style="width:100%;margin-top:16px;">Passer à Full</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="quick-links">
+        <a href="/dashboard" class="quick-link">
+          <span class="ql-icon">📊</span>
+          <div>
+            <strong>Dashboard</strong>
+            <p>Analysez vos patterns émotionnels</p>
+          </div>
+        </a>
+        <a href="/activate" class="quick-link">
+          <span class="ql-icon">📱</span>
+          <div>
+            <strong>Activer sur un autre appareil</strong>
+            <p>Utilisez votre Premium partout</p>
+          </div>
+        </a>
+        <button id="logoutBtn" class="quick-link ql-logout">
+          <span class="ql-icon">🚪</span>
+          <div>
+            <strong>Se déconnecter</strong>
+            <p>Supprimer l'email enregistré</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+  }
+
+  .page-header {
+    margin-bottom: 40px;
+  }
+
+  .page-header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .page-header p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* Gate */
+  .gate-section { padding: 40px 0; }
+
+  .gate-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+  }
+
+  .gate-card h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .gate-card p { font-size: 15px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+  .gate-link { margin-top: 16px; font-size: 14px; color: rgba(255,255,255,0.55); }
+  .gate-link a { color: #ffd700; text-decoration: none; }
+  .gate-link a:hover { text-decoration: underline; }
+
+  /* Plan banner */
+  .plan-banner {
+    background: linear-gradient(135deg, rgba(74,222,128,0.1) 0%, rgba(34,197,94,0.1) 100%);
+    border: 2px solid rgba(74,222,128,0.35);
+    border-radius: 20px;
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .plan-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffd700;
+    margin-bottom: 6px;
+  }
+
+  .plan-details {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  /* Upgrade section */
+  .upgrade-section { margin-bottom: 40px; }
+  .upgrade-section h2 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+
+  .upgrade-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .upgrade-card {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .uc-featured {
+    border-color: rgba(255,215,0,0.4);
+    background: rgba(255,215,0,0.03);
+  }
+
+  .uc-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .uc-badge-full {
+    background: rgba(255,215,0,0.2);
+    color: #ffd700;
+  }
+
+  .uc-price {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .uc-price span { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 400; }
+
+  .upgrade-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 4px;
+  }
+
+  .upgrade-card li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .upgrade-card li:last-child { border-bottom: none; }
+
+  /* Quick links */
+  .quick-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .quick-link {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.03);
+    color: #e0e0e0;
+    text-decoration: none;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: 0.2s;
+    width: 100%;
+  }
+
+  .quick-link:last-child { border-bottom: none; }
+
+  .quick-link:hover { background: rgba(255,255,255,0.07); }
+
+  .ql-icon { font-size: 24px; flex-shrink: 0; }
+
+  .quick-link strong { display: block; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .quick-link p { font-size: 13px; color: rgba(255,255,255,0.5); margin: 0; }
+
+  .ql-logout:hover { background: rgba(239,68,68,0.08); }
+  .ql-logout:hover strong { color: #ef4444; }
+
+  @media (max-width: 600px) {
+    .plan-banner { flex-direction: column; }
+    .upgrade-cards { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script define:vars={{ API_URL }}>
+  let currentEmail = '';
+
+  function showStatus(el, msg, type) {
+    el.innerHTML = msg;
+    el.className = `status-message ${type}`;
+    el.classList.remove('hidden');
+  }
+
+  function hideStatus(el) { el.classList.add('hidden'); }
+
+  const savedEmail = localStorage.getItem('eumenides_email');
+  if (savedEmail) {
+    loadAccount(savedEmail);
+  } else {
+    document.getElementById('emailGate').classList.remove('hidden');
+  }
+
+  // Gate submit
+  document.getElementById('gateSubmit').addEventListener('click', async function () {
+    const email = document.getElementById('gateEmail').value.trim();
+    const status = document.getElementById('gateStatus');
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus(status, 'Veuillez entrer une adresse email valide', 'error');
+      return;
+    }
+
+    this.disabled = true;
+    this.textContent = 'Chargement...';
+
+    try {
+      const r = await fetch(`${API_URL}/api/check-status`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const d = await r.json();
+
+      if (d.premium) {
+        localStorage.setItem('eumenides_email', email);
+        document.getElementById('emailGate').classList.add('hidden');
+        loadAccount(email);
+      } else {
+        showStatus(status, 'Aucun abonnement actif. <a href="/subscribe" style="color:#ffd700">S\'abonner →</a>', 'error');
+        this.disabled = false; this.textContent = 'Accéder à mon compte';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Réessayez.', 'error');
+      this.disabled = false; this.textContent = 'Accéder à mon compte';
+    }
+  });
+
+  document.getElementById('gateEmail').addEventListener('keypress', e => {
+    if (e.key === 'Enter') document.getElementById('gateSubmit').click();
+  });
+
+  async function loadAccount(email) {
+    currentEmail = email;
+    document.getElementById('accountContent').classList.remove('hidden');
+    const status = document.getElementById('accountStatus');
+
+    try {
+      const r = await fetch(`${API_URL}/api/check-status`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const d = await r.json();
+
+      if (d.premium) {
+        const tier = d.tier || 'basic';
+        const planLabel = tier === 'full' ? '⭐ Full Plan' : '✨ Basic Plan';
+        document.getElementById('planName').textContent = planLabel;
+
+        let details = `Email : ${email}`;
+        if (d.expiresAt) {
+          const exp = new Date(d.expiresAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+          details += `\n${d.subscriptionCanceled ? `Annulé — actif jusqu'au` : 'Actif jusqu\'au'} ${exp}`;
+        }
+        document.getElementById('planDetails').style.whiteSpace = 'pre-line';
+        document.getElementById('planDetails').textContent = details;
+
+        // Show upgrade section with the other plan
+        const upgradeSection = document.getElementById('upgradeSection');
+        upgradeSection.classList.remove('hidden');
+        if (tier === 'full') {
+          document.getElementById('upgradeFullCard').style.display = 'none';
+        } else {
+          document.getElementById('upgradeBasicCard').style.display = 'none';
+        }
+      } else {
+        document.getElementById('planName').textContent = '🆓 Plan Gratuit';
+        document.getElementById('planDetails').textContent = `Email : ${email}`;
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur lors du chargement du compte', 'error');
+    }
+  }
+
+  // Manage subscription (Stripe portal)
+  document.getElementById('manageSubBtn').addEventListener('click', async function () {
+    const status = document.getElementById('accountStatus');
+    this.disabled = true;
+    this.textContent = 'Redirection...';
+
+    try {
+      const r = await fetch(`${API_URL}/api/create-portal-session`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentEmail }),
+      });
+      const d = await r.json();
+
+      if (d.url) {
+        window.location.href = d.url;
+      } else {
+        throw new Error(d.error || 'Impossible de créer la session');
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur : ' + e.message, 'error');
+      this.disabled = false;
+      this.textContent = '⚙️ Gérer l\'abonnement';
+    }
+  });
+
+  // Upgrade/downgrade plan buttons
+  document.querySelectorAll('.upgrade-plan-btn').forEach(btn => {
+    btn.addEventListener('click', async function () {
+      const plan = this.dataset.plan;
+      const status = document.getElementById('accountStatus');
+      const confirmed = confirm(`Changer de plan vers ${plan === 'full' ? 'Full (4,99€/mois)' : 'Basic (1,99€/mois)'} ?`);
+      if (!confirmed) return;
+
+      this.disabled = true;
+      this.textContent = 'Changement en cours...';
+
+      try {
+        const r = await fetch(`${API_URL}/api/upgrade-subscription`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentEmail, newPlan: plan }),
+        });
+        const d = await r.json();
+
+        if (d.success) {
+          showStatus(status, `✅ Plan changé vers ${d.newPlan === 'full' ? 'Full' : 'Basic'} avec succès !`, 'success');
+          setTimeout(() => loadAccount(currentEmail), 1500);
+        } else {
+          throw new Error(d.error || 'Erreur lors du changement');
+        }
+      } catch (e) {
+        showStatus(status, 'Erreur : ' + e.message, 'error');
+        this.disabled = false;
+        this.textContent = plan === 'full' ? 'Passer à Full' : 'Passer à Basic';
+      }
+    });
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    localStorage.removeItem('eumenides_email');
+    localStorage.removeItem('eumenides_plan');
+    localStorage.removeItem('eumenides_expires');
+    window.location.href = '/';
+  });
+</script>

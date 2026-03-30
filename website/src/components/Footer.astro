@@ -1,0 +1,103 @@
+---
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">⚡ Eumenides</span>
+      <p>Transformez votre rage en sagesse.<br />Postez sans regrets.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <a href="/#features">Fonctionnalités</a>
+        <a href="/pricing">Tarifs</a>
+        <a href="/dashboard">Dashboard</a>
+      </div>
+      <div class="footer-col">
+        <h4>Compte</h4>
+        <a href="/subscribe">S'abonner</a>
+        <a href="/activate">Activer</a>
+        <a href="/account">Gérer mon abonnement</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <span>© {new Date().getFullYear()} Eumenides. Tous droits réservés.</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 60px 0 24px;
+    margin-top: 80px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-logo {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 0.7;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 14px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover {
+    color: #fff;
+  }
+
+  .footer-bottom {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

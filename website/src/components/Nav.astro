@@ -1,0 +1,139 @@
+---
+interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
+---
+
+<nav class={dark ? "nav nav-dark" : "nav nav-transparent"}>
+  <div class="nav-inner container">
+    <a href="/" class="nav-logo">⚡ Eumenides</a>
+    <div class="nav-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/pricing">Tarifs</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/account">Mon compte</a>
+      <a href="/subscribe" class="nav-cta">Commencer</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu" id="navBurger">☰</button>
+  </div>
+  <div class="nav-mobile hidden" id="navMobile">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/pricing">Tarifs</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/account">Mon compte</a>
+    <a href="/subscribe">Commencer</a>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+  }
+
+  .nav-transparent {
+    background: rgba(10, 8, 30, 0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-dark {
+    background: rgba(10, 8, 30, 0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: #fff;
+  }
+
+  .nav-cta {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #000 !important;
+    padding: 9px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px !important;
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255,215,0,0.4);
+  }
+
+  .nav-burger {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .nav-mobile {
+    padding: 16px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background: rgba(10, 8, 30, 0.95);
+  }
+
+  .nav-mobile a {
+    display: block;
+    padding: 12px 24px;
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .nav-mobile a:hover {
+    background: rgba(255,255,255,0.05);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    .nav-burger {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const burger = document.getElementById('navBurger');
+  const mobile = document.getElementById('navMobile');
+  burger?.addEventListener('click', () => {
+    mobile?.classList.toggle('hidden');
+  });
+</script>
