@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="fr"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard — Eumenides</title><meta name="description" content="Analysez vos patterns émotionnels et suivez votre progression."><meta name="theme-color" content="#667eea"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta property="og:title" content="Dashboard — Eumenides"><meta property="og:description" content="Analysez vos patterns émotionnels et suivez votre progression."><meta property="og:type" content="website"><style>*{margin:0;padding:0;box-sizing:border-box}:root{--purple-start: #667eea;--purple-end: #764ba2;--gold: #ffd700;--gold-end: #ffed4e;--green: #4ade80;--red: #ef4444;--dark-bg: #0f0f23;--text: #e0e0e0;--text-muted: rgba(255,255,255,.6);--glass: rgba(255,255,255,.1);--glass-border: rgba(255,255,255,.15);--font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif}html{scroll-behavior:smooth}body{font-family:var(--font);color:var(--text);background:var(--dark-bg);min-height:100vh}a{color:inherit;text-decoration:none}button{font-family:var(--font);cursor:pointer}.container{max-width:1100px;margin:0 auto;padding:0 24px}.btn-primary{display:inline-block;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-end) 100%);color:#000;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:700;border:none;cursor:pointer;transition:.3s;text-decoration:none;box-shadow:0 6px 24px #ffd70059}.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 36px #ffd70080}.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}.btn-secondary{display:inline-block;background:#ffffff26;color:#fff;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:600;border:2px solid rgba(255,255,255,.25);cursor:pointer;transition:.3s;text-decoration:none}.btn-secondary:hover{background:#ffffff38;transform:translateY(-2px)}.glass-card{background:#ffffff12;backdrop-filter:blur(10px);border:1px solid var(--glass-border);border-radius:20px}.status-message{padding:14px 18px;border-radius:10px;font-size:14px;margin:12px 0}.status-message.success{background:#4ade8033;border:1.5px solid var(--green)}.status-message.error{background:#ef444433;border:1.5px solid var(--red)}.status-message.info{background:#667eea33;border:1.5px solid var(--purple-start)}.hidden{display:none!important}.input-group{margin-bottom:18px;text-align:left}.input-group label{display:block;margin-bottom:8px;font-weight:600;font-size:14px}.input-group input,.input-group select{width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,.2);border-radius:10px;background:#ffffff1a;color:#fff;font-size:16px;font-family:var(--font);transition:.2s}.input-group input::placeholder{color:var(--text-muted)}.input-group input:focus,.input-group select:focus{outline:none;border-color:var(--gold);background:#ffffff26}.input-group select option{background:#1a1040;color:#fff}.page-gradient{background:linear-gradient(135deg,var(--purple-start) 0%,var(--purple-end) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}.dark-body{background:#0f0f23}
+.nav[data-astro-cid-dmqpwcec]{position:sticky;top:0;z-index:100;padding:0 24px}.nav-transparent[data-astro-cid-dmqpwcec]{background:#0a081e99;backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}.nav-dark[data-astro-cid-dmqpwcec]{background:#0a081ee6;border-bottom:1px solid rgba(255,255,255,.08)}.nav-inner[data-astro-cid-dmqpwcec]{display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo[data-astro-cid-dmqpwcec]{font-size:20px;font-weight:700;background:linear-gradient(135deg,gold,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}.nav-links[data-astro-cid-dmqpwcec]{display:flex;align-items:center;gap:28px}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{color:#fffc;font-size:15px;text-decoration:none;transition:color .2s}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover{color:#fff}.nav-cta[data-astro-cid-dmqpwcec]{background:linear-gradient(135deg,gold,#ffed4e);color:#000!important;padding:9px 22px;border-radius:50px;font-weight:700;font-size:14px!important}.nav-cta[data-astro-cid-dmqpwcec]:hover{transform:translateY(-1px);box-shadow:0 4px 16px #ffd70066}.nav-burger[data-astro-cid-dmqpwcec]{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer}.nav-mobile[data-astro-cid-dmqpwcec]{padding:16px 0;border-top:1px solid rgba(255,255,255,.1);background:#0a081ef2}.nav-mobile[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{display:block;padding:12px 24px;color:#ffffffd9;font-size:16px;text-decoration:none}.nav-mobile[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover{background:#ffffff0d}@media(max-width:768px){.nav-links[data-astro-cid-dmqpwcec]{display:none}.nav-burger[data-astro-cid-dmqpwcec]{display:block}}.footer[data-astro-cid-sz7xmlte]{background:#0000004d;border-top:1px solid rgba(255,255,255,.08);padding:60px 0 24px;margin-top:80px;color:#ffffffb3}.footer-inner[data-astro-cid-sz7xmlte]{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;margin-bottom:48px}.footer-logo[data-astro-cid-sz7xmlte]{display:block;font-size:20px;font-weight:700;background:linear-gradient(135deg,gold,#ffed4e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}.footer-brand[data-astro-cid-sz7xmlte] p[data-astro-cid-sz7xmlte]{font-size:14px;line-height:1.7;opacity:.7}.footer-links[data-astro-cid-sz7xmlte]{display:grid;grid-template-columns:1fr 1fr;gap:32px}.footer-col[data-astro-cid-sz7xmlte] h4[data-astro-cid-sz7xmlte]{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff6;margin-bottom:14px}.footer-col[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{display:block;font-size:14px;color:#ffffffa6;text-decoration:none;margin-bottom:10px;transition:color .2s}.footer-col[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:#fff}.footer-bottom[data-astro-cid-sz7xmlte]{padding-top:24px;border-top:1px solid rgba(255,255,255,.06);font-size:13px;color:#ffffff59}@media(max-width:640px){.footer-inner[data-astro-cid-sz7xmlte]{grid-template-columns:1fr}}
+.email-gate[data-astro-cid-3nssi2tu]{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:40px 20px}.gate-card[data-astro-cid-3nssi2tu]{background:#ffffff0f;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:48px 40px;max-width:460px;width:100%;text-align:center}.gate-icon[data-astro-cid-3nssi2tu]{font-size:56px;margin-bottom:20px}.gate-card[data-astro-cid-3nssi2tu] h2[data-astro-cid-3nssi2tu]{font-size:26px;font-weight:700;color:#fff;margin-bottom:12px}.gate-card[data-astro-cid-3nssi2tu] p[data-astro-cid-3nssi2tu]{font-size:15px;color:#ffffffb3;margin-bottom:4px;line-height:1.6}.gate-links[data-astro-cid-3nssi2tu]{margin-top:20px;font-size:13px;color:#ffffff80}.gate-links[data-astro-cid-3nssi2tu] a[data-astro-cid-3nssi2tu]{color:gold;text-decoration:none}.gate-links[data-astro-cid-3nssi2tu] a[data-astro-cid-3nssi2tu]:hover{text-decoration:underline}.container[data-astro-cid-3nssi2tu]{max-width:1400px;margin:0 auto;padding:0 24px}.dash-header[data-astro-cid-3nssi2tu]{display:flex;justify-content:space-between;align-items:center;padding:32px 0 24px;border-bottom:2px solid rgba(255,255,255,.08);margin-bottom:36px;flex-wrap:wrap;gap:16px}.logo-text[data-astro-cid-3nssi2tu]{font-size:28px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.user-email[data-astro-cid-3nssi2tu]{font-size:13px;color:#ffffff73;margin-top:4px}.period-selector[data-astro-cid-3nssi2tu]{display:flex;gap:8px;flex-wrap:wrap}.period-btn[data-astro-cid-3nssi2tu]{padding:8px 16px;background:#ffffff0d;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#e0e0e0;cursor:pointer;transition:.2s;font-size:14px}.period-btn[data-astro-cid-3nssi2tu]:hover,.period-btn[data-astro-cid-3nssi2tu].active{background:#667eea4d;border-color:#667eea;color:#fff}.stats-grid[data-astro-cid-3nssi2tu]{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:36px}.stat-card[data-astro-cid-3nssi2tu]{background:linear-gradient(135deg,#667eea1a,#764ba21a);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;transition:.3s}.stat-card[data-astro-cid-3nssi2tu]:hover{transform:translateY(-4px);box-shadow:0 10px 30px #667eea40}.stat-icon[data-astro-cid-3nssi2tu]{font-size:30px;margin-bottom:12px}.stat-value[data-astro-cid-3nssi2tu]{font-size:34px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}.stat-label[data-astro-cid-3nssi2tu]{font-size:13px;color:#ffffff8c;margin-bottom:10px}.stat-change[data-astro-cid-3nssi2tu]{font-size:12px;color:#4ade80}.chart-section[data-astro-cid-3nssi2tu]{background:#ffffff05;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px;margin-bottom:28px}.chart-section[data-astro-cid-3nssi2tu] h2[data-astro-cid-3nssi2tu]{font-size:18px;font-weight:600;margin-bottom:20px;color:#fff}.chart-section[data-astro-cid-3nssi2tu] canvas[data-astro-cid-3nssi2tu]{width:100%;height:300px;border-radius:8px}.chart-row[data-astro-cid-3nssi2tu]{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:28px;margin-bottom:28px}.chart-row[data-astro-cid-3nssi2tu] .chart-section[data-astro-cid-3nssi2tu]{margin-bottom:0}.insights-section[data-astro-cid-3nssi2tu]{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.insight-card[data-astro-cid-3nssi2tu]{background:#4ade8014;border:1px solid rgba(74,222,128,.25);border-radius:12px;padding:18px}.insight-card[data-astro-cid-3nssi2tu] h3[data-astro-cid-3nssi2tu]{font-size:15px;color:#4ade80;margin-bottom:8px}.insight-card[data-astro-cid-3nssi2tu] p[data-astro-cid-3nssi2tu]{font-size:13px;color:#fffc;line-height:1.6}@media(max-width:768px){.dash-header[data-astro-cid-3nssi2tu]{flex-direction:column;align-items:flex-start}.chart-row[data-astro-cid-3nssi2tu]{grid-template-columns:1fr}}
+</style></head> <body class="dark-body">  <nav class="nav nav-dark" data-astro-cid-dmqpwcec> <div class="nav-inner container" data-astro-cid-dmqpwcec> <a href="/" class="nav-logo" data-astro-cid-dmqpwcec>⚡ Eumenides</a> <div class="nav-links" data-astro-cid-dmqpwcec> <a href="/#features" data-astro-cid-dmqpwcec>Fonctionnalités</a> <a href="/pricing" data-astro-cid-dmqpwcec>Tarifs</a> <a href="/dashboard" data-astro-cid-dmqpwcec>Dashboard</a> <a href="/account" data-astro-cid-dmqpwcec>Mon compte</a> <a href="/subscribe" class="nav-cta" data-astro-cid-dmqpwcec>Commencer</a> </div> <button class="nav-burger" aria-label="Menu" id="navBurger" data-astro-cid-dmqpwcec>☰</button> </div> <div class="nav-mobile hidden" id="navMobile" data-astro-cid-dmqpwcec> <a href="/#features" data-astro-cid-dmqpwcec>Fonctionnalités</a> <a href="/pricing" data-astro-cid-dmqpwcec>Tarifs</a> <a href="/dashboard" data-astro-cid-dmqpwcec>Dashboard</a> <a href="/account" data-astro-cid-dmqpwcec>Mon compte</a> <a href="/subscribe" data-astro-cid-dmqpwcec>Commencer</a> </div> </nav>  <script type="module">const e=document.getElementById("navBurger"),t=document.getElementById("navMobile");e?.addEventListener("click",()=>{t?.classList.toggle("hidden")});</script>  <div id="emailGate" class="email-gate hidden" data-astro-cid-3nssi2tu> <div class="gate-card" data-astro-cid-3nssi2tu> <div class="gate-icon" data-astro-cid-3nssi2tu>🔑</div> <h2 data-astro-cid-3nssi2tu>Accédez à votre dashboard</h2> <p data-astro-cid-3nssi2tu>Entrez l'email de votre abonnement Premium pour voir vos statistiques.</p> <div class="input-group" style="margin-top:20px;" data-astro-cid-3nssi2tu> <input type="email" id="gateEmail" placeholder="votre@email.com" autocomplete="email" data-astro-cid-3nssi2tu> </div> <button id="gateSubmit" class="btn-primary" style="width:100%;margin-top:8px;" data-astro-cid-3nssi2tu>📊 Voir mon dashboard</button> <div id="gateStatus" class="status-message hidden" data-astro-cid-3nssi2tu></div> <p class="gate-links" data-astro-cid-3nssi2tu>
+Pas encore abonné ? <a href="/subscribe" data-astro-cid-3nssi2tu>Créer un compte</a> ·
+<a href="/activate" data-astro-cid-3nssi2tu>Activer Premium</a> </p> </div> </div>  <div id="dashboardContent" class="hidden" data-astro-cid-3nssi2tu> <div class="container" data-astro-cid-3nssi2tu> <header class="dash-header" data-astro-cid-3nssi2tu> <div data-astro-cid-3nssi2tu> <div class="logo-text" data-astro-cid-3nssi2tu>⚡ Eumenides Dashboard</div> <div id="userEmail" class="user-email" data-astro-cid-3nssi2tu></div> </div> <div class="period-selector" data-astro-cid-3nssi2tu> <button class="period-btn" data-days="1" data-astro-cid-3nssi2tu>Aujourd'hui</button> <button class="period-btn active" data-days="7" data-astro-cid-3nssi2tu>Cette semaine</button> <button class="period-btn" data-days="30" data-astro-cid-3nssi2tu>Ce mois</button> <button class="period-btn" data-days="365" data-astro-cid-3nssi2tu>Tout</button> </div> </header> <div class="stats-grid" data-astro-cid-3nssi2tu> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>🛡️</div> <div class="stat-value" id="postsIntercepted" data-astro-cid-3nssi2tu>0</div> <div class="stat-label" data-astro-cid-3nssi2tu>Posts interceptés</div> <div class="stat-change" id="weeklyTrendChange" data-astro-cid-3nssi2tu>→ 0% vs semaine dernière</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>⏰</div> <div class="stat-value" id="timeSaved" data-astro-cid-3nssi2tu>0h</div> <div class="stat-label" data-astro-cid-3nssi2tu>Temps économisé</div> <div class="stat-change" id="avgTimePerPost" data-astro-cid-3nssi2tu>~0 min par post</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>😌</div> <div class="stat-value" id="regretsAvoided" data-astro-cid-3nssi2tu>0%</div> <div class="stat-label" data-astro-cid-3nssi2tu>Regrets évités</div> <div class="stat-change" id="calmDaysInfo" data-astro-cid-3nssi2tu>0 jours calmes</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>🔥</div> <div class="stat-value" id="currentStreak" data-astro-cid-3nssi2tu>0</div> <div class="stat-label" data-astro-cid-3nssi2tu>Streak actuel</div> <div class="stat-change" id="longestStreak" data-astro-cid-3nssi2tu>Record: 0 jours</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>⏰</div> <div class="stat-value" id="peakHour" data-astro-cid-3nssi2tu>--</div> <div class="stat-label" data-astro-cid-3nssi2tu>Heure de pointe</div> <div class="stat-change" id="peakHourPercent" data-astro-cid-3nssi2tu>0% de tes posts</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>🏆</div> <div class="stat-value" id="bestDayCount" data-astro-cid-3nssi2tu>0</div> <div class="stat-label" data-astro-cid-3nssi2tu>Meilleur jour</div> <div class="stat-change" id="bestDayDate" data-astro-cid-3nssi2tu>--</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>🌡️</div> <div class="stat-value" id="angerScore" data-astro-cid-3nssi2tu>0.0</div> <div class="stat-label" data-astro-cid-3nssi2tu>Score de rage</div> <div class="stat-change" data-astro-cid-3nssi2tu>sur 3.0</div> </div> <div class="stat-card" data-astro-cid-3nssi2tu> <div class="stat-icon" data-astro-cid-3nssi2tu>📅</div> <div class="stat-value" id="weekdayPercent" data-astro-cid-3nssi2tu>0%</div> <div class="stat-label" data-astro-cid-3nssi2tu>Posts en semaine</div> <div class="stat-change" id="weekendPercent" data-astro-cid-3nssi2tu>0% le weekend</div> </div> </div> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>📊 Activité émotionnelle</h2> <canvas id="emotionalActivityChart" data-astro-cid-3nssi2tu></canvas> </div> <div class="chart-row" data-astro-cid-3nssi2tu> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>📱 Répartition par plateforme</h2> <canvas id="platformChart" style="max-height:300px" data-astro-cid-3nssi2tu></canvas> </div> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>😡 Composition émotionnelle</h2> <canvas id="emotionChart" style="max-height:300px" data-astro-cid-3nssi2tu></canvas> </div> </div> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>⏰ Pattern horaire (24h)</h2> <canvas id="hourlyPatternChart" data-astro-cid-3nssi2tu></canvas> </div> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>📈 Tendance mensuelle</h2> <canvas id="monthlyTrendChart" data-astro-cid-3nssi2tu></canvas> </div> <div class="chart-section" data-astro-cid-3nssi2tu> <h2 data-astro-cid-3nssi2tu>💡 Insights personnalisés</h2> <div class="insights-section" id="insightsList" data-astro-cid-3nssi2tu> <div class="insight-card" data-astro-cid-3nssi2tu> <h3 data-astro-cid-3nssi2tu>💡 Pattern détecté</h3> <p data-astro-cid-3nssi2tu>Commence à utiliser Eumenides pour voir tes patterns de rage posting.</p> </div> </div> </div> </div> </div> <footer class="footer" data-astro-cid-sz7xmlte> <div class="container footer-inner" data-astro-cid-sz7xmlte> <div class="footer-brand" data-astro-cid-sz7xmlte> <span class="footer-logo" data-astro-cid-sz7xmlte>⚡ Eumenides</span> <p data-astro-cid-sz7xmlte>Transformez votre rage en sagesse.<br data-astro-cid-sz7xmlte>Postez sans regrets.</p> </div> <div class="footer-links" data-astro-cid-sz7xmlte> <div class="footer-col" data-astro-cid-sz7xmlte> <h4 data-astro-cid-sz7xmlte>Produit</h4> <a href="/#features" data-astro-cid-sz7xmlte>Fonctionnalités</a> <a href="/pricing" data-astro-cid-sz7xmlte>Tarifs</a> <a href="/dashboard" data-astro-cid-sz7xmlte>Dashboard</a> </div> <div class="footer-col" data-astro-cid-sz7xmlte> <h4 data-astro-cid-sz7xmlte>Compte</h4> <a href="/subscribe" data-astro-cid-sz7xmlte>S'abonner</a> <a href="/activate" data-astro-cid-sz7xmlte>Activer</a> <a href="/account" data-astro-cid-sz7xmlte>Gérer mon abonnement</a> </div> </div> </div> <div class="footer-bottom container" data-astro-cid-sz7xmlte> <span data-astro-cid-sz7xmlte>© 2026 Eumenides. Tous droits réservés.</span> </div> </footer>   </body></html>  <script>(function(){const API_URL = "http://localhost:3000";
+
+  let currentPeriodDays = 7;
+
+  function showStatus(el, msg, type) {
+    el.textContent = msg;
+    el.className = `status-message ${type}`;
+    el.classList.remove('hidden');
+  }
+
+  // Check if we have an email in localStorage
+  const savedEmail = localStorage.getItem('eumenides_email');
+
+  if (savedEmail) {
+    initDashboard(savedEmail);
+  } else {
+    document.getElementById('emailGate').classList.remove('hidden');
+  }
+
+  // Gate form submission
+  document.getElementById('gateSubmit').addEventListener('click', async function () {
+    const email = document.getElementById('gateEmail').value.trim();
+    const status = document.getElementById('gateStatus');
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus(status, 'Veuillez entrer une adresse email valide', 'error');
+      return;
+    }
+
+    this.disabled = true;
+    this.textContent = 'Vérification...';
+
+    try {
+      const r = await fetch(`${API_URL}/api/check-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const d = await r.json();
+
+      if (d.premium) {
+        localStorage.setItem('eumenides_email', email);
+        document.getElementById('emailGate').classList.add('hidden');
+        initDashboard(email);
+      } else {
+        showStatus(status, 'Aucun abonnement actif trouvé pour cet email. <a href="/subscribe" style="color:#ffd700">S\'abonner</a>', 'error');
+        this.disabled = false;
+        this.textContent = '📊 Voir mon dashboard';
+      }
+    } catch (e) {
+      showStatus(status, 'Erreur réseau. Réessayez.', 'error');
+      this.disabled = false;
+      this.textContent = '📊 Voir mon dashboard';
+    }
+  });
+
+  document.getElementById('gateEmail').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('gateSubmit').click();
+  });
+
+  function initDashboard(email) {
+    document.getElementById('dashboardContent').classList.remove('hidden');
+    document.getElementById('userEmail').textContent = email;
+
+    // Period selector
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentPeriodDays = parseInt(this.dataset.days);
+        loadDashboardData(email);
+      });
+    });
+
+    loadDashboardData(email);
+  }
+
+  async function loadDashboardData(email) {
+    try {
+      const response = await fetch(`${API_URL}/api/stats`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, days: currentPeriodDays }),
+      });
+
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const data = await response.json();
+
+      if (data.success) {
+        renderAllStats(data);
+      }
+    } catch (error) {
+      console.error('Failed to load stats:', error);
+      renderAllStats({ analytics: getEmptyStats(), insights: [], daily: [] });
+    }
+  }
+
+  function getEmptyStats() {
+    return {
+      postsIntercepted: 0, timeSavedHours: 0, timeSavedMinutes: 0,
+      regretsAvoided: 0, currentStreak: 0, longestStreak: 0,
+      weeklyTrend: 0, peakHour: '--', peakHourPercentage: 0,
+      bestDay: null, calmDays: 0, angerIntensityScore: 0,
+      avgTimePerPost: 0, weekdayPercentage: 0, weekendPercentage: 0,
+      platformPercentages: {}, emotionPercentages: {}, hourlyPercentages: {},
+    };
+  }
+
+  function renderAllStats(data) {
+    const { analytics, insights, daily } = data;
+    if (!analytics) return;
+
+    document.getElementById('postsIntercepted').textContent = analytics.postsIntercepted || 0;
+    document.getElementById('timeSaved').textContent = `${analytics.timeSavedHours || 0}h`;
+    document.getElementById('regretsAvoided').textContent = `${analytics.regretsAvoided || 0}%`;
+    document.getElementById('currentStreak').textContent = analytics.currentStreak || 0;
+
+    const trend = analytics.weeklyTrend || 0;
+    const trendEl = document.getElementById('weeklyTrendChange');
+    if (trend > 0) { trendEl.textContent = `↑ ${trend}% vs semaine dernière`; trendEl.style.color = '#ff6b6b'; }
+    else if (trend < 0) { trendEl.textContent = `↓ ${Math.abs(trend)}% vs semaine dernière`; trendEl.style.color = '#4ade80'; }
+    else { trendEl.textContent = '→ 0% vs semaine dernière'; trendEl.style.color = '#e0e0e0'; }
+
+    document.getElementById('avgTimePerPost').textContent = `~${analytics.avgTimePerPost || 0} min par post`;
+    document.getElementById('calmDaysInfo').textContent = `${analytics.calmDays || 0} jours calmes`;
+    document.getElementById('longestStreak').textContent = `Record: ${analytics.longestStreak || 0} jours`;
+    document.getElementById('peakHour').textContent = analytics.peakHour || '--';
+    document.getElementById('peakHourPercent').textContent = `${analytics.peakHourPercentage || 0}% de tes posts`;
+
+    if (analytics.bestDay) {
+      document.getElementById('bestDayCount').textContent = analytics.bestDay.count;
+      document.getElementById('bestDayDate').textContent = new Date(analytics.bestDay.date)
+        .toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    }
+
+    document.getElementById('angerScore').textContent = analytics.angerIntensityScore || '0.0';
+    document.getElementById('weekdayPercent').textContent = `${analytics.weekdayPercentage || 0}%`;
+    document.getElementById('weekendPercent').textContent = `${analytics.weekendPercentage || 0}% le weekend`;
+
+    renderEmotionalActivityChart(daily);
+    renderPlatformChart(analytics.platformPercentages || {});
+    renderEmotionChart(analytics.emotionPercentages || {});
+    renderHourlyPatternChart(analytics.hourlyPercentages || {});
+    renderMonthlyTrendChart(daily);
+    renderInsights(insights || []);
+  }
+
+  function setupCanvas(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    return { ctx, width: rect.width, height: rect.height };
+  }
+
+  function renderEmotionalActivityChart(dailyData) {
+    const c = setupCanvas('emotionalActivityChart');
+    if (!c) return;
+    const { ctx, width, height } = c;
+    ctx.clearRect(0, 0, width, height);
+
+    if (!dailyData || dailyData.length === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '16px -apple-system';
+      ctx.textAlign = 'center'; ctx.fillText('Aucune donnée disponible', width / 2, height / 2); return;
+    }
+
+    const chartData = dailyData.slice(0, 7).reverse();
+    const emotionColors = { anger: '#ff6b6b', frustration: '#ffa500', irritation: '#ffcc00', neutral: '#4ade80' };
+    const barWidth = (width / chartData.length) * 0.7;
+    const gap = (width / chartData.length) * 0.3;
+    const maxValue = Math.max(...chartData.map(d => d.emotions.anger + d.emotions.frustration + d.emotions.irritation + d.emotions.neutral), 1);
+    const chartHeight = height - 60;
+
+    chartData.forEach((day, i) => {
+      const x = i * (barWidth + gap) + gap / 2;
+      const total = day.emotions.anger + day.emotions.frustration + day.emotions.irritation + day.emotions.neutral;
+      let yOffset = chartHeight;
+
+      if (total === 0) {
+        ctx.fillStyle = 'rgba(255,255,255,0.05)'; ctx.fillRect(x, 40, barWidth, chartHeight - 40);
+      } else {
+        ['neutral', 'irritation', 'frustration', 'anger'].forEach(emotion => {
+          const val = day.emotions[emotion] || 0;
+          const bh = (val / maxValue) * (chartHeight - 40);
+          if (bh > 0) { ctx.fillStyle = emotionColors[emotion]; ctx.fillRect(x, yOffset - bh, barWidth, bh); yOffset -= bh; }
+        });
+      }
+
+      const date = new Date(day.date);
+      const label = i === chartData.length - 1 ? 'Auj.' : date.toLocaleDateString('fr-FR', { weekday: 'short' });
+      ctx.fillStyle = '#e0e0e0'; ctx.font = '12px -apple-system'; ctx.textAlign = 'center';
+      ctx.fillText(label, x + barWidth / 2, height - 10);
+      if (total > 0) { ctx.fillStyle = '#e0e0e0'; ctx.font = 'bold 14px -apple-system'; ctx.fillText(total.toString(), x + barWidth / 2, yOffset - 5); }
+    });
+
+    const legendItems = [
+      { key: 'anger', label: 'Colère' }, { key: 'frustration', label: 'Frustration' },
+      { key: 'irritation', label: 'Irritation' }, { key: 'neutral', label: 'Neutre' },
+    ];
+    let legendX = 10;
+    legendItems.forEach(e => {
+      ctx.fillStyle = emotionColors[e.key]; ctx.fillRect(legendX, 10, 12, 12);
+      ctx.fillStyle = '#e0e0e0'; ctx.font = '11px -apple-system'; ctx.textAlign = 'left';
+      ctx.fillText(e.label, legendX + 16, 20);
+      legendX += ctx.measureText(e.label).width + 32;
+    });
+  }
+
+  function renderPieChart(canvasId, items, percentages) {
+    const c = setupCanvas(canvasId);
+    if (!c) return;
+    const { ctx, width, height } = c;
+    ctx.clearRect(0, 0, width, height);
+
+    const total = Object.values(percentages).reduce((s, v) => s + v, 0);
+    if (total === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '14px -apple-system';
+      ctx.textAlign = 'center'; ctx.fillText('Aucune donnée disponible', width / 2, height / 2); return;
+    }
+
+    const cx = width / 3, cy = height / 2, r = Math.min(width / 3, height / 2) * 0.8;
+    let angle = -Math.PI / 2;
+    items.forEach(item => {
+      const pct = percentages[item.key] || 0;
+      if (pct > 0) {
+        const slice = (pct / 100) * 2 * Math.PI;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, angle, angle + slice); ctx.closePath();
+        ctx.fillStyle = item.color; ctx.fill(); angle += slice;
+      }
+    });
+
+    let ly = cy - (items.length * 30) / 2;
+    const lx = width * 0.6;
+    items.forEach(item => {
+      const pct = percentages[item.key] || 0;
+      ctx.fillStyle = item.color; ctx.fillRect(lx, ly, 14, 14);
+      ctx.fillStyle = '#e0e0e0'; ctx.font = '13px -apple-system'; ctx.textAlign = 'left';
+      ctx.fillText(`${item.label}${pct > 0 ? ': ' + pct + '%' : ''}`, lx + 20, ly + 12);
+      ly += 30;
+    });
+  }
+
+  function renderPlatformChart(percentages) {
+    renderPieChart('platformChart', [
+      { key: 'twitter', label: 'Twitter', color: '#1DA1F2' },
+      { key: 'reddit', label: 'Reddit', color: '#FF4500' },
+      { key: 'facebook', label: 'Facebook', color: '#1877F2' },
+      { key: 'linkedin', label: 'LinkedIn', color: '#0A66C2' },
+    ], percentages);
+  }
+
+  function renderEmotionChart(percentages) {
+    renderPieChart('emotionChart', [
+      { key: 'anger', label: 'Colère', color: '#ff6b6b' },
+      { key: 'frustration', label: 'Frustration', color: '#ffa500' },
+      { key: 'irritation', label: 'Irritation', color: '#ffcc00' },
+      { key: 'neutral', label: 'Neutre', color: '#4ade80' },
+    ], percentages);
+  }
+
+  function renderHourlyPatternChart(hourlyPercentages) {
+    const c = setupCanvas('hourlyPatternChart');
+    if (!c) return;
+    const { ctx, width, height } = c;
+    ctx.clearRect(0, 0, width, height);
+
+    const hours = [
+      { key: '00-05', label: '00h-05h' }, { key: '06-11', label: '06h-11h' },
+      { key: '12-17', label: '12h-17h' }, { key: '18-23', label: '18h-23h' },
+    ];
+    const maxPct = Math.max(...Object.values(hourlyPercentages), 1);
+    const barWidth = (width / hours.length) * 0.7;
+    const gap = (width / hours.length) * 0.3;
+    const chartHeight = height - 60;
+
+    hours.forEach((hour, i) => {
+      const pct = hourlyPercentages[hour.key] || 0;
+      const bh = (pct / maxPct) * (chartHeight - 40);
+      const x = i * (barWidth + gap) + gap / 2;
+      const y = chartHeight - bh;
+      const grad = ctx.createLinearGradient(0, y, 0, chartHeight);
+      grad.addColorStop(0, '#667eea'); grad.addColorStop(1, '#764ba2');
+      ctx.fillStyle = grad; ctx.fillRect(x, y, barWidth, bh);
+      if (pct > 0) { ctx.fillStyle = '#e0e0e0'; ctx.font = 'bold 14px -apple-system'; ctx.textAlign = 'center'; ctx.fillText(`${pct}%`, x + barWidth / 2, y - 10); }
+      ctx.fillStyle = '#e0e0e0'; ctx.font = '12px -apple-system'; ctx.textAlign = 'center';
+      ctx.fillText(hour.label, x + barWidth / 2, height - 10);
+    });
+  }
+
+  function renderMonthlyTrendChart(dailyData) {
+    const c = setupCanvas('monthlyTrendChart');
+    if (!c) return;
+    const { ctx, width, height } = c;
+    ctx.clearRect(0, 0, width, height);
+
+    if (!dailyData || dailyData.length === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '14px -apple-system';
+      ctx.textAlign = 'center'; ctx.fillText('Aucune donnée disponible', width / 2, height / 2); return;
+    }
+
+    const weeks = Math.min(Math.ceil(dailyData.length / 7), 12);
+    const weeklyData = [];
+    for (let i = 0; i < weeks; i++) {
+      const wd = dailyData.slice(i * 7, (i + 1) * 7);
+      weeklyData.push({ week: weeks - i, total: wd.reduce((s, d) => s + (d.posts || 0), 0), date: wd[0]?.date });
+    }
+    weeklyData.reverse();
+
+    const maxPosts = Math.max(...weeklyData.map(w => w.total), 1);
+    const spacing = width / (weeklyData.length + 1);
+    const chartHeight = height - 60;
+
+    ctx.beginPath(); ctx.strokeStyle = '#667eea'; ctx.lineWidth = 3;
+    weeklyData.forEach((week, i) => {
+      const x = (i + 1) * spacing;
+      const y = chartHeight - (week.total / maxPosts) * (chartHeight - 40);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      ctx.fillStyle = '#667eea'; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#e0e0e0'; ctx.font = 'bold 12px -apple-system'; ctx.textAlign = 'center';
+      ctx.fillText(week.total.toString(), x, y - 10);
+      if (week.date) {
+        const label = new Date(week.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        ctx.font = '11px -apple-system'; ctx.fillText(label, x, height - 10);
+      }
+    });
+    ctx.stroke();
+  }
+
+  function renderInsights(insights) {
+    const container = document.getElementById('insightsList');
+    if (!container) return;
+
+    if (!insights || insights.length === 0) {
+      container.innerHTML = `<div class="insight-card"><h3>💡 Insights personnalisés</h3><p>Commence à utiliser Eumenides pour voir tes patterns et insights personnalisés.</p></div>`;
+      return;
+    }
+
+    const typeLabels = { pattern: 'Pattern détecté', emotion: 'Composition émotionnelle', platform: 'Plateforme déclencheur', improvement: 'Amélioration', achievement: 'Achievement' };
+    container.innerHTML = insights.map(i => `
+      <div class="insight-card">
+        <h3>${i.icon || '💡'} ${typeLabels[i.type] || 'Insight'}</h3>
+        <p>${i.message}</p>
+      </div>`).join('');
+  }
+})();</script>
