@@ -15,7 +15,7 @@ import Footer from '../components/Footer.astro';
       <h1>Postez sans <span class="gradient-text">regrets</span></h1>
       <p class="hero-sub">Eumenides intercepte vos posts impulsifs avant qu'il ne soit trop tard.<br />Transformez votre rage en sagesse.</p>
       <div class="hero-cta">
-        <a href="/subscribe" class="btn-primary">✨ Commencer gratuitement</a>
+        <a href="#" id="install-btn" class="btn-primary">✨ Commencer gratuitement</a>
         <a href="#how-it-works" class="btn-secondary">Voir comment ça marche</a>
       </div>
       <div class="hero-stats">
@@ -145,7 +145,18 @@ import Footer from '../components/Footer.astro';
             <li>✓ X et Reddit</li>
             <li>✓ Modes Catharsis et Aperçu</li>
           </ul>
-          <a href="/subscribe" class="btn-secondary" style="display:block;text-align:center;margin-top:20px;">Commencer</a>
+          <a href="#" class="btn-secondary install-btn" style="display:block;text-align:center;margin-top:20px;">Commencer</a>
+        </div>
+        <div class="pricing-preview-card">
+          <div class="pp-badge pp-badge-basic">✨ Basic</div>
+          <div class="pp-price">1,99€ <span>/mois</span></div>
+          <ul>
+            <li>✓ 15 posts par jour</li>
+            <li>✓ X, Reddit, Facebook</li>
+            <li>✓ Mode Délai</li>
+            <li>✓ Dashboard basique</li>
+          </ul>
+          <a href="/subscribe?plan=basic" class="btn-secondary" style="display:block;text-align:center;margin-top:20px;">Passer à Basic</a>
         </div>
         <div class="pricing-preview-card pp-featured">
           <div class="pp-badge pp-badge-full">⭐ Full — Recommandé</div>
@@ -158,17 +169,6 @@ import Footer from '../components/Footer.astro';
             <li>✓ Synchronisation cloud</li>
           </ul>
           <a href="/subscribe?plan=full" class="btn-primary" style="display:block;text-align:center;margin-top:20px;">Passer à Full</a>
-        </div>
-        <div class="pricing-preview-card">
-          <div class="pp-badge pp-badge-basic">✨ Basic</div>
-          <div class="pp-price">1,99€ <span>/mois</span></div>
-          <ul>
-            <li>✓ 15 posts par jour</li>
-            <li>✓ X, Reddit, Facebook</li>
-            <li>✓ Mode Délai</li>
-            <li>✓ Dashboard basique</li>
-          </ul>
-          <a href="/subscribe?plan=basic" class="btn-secondary" style="display:block;text-align:center;margin-top:20px;">Passer à Basic</a>
         </div>
       </div>
       <div style="text-align:center;margin-top:24px;">
@@ -209,12 +209,24 @@ import Footer from '../components/Footer.astro';
     <div class="container" style="text-align:center;">
       <h2>Prêt à poster sans regrets ?</h2>
       <p>Rejoignez des milliers d'utilisateurs qui protègent leur réputation en ligne.</p>
-      <a href="/subscribe" class="btn-primary" style="font-size:18px;padding:18px 48px;">✨ Commencer gratuitement</a>
+      <a href="#" id="install-btn-cta" class="btn-primary install-btn" style="font-size:18px;padding:18px 48px;">✨ Commencer gratuitement</a>
     </div>
   </section>
 
   <Footer />
 </Layout>
+
+<script>
+  const CHROME_STORE_URL = 'https://chrome.google.com/webstore/detail/eumenides/TODO_CHROME_ID';
+  const FIREFOX_STORE_URL = 'https://addons.mozilla.org/fr/firefox/addon/eumenides/';
+
+  const isFirefox = navigator.userAgent.includes('Firefox');
+  const storeUrl = isFirefox ? FIREFOX_STORE_URL : CHROME_STORE_URL;
+
+  document.querySelectorAll('.install-btn').forEach(btn => {
+    (btn as HTMLAnchorElement).href = storeUrl;
+  });
+</script>
 
 <style>
   /* Hero */
@@ -493,6 +505,7 @@ import Footer from '../components/Footer.astro';
     border-color: rgba(255,215,0,0.5);
     background: rgba(255,215,0,0.04);
     position: relative;
+    overflow: hidden;
   }
 
   .pp-featured::before {
