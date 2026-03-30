@@ -17,6 +17,7 @@ const path = require("path");
 
 // Get environment from command line or default to preview
 const env = process.argv[2] || "preview";
+const browser = process.argv[3] || "chrome"; // chrome | firefox
 
 // Default URLs for each environment
 const ENV_URLS = {
@@ -27,7 +28,7 @@ const ENV_URLS = {
 
 // Website URLs for each environment
 const WEBSITE_URLS = {
-  preview: "http://localhost:4321",
+  preview: "https://eumenides-frontend-git-preview-snaxs-projects-47698530.vercel.app",
   production: "https://eumenides.eu",
   development: "http://localhost:4321",
 };
@@ -36,7 +37,7 @@ const WEBSITE_URLS = {
 const apiUrl = process.env.API_BASE_URL || ENV_URLS[env] || ENV_URLS.preview;
 const websiteUrl = process.env.WEBSITE_BASE_URL || WEBSITE_URLS[env] || WEBSITE_URLS.preview;
 
-console.log(`Building config for environment: ${env}`);
+console.log(`Building config for environment: ${env}, browser: ${browser}`);
 console.log(`API URL: ${apiUrl}`);
 console.log(`Website URL: ${websiteUrl}`);
 
@@ -55,8 +56,11 @@ window.EUMENIDES_CONFIG = {
 console.log('Eumenides Config loaded:', window.EUMENIDES_CONFIG);
 `;
 
-// Write to js/config-generated.js (for HTML pages)
-const outputPath = path.join(__dirname, "js", "config-generated.js");
+// Write to dist/<browser>/js/config-generated.js
+const distDir = path.join(__dirname, "dist", browser, "js");
+fs.mkdirSync(distDir, { recursive: true });
+
+const outputPath = path.join(distDir, "config-generated.js");
 fs.writeFileSync(outputPath, configContent, "utf8");
 
 console.log(`✓ Config written to: ${outputPath}`);
@@ -73,7 +77,7 @@ const BUILD_TIME = '${new Date().toISOString()}';
 console.log('Eumenides Service Worker Config loaded:', { API_BASE_URL, ENVIRONMENT, BUILD_TIME });
 `;
 
-const swOutputPath = path.join(__dirname, "js", "sw-config-generated.js");
+const swOutputPath = path.join(distDir, "sw-config-generated.js");
 fs.writeFileSync(swOutputPath, swConfigContent, "utf8");
 
 console.log(`✓ Service Worker config written to: ${swOutputPath}`);

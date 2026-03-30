@@ -222,16 +222,16 @@ import Footer from '../components/Footer.astro';
     flex-direction: column;
     min-height: 600px;
     position: relative;
+    overflow: hidden;
     transition: 0.3s;
   }
 
-  .pricing-card::before {
+  .card-featured::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
-    border-radius: 24px 24px 0 0;
   }
 
   .pricing-card:hover {

@@ -41,5 +41,8 @@ node_modules/
 !**/README.md
 
 # Generated config files (build artifacts)
-js/config-generated.js
-js/sw-config-generated.js
+extensions/shared/js/config-generated.js
+extensions/shared/js/sw-config-generated.js
+
+# Extension build output
+extensions/dist/

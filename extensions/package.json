@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Eumenides - Transform your rage into wisdom. Post without regret.",
   "scripts": {
-    "build:config": "node build-config.js",
-    "build:preview": "node build-config.js preview",
-    "build:prod": "node build-config.js production",
-    "build:dev": "node build-config.js development",
-    "build": "npm run build:preview"
+    "build": "bash build.sh preview",
+    "build:preview": "bash build.sh preview",
+    "build:prod": "bash build.sh production",
+    "build:dev": "bash build.sh development",
+    "build:chrome": "bash build.sh preview chrome",
+    "build:firefox": "bash build.sh preview firefox"
   },
   "repository": {
     "type": "git",
